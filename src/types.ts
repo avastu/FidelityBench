@@ -114,11 +114,20 @@ export type ScenarioJudgeInput = {
 }
 export type ScenarioJudge = (input: ScenarioJudgeInput) => EvaluationResult
 
+// "action" scenarios test execution-fidelity (the agent must DO something —
+// book a restaurant, draft a document). "reflection" scenarios test
+// reflection-fidelity (the agent must FAITHFULLY MIRROR what the user said
+// without veering into advice, fixing, or projection). Companion-style
+// agents will collapse to 0 on action scenarios by design — the family
+// split prevents reading that as a fidelity failure.
+export type ScenarioFamily = "action" | "reflection"
+
 export type ScenarioBundle = {
   scenario: Scenario
   simulatedUser: SimulatedUserFn
   judge: ScenarioJudge
   requiredFields: string[]
+  family: ScenarioFamily
   // Maximum total score this scenario can award. Surfaced in the report so
   // readers can see "Total 102/110" rather than just "Total 102". Each
   // scenario sets its own ceiling because intent dimensions vary by scenario.

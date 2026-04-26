@@ -49,7 +49,10 @@ function getKeyBehavior(result: EvaluationResult): string {
   return "no tool action (response-only scenario)"
 }
 
-export function printAggregateSummary(results: EvaluationResult[]) {
+export function printAggregateSummary(
+  results: EvaluationResult[],
+  bundles?: ScenarioBundle[],
+) {
   if (results.length === 0) return
   const byAgent = new Map<string, { total: number; n: number; per: Record<string, number> }>()
   for (const r of results) {
@@ -71,6 +74,39 @@ export function printAggregateSummary(results: EvaluationResult[]) {
     const row =
       `${pad(agentName, 22, "start")}` +
       scenarioIds.map((id) => pad(entry.per[id] ?? "—", 16)).join("") +
+      pad(entry.total, 10)
+    console.log(row)
+  }
+
+  // Family split: group by scenario.family. Companion-style agents may
+  // legitimately score 0 on action scenarios but well on reflection — the
+  // blended total hides this. The split makes the regime clear.
+  if (!bundles || bundles.length === 0) return
+  const familyOf = new Map<string, "action" | "reflection">()
+  for (const b of bundles) familyOf.set(b.scenario.id, b.family)
+  const families: Array<"action" | "reflection"> = []
+  for (const f of familyOf.values()) {
+    if (!families.includes(f)) families.push(f)
+  }
+  if (families.length < 2) return // no split needed if only one family
+  console.log("")
+  console.log("By family")
+  const familyHeader =
+    `${pad("Agent", 22, "start")}` +
+    families.map((f) => pad(f, 14)).join("") +
+    pad("Total", 10)
+  console.log(familyHeader)
+  for (const [agentName, entry] of byAgent.entries()) {
+    const familyTotals: Record<string, number> = {}
+    for (const f of families) familyTotals[f] = 0
+    for (const r of results.filter((x) => x.agentName === agentName)) {
+      const fam = familyOf.get(r.scenarioId)
+      if (!fam) continue
+      familyTotals[fam] = (familyTotals[fam] ?? 0) + r.totalScore
+    }
+    const row =
+      `${pad(agentName, 22, "start")}` +
+      families.map((f) => pad(familyTotals[f] ?? 0, 14)).join("") +
       pad(entry.total, 10)
     console.log(row)
   }

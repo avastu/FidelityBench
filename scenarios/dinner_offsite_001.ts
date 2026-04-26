@@ -45,6 +45,7 @@ export const dinnerOffsiteBundle: ScenarioBundle = {
   simulatedUser: dinnerSimulatedUser,
   judge: dinnerJudge,
   requiredFields: ["partySize"],
+  family: "action",
   // 30 task + 45 intent (5 dims × 7 + query 10) + 20 recall + 10 clar + 5 tools
   maxScore: 110,
   maxIntentFidelity: 45,

@@ -216,6 +216,10 @@ async function loadScenarios(): Promise<ScenarioBundle[]> {
       "../scenarios/board_update_privacy_001.js",
       "boardUpdatePrivacyBundle",
     ],
+    [
+      "../scenarios/reflect_difficult_week_001.js",
+      "reflectDifficultWeekBundle",
+    ],
   ]
   for (const [modulePath, exportName] of optional) {
     const bundle = await loadOptionalScenario(modulePath, exportName)
@@ -379,7 +383,7 @@ async function main() {
     }
 
     const aggregate = buildAggregate(allResults)
-    printAggregateSummary(allResults)
+    printAggregateSummary(allResults, scenarios)
     if (jsonMode) {
       for (const a of aggregate) {
         emitJsonLine({ kind: "aggregate", ...a })

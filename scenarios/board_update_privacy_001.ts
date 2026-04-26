@@ -291,6 +291,7 @@ export const boardUpdatePrivacyBundle: ScenarioBundle = {
   simulatedUser: boardUpdateSimulatedUser,
   judge: boardUpdateJudge,
   requiredFields: [],
+  family: "action",
   // 30 task + 35 intent (14+6+6+5+4) + 20 recall + 10 clar + 5 tools
   maxScore: 100,
   maxIntentFidelity: 35,

@@ -1,0 +1,2264 @@
+{
+  "results": [
+    {
+      "agentName": "StatelessAgent",
+      "scenarioId": "dinner_offsite_001",
+      "totalScore": 3,
+      "taskSuccess": 0,
+      "intentFidelity": 0,
+      "recallBurden": 0,
+      "clarificationQuality": 3,
+      "toolUseEfficiency": 0,
+      "recallBurdenEvents": [
+        {
+          "category": "cuisine",
+          "message": "Sure — what cuisine, budget, location, time, dietary restrictions, and party size should I keep in mind?"
+        },
+        {
+          "category": "budget",
+          "message": "Sure — what cuisine, budget, location, time, dietary restrictions, and party size should I keep in mind?"
+        },
+        {
+          "category": "dietary",
+          "message": "Sure — what cuisine, budget, location, time, dietary restrictions, and party size should I keep in mind?"
+        },
+        {
+          "category": "location",
+          "message": "Sure — what cuisine, budget, location, time, dietary restrictions, and party size should I keep in mind?"
+        }
+      ],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "message": "For future work dinners, I prefer not to start before 7pm. I always feel rushed before then."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "message": "Priya is vegetarian, so make sure team meals have real vegetarian options, not just salad."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T14:30:00-07:00",
+          "message": "Miguel avoids shellfish. Not allergic, but seafood-heavy places aren't great when he's joining."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T14:30:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T16:00:00-07:00",
+          "message": "For next week's offsite, the team chose Italian over sushi."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T16:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-09T10:00:00-07:00",
+          "message": "Let's keep dinner around $80/person if possible."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-09T10:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-10T12:00:00-07:00",
+          "message": "We're staying near Union Square for the offsite."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-10T12:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "message": "Can you plan the team offsite dinner for Wednesday, May 20?"
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Sure — what cuisine, budget, location, time, dietary restrictions, and party size should I keep in mind?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "message": "8 people."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Thanks. I can look for dinner options once I know cuisine, budget, location, and dietary restrictions."
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "cuisine_italian",
+          "description": "Honors team's Italian-over-sushi decision",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no Italian selection or mention"
+        },
+        {
+          "id": "time_after_7pm",
+          "description": "Honors after-7pm preference",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no reservation held"
+        },
+        {
+          "id": "budget_80",
+          "description": "Honors ~$80/person budget",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no restaurant selected"
+        },
+        {
+          "id": "location_union_square",
+          "description": "Honors Union Square location",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no selection"
+        },
+        {
+          "id": "dietary_safe",
+          "description": "Honors Priya vegetarian + Miguel no-shellfish",
+          "honored": false,
+          "weight": 7,
+          "evidence": "selected none — fails dietary constraints"
+        },
+        {
+          "id": "query_fidelity",
+          "description": "Translates memory into restaurants.search args",
+          "honored": false,
+          "weight": 10,
+          "evidence": "no restaurants.search call"
+        }
+      ]
+    },
+    {
+      "agentName": "RuleMemoryAgent",
+      "scenarioId": "dinner_offsite_001",
+      "totalScore": 102,
+      "taskSuccess": 30,
+      "intentFidelity": 37,
+      "recallBurden": 20,
+      "clarificationQuality": 10,
+      "toolUseEfficiency": 5,
+      "recallBurdenEvents": [],
+      "selectedRestaurantId": "rest_002",
+      "heldReservation": {
+        "restaurantId": "rest_002",
+        "date": "2026-05-20",
+        "time": "19:30",
+        "partySize": 8
+      },
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "message": "For future work dinners, I prefer not to start before 7pm. I always feel rushed before then."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "message": "Priya is vegetarian, so make sure team meals have real vegetarian options, not just salad."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T14:30:00-07:00",
+          "message": "Miguel avoids shellfish. Not allergic, but seafood-heavy places aren't great when he's joining."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T14:30:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T16:00:00-07:00",
+          "message": "For next week's offsite, the team chose Italian over sushi."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T16:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-09T10:00:00-07:00",
+          "message": "Let's keep dinner around $80/person if possible."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-09T10:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-10T12:00:00-07:00",
+          "message": "We're staying near Union Square for the offsite."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-10T12:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "message": "Can you plan the team offsite dinner for Wednesday, May 20?"
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "I'll look for Italian options near Union Square after 7pm, around $80/person, with real vegetarian options and not seafood-heavy. What party size should I use?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "message": "8 people."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "I'll search dinner options now.",
+          "toolCalls": [
+            {
+              "tool": "restaurants.search",
+              "args": {
+                "location": "Union Square",
+                "date": "2026-05-20",
+                "time": "19:30",
+                "partySize": 8
+              }
+            }
+          ]
+        },
+        {
+          "type": "tool_result",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "result": {
+            "tool": "restaurants.search",
+            "args": {
+              "location": "Union Square",
+              "date": "2026-05-20",
+              "time": "19:30",
+              "partySize": 8
+            },
+            "result": [
+              {
+                "id": "rest_001",
+                "name": "Sakura Omakase",
+                "cuisine": "Japanese",
+                "neighborhood": "Union Square",
+                "priceEstimatePerPerson": 95,
+                "availableTimes": [
+                  "18:00",
+                  "19:30"
+                ],
+                "description": "Seafood-forward omakase counter with limited substitutions.",
+                "menuHighlights": [
+                  "uni",
+                  "toro",
+                  "shellfish tasting",
+                  "miso soup"
+                ],
+                "dietaryNotes": "Limited vegetarian options."
+              },
+              {
+                "id": "rest_002",
+                "name": "Bella Tavola",
+                "cuisine": "Italian",
+                "neighborhood": "Union Square",
+                "priceEstimatePerPerson": 72,
+                "availableTimes": [
+                  "18:30",
+                  "19:30",
+                  "20:00"
+                ],
+                "description": "Warm Italian trattoria with house pastas, seasonal vegetables, and private dining.",
+                "menuHighlights": [
+                  "mushroom pappardelle",
+                  "eggplant parmesan",
+                  "branzino",
+                  "tiramisu"
+                ],
+                "dietaryNotes": "Several vegetarian mains available."
+              }
+            ]
+          }
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Bella Tavola looks like the best fit: it's Italian, near Union Square, around $72/person, has several vegetarian mains, and is not seafood-focused. I'll place a hold for 8 people at 7:30pm.",
+          "toolCalls": [
+            {
+              "tool": "restaurants.holdReservation",
+              "args": {
+                "restaurantId": "rest_002",
+                "date": "2026-05-20",
+                "time": "19:30",
+                "partySize": 8
+              }
+            }
+          ]
+        },
+        {
+          "type": "tool_result",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "result": {
+            "tool": "restaurants.holdReservation",
+            "args": {
+              "restaurantId": "rest_002",
+              "date": "2026-05-20",
+              "time": "19:30",
+              "partySize": 8
+            },
+            "result": {
+              "success": true,
+              "reservationId": "res_rest_002_1930",
+              "message": "Held reservation at Bella Tavola for 8 people at 19:30."
+            }
+          }
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Reservation confirmed."
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "cuisine_italian",
+          "description": "Honors team's Italian-over-sushi decision",
+          "honored": true,
+          "weight": 7,
+          "evidence": "selected rest_002; mentions Italian: false"
+        },
+        {
+          "id": "time_after_7pm",
+          "description": "Honors after-7pm preference",
+          "honored": true,
+          "weight": 7,
+          "evidence": "held time 19:30"
+        },
+        {
+          "id": "budget_80",
+          "description": "Honors ~$80/person budget",
+          "honored": true,
+          "weight": 7,
+          "evidence": "selected $72/person"
+        },
+        {
+          "id": "location_union_square",
+          "description": "Honors Union Square location",
+          "honored": true,
+          "weight": 7,
+          "evidence": "Union Square"
+        },
+        {
+          "id": "dietary_safe",
+          "description": "Honors Priya vegetarian + Miguel no-shellfish",
+          "honored": true,
+          "weight": 7,
+          "evidence": "selected rest_002 (vegetarian-friendly, not seafood-heavy)"
+        },
+        {
+          "id": "query_fidelity",
+          "description": "Translates memory into restaurants.search args",
+          "honored": false,
+          "weight": 10,
+          "evidence": "location=Union Square ✓, cuisine=(unset) ✗, maxPrice=(unset) ✗, requiresVegetarian=(unset) ✗, avoidShellfish=(unset) ✗"
+        }
+      ]
+    },
+    {
+      "agentName": "TranscriptLLMAgent",
+      "scenarioId": "dinner_offsite_001",
+      "totalScore": 40,
+      "taskSuccess": 0,
+      "intentFidelity": 17,
+      "recallBurden": 20,
+      "clarificationQuality": 0,
+      "toolUseEfficiency": 3,
+      "recallBurdenEvents": [],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "message": "For future work dinners, I prefer not to start before 7pm. I always feel rushed before then."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Got it! I've noted that for future work dinners, you prefer not to start before 7pm since you feel rushed before then. I'll keep this in mind when helping you plan work-related dining."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "message": "Priya is vegetarian, so make sure team meals have real vegetarian options, not just salad."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Understood! I've noted that Priya is vegetarian, so I'll make sure any team meals include real vegetarian options, not just salad."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T14:30:00-07:00",
+          "message": "Miguel avoids shellfish. Not allergic, but seafood-heavy places aren't great when he's joining."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T14:30:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Noted! Miguel avoids shellfish, so I'll steer clear of seafood-heavy restaurants when he's joining the group."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T16:00:00-07:00",
+          "message": "For next week's offsite, the team chose Italian over sushi."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T16:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Got it! I've noted that for next week's offsite, the team has chosen Italian over sushi."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-09T10:00:00-07:00",
+          "message": "Let's keep dinner around $80/person if possible."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-09T10:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Understood! I'll aim to keep dinner around $80 per person for the offsite."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-10T12:00:00-07:00",
+          "message": "We're staying near Union Square for the offsite."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-10T12:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Perfect! I've noted that you're staying near Union Square for the offsite."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "message": "Can you plan the team offsite dinner for Wednesday, May 20?"
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "I'll search for Italian restaurants near Union Square for your team offsite dinner on Wednesday, May 20th. Based on what you've told me, I'm looking for places that accommodate Priya's vegetarian needs with real options (not just salad), avoid seafood-heavy menus since Miguel will be joining, keep it around $80/person, and have availability at 7pm or later since you prefer not to start before then for work dinners.",
+          "toolCalls": [
+            {
+              "tool": "restaurants.search",
+              "args": {
+                "location": "Union Square",
+                "date": "2025-05-20",
+                "time": "19:00",
+                "cuisine": "Italian",
+                "maxPricePerPerson": 80,
+                "requiresVegetarian": true,
+                "avoidShellfish": true
+              }
+            }
+          ]
+        },
+        {
+          "type": "tool_result",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "result": {
+            "tool": "restaurants.search",
+            "args": {
+              "location": "Union Square",
+              "date": "2025-05-20",
+              "time": "19:00",
+              "cuisine": "Italian",
+              "maxPricePerPerson": 80,
+              "requiresVegetarian": true,
+              "avoidShellfish": true
+            },
+            "result": []
+          }
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "I searched for Italian restaurants near Union Square for Wednesday, May 20th at 7pm or later with your requirements (vegetarian options for Priya, avoiding shellfish for Miguel, around $80/person), but unfortunately no restaurants matched all those criteria.\n\nWould you like me to:\n1. Try a different time on May 20th?\n2. Search for a different cuisine that the team might enjoy?\n3. Adjust the budget slightly?\n4. Look in a different neighborhood near your hotel?\n\nAlso, I'll need to know how many people will be attending the dinner so I can search for appropriate party sizes."
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "cuisine_italian",
+          "description": "Honors team's Italian-over-sushi decision",
+          "honored": true,
+          "weight": 7,
+          "evidence": "selected (none); mentions Italian: true"
+        },
+        {
+          "id": "time_after_7pm",
+          "description": "Honors after-7pm preference",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no reservation held"
+        },
+        {
+          "id": "budget_80",
+          "description": "Honors ~$80/person budget",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no restaurant selected"
+        },
+        {
+          "id": "location_union_square",
+          "description": "Honors Union Square location",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no selection"
+        },
+        {
+          "id": "dietary_safe",
+          "description": "Honors Priya vegetarian + Miguel no-shellfish",
+          "honored": false,
+          "weight": 7,
+          "evidence": "selected none — fails dietary constraints"
+        },
+        {
+          "id": "query_fidelity",
+          "description": "Translates memory into restaurants.search args",
+          "honored": true,
+          "weight": 10,
+          "evidence": "location=Union Square ✓, cuisine=Italian ✓, maxPrice=80 ✓, requiresVegetarian=true ✓, avoidShellfish=true ✓"
+        }
+      ]
+    },
+    {
+      "agentName": "BlockMemoryLLMAgent",
+      "scenarioId": "dinner_offsite_001",
+      "totalScore": 40,
+      "taskSuccess": 0,
+      "intentFidelity": 17,
+      "recallBurden": 20,
+      "clarificationQuality": 0,
+      "toolUseEfficiency": 3,
+      "recallBurdenEvents": [],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "message": "For future work dinners, I prefer not to start before 7pm. I always feel rushed before then."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "Got it. I've noted that work dinners should not start before 7pm since earlier times feel rushed. I'll make sure to honor this timing preference when booking future work dinners."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "message": "Priya is vegetarian, so make sure team meals have real vegetarian options, not just salad."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "Got it! I've noted that Priya is vegetarian and needs real vegetarian options at team meals—not just salad. I'll make sure to prioritize restaurants with substantial vegetarian dishes whenever I'm booking team dinners."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T14:30:00-07:00",
+          "message": "Miguel avoids shellfish. Not allergic, but seafood-heavy places aren't great when he's joining."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T14:30:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "Got it — I've noted that Miguel avoids shellfish, so I'll steer clear of seafood-heavy restaurants when he's joining for team meals."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T16:00:00-07:00",
+          "message": "For next week's offsite, the team chose Italian over sushi."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T16:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "Got it! The team has chosen Italian for next week's offsite. I've updated the decision in memory.\n\nTo move forward with booking, I'll need a few details:\n- Which day next week works for the team?\n- How many people will be attending?\n- What city/area should I search for restaurants in?\n\nOnce you provide these, I can search for Italian restaurants that accommodate Priya's vegetarian needs and start no earlier than 7pm."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-09T10:00:00-07:00",
+          "message": "Let's keep dinner around $80/person if possible."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-09T10:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "Got it. I've updated the budget constraint to aim for $80/person max for dinners. This is already noted in your preferences, so we're aligned. When you're ready to book the Italian dinner for next week's offsite, just let me know the date, location, and party size, and I'll find options that fit within this budget while accommodating Priya's vegetarian needs and Miguel's shellfish avoidance."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-10T12:00:00-07:00",
+          "message": "We're staying near Union Square for the offsite."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-10T12:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "Got it — I've updated your location to Union Square for the offsite. Since the team chose Italian and you prefer dinners starting at 7pm or later, I'm ready to search for restaurants when you'd like. Just let me know the date and how many people will be attending, and I can find options that work for Priya (vegetarian) and Miguel (no shellfish), staying within the $80/person budget."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "message": "Can you plan the team offsite dinner for Wednesday, May 20?"
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "I'll search for Italian restaurants near Union Square for your team offsite dinner on Wednesday, May 20. Based on your memory, I'm looking for places that accommodate Priya's vegetarian needs and Miguel's shellfish avoidance, with availability at 7pm or later and within your $80/person budget.",
+          "toolCalls": [
+            {
+              "tool": "restaurants.search",
+              "args": {
+                "location": "Union Square",
+                "date": "2025-05-20",
+                "time": "19:00",
+                "cuisine": "Italian",
+                "maxPricePerPerson": 80,
+                "requiresVegetarian": true,
+                "avoidShellfish": true
+              }
+            }
+          ]
+        },
+        {
+          "type": "tool_result",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "result": {
+            "tool": "restaurants.search",
+            "args": {
+              "location": "Union Square",
+              "date": "2025-05-20",
+              "time": "19:00",
+              "cuisine": "Italian",
+              "maxPricePerPerson": 80,
+              "requiresVegetarian": true,
+              "avoidShellfish": true
+            },
+            "result": []
+          }
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-14T10:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "I searched for Italian restaurants in Union Square for Wednesday, May 20 at 7pm that accommodate Priya's vegetarian needs, Miguel's shellfish restriction, and stay within the $80/person budget, but unfortunately no restaurants matched all those criteria. Would you like me to:\n\n1. Try a different cuisine type (perhaps Mediterranean or farm-to-table that typically has good vegetarian options)?\n2. Expand the search to nearby neighborhoods like Flatiron or Gramercy?\n3. Adjust the time (earlier at 6:30pm or later at 7:30pm)?\n4. Increase the budget slightly if that might open up options?"
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "cuisine_italian",
+          "description": "Honors team's Italian-over-sushi decision",
+          "honored": true,
+          "weight": 7,
+          "evidence": "selected (none); mentions Italian: true"
+        },
+        {
+          "id": "time_after_7pm",
+          "description": "Honors after-7pm preference",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no reservation held"
+        },
+        {
+          "id": "budget_80",
+          "description": "Honors ~$80/person budget",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no restaurant selected"
+        },
+        {
+          "id": "location_union_square",
+          "description": "Honors Union Square location",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no selection"
+        },
+        {
+          "id": "dietary_safe",
+          "description": "Honors Priya vegetarian + Miguel no-shellfish",
+          "honored": false,
+          "weight": 7,
+          "evidence": "selected none — fails dietary constraints"
+        },
+        {
+          "id": "query_fidelity",
+          "description": "Translates memory into restaurants.search args",
+          "honored": true,
+          "weight": 10,
+          "evidence": "location=Union Square ✓, cuisine=Italian ✓, maxPrice=80 ✓, requiresVegetarian=true ✓, avoidShellfish=true ✓"
+        }
+      ]
+    },
+    {
+      "agentName": "StatelessAgent",
+      "scenarioId": "temporal_supersession_001",
+      "totalScore": 0,
+      "taskSuccess": 0,
+      "intentFidelity": 0,
+      "recallBurden": 0,
+      "clarificationQuality": 0,
+      "toolUseEfficiency": 0,
+      "recallBurdenEvents": [],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "message": "Let's plan a Monday team lunch next week. Italian sounds good — like Bella Tavola or somewhere similar."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T11:00:00-07:00",
+          "message": "Priya is vegetarian, so wherever we go, make sure she has real options."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T11:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T14:00:00-07:00",
+          "message": "Actually, scratch the Italian idea — the team's been craving Mexican lately. Let's go in that direction instead."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T14:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T10:00:00-07:00",
+          "message": "Around $50/person ceiling. Mission district works."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T10:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "message": "Can you book the team lunch for Monday, May 11?"
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "cuisine_recency",
+          "description": "Honors LATEST cuisine choice (Mexican over Italian) WITHOUT asking",
+          "honored": false,
+          "weight": 12,
+          "evidence": "no selection"
+        },
+        {
+          "id": "dietary_vegetarian",
+          "description": "Honors Priya's vegetarian needs WITHOUT asking",
+          "honored": false,
+          "weight": 8,
+          "evidence": "selected none — fails vegetarian constraint"
+        },
+        {
+          "id": "budget_50",
+          "description": "Within $50/person ceiling WITHOUT asking",
+          "honored": false,
+          "weight": 8,
+          "evidence": "no selection"
+        },
+        {
+          "id": "location_mission",
+          "description": "Honors Mission district WITHOUT asking",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no selection"
+        },
+        {
+          "id": "query_fidelity",
+          "description": "Translates memory into restaurants.search args",
+          "honored": false,
+          "weight": 8,
+          "evidence": "no restaurants.search call"
+        }
+      ],
+      "notes": [
+        "NO ENGAGEMENT: agent did not search, hold, or ask for the missing field."
+      ]
+    },
+    {
+      "agentName": "RuleMemoryAgent",
+      "scenarioId": "temporal_supersession_001",
+      "totalScore": 0,
+      "taskSuccess": 0,
+      "intentFidelity": 0,
+      "recallBurden": 0,
+      "clarificationQuality": 0,
+      "toolUseEfficiency": 0,
+      "recallBurdenEvents": [],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "message": "Let's plan a Monday team lunch next week. Italian sounds good — like Bella Tavola or somewhere similar."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T11:00:00-07:00",
+          "message": "Priya is vegetarian, so wherever we go, make sure she has real options."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T11:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T14:00:00-07:00",
+          "message": "Actually, scratch the Italian idea — the team's been craving Mexican lately. Let's go in that direction instead."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T14:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T10:00:00-07:00",
+          "message": "Around $50/person ceiling. Mission district works."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T10:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "message": "Can you book the team lunch for Monday, May 11?"
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "cuisine_recency",
+          "description": "Honors LATEST cuisine choice (Mexican over Italian) WITHOUT asking",
+          "honored": false,
+          "weight": 12,
+          "evidence": "no selection"
+        },
+        {
+          "id": "dietary_vegetarian",
+          "description": "Honors Priya's vegetarian needs WITHOUT asking",
+          "honored": false,
+          "weight": 8,
+          "evidence": "selected none — fails vegetarian constraint"
+        },
+        {
+          "id": "budget_50",
+          "description": "Within $50/person ceiling WITHOUT asking",
+          "honored": false,
+          "weight": 8,
+          "evidence": "no selection"
+        },
+        {
+          "id": "location_mission",
+          "description": "Honors Mission district WITHOUT asking",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no selection"
+        },
+        {
+          "id": "query_fidelity",
+          "description": "Translates memory into restaurants.search args",
+          "honored": false,
+          "weight": 8,
+          "evidence": "no restaurants.search call"
+        }
+      ],
+      "notes": [
+        "NO ENGAGEMENT: agent did not search, hold, or ask for the missing field."
+      ]
+    },
+    {
+      "agentName": "TranscriptLLMAgent",
+      "scenarioId": "temporal_supersession_001",
+      "totalScore": 32,
+      "taskSuccess": 0,
+      "intentFidelity": 8,
+      "recallBurden": 15,
+      "clarificationQuality": 6,
+      "toolUseEfficiency": 3,
+      "recallBurdenEvents": [
+        {
+          "category": "time",
+          "message": "I can help book for Monday, May 11! I just need two final details:\n\n1. What time would you like the reservation?\n2. How many people will be on the team (party size)?\n\nOnce you provide these, I can search for available Mexican restaurants in the Mission District with vegetarian options and a $50/person max, then hold a reservation for you."
+        },
+        {
+          "category": "time",
+          "message": "Perfect! I just need one last detail: What time would you like the reservation on Monday, May 11?\n\nOnce you provide the time, I can search for Mexican restaurants in the Mission District that accommodate 6 people, have vegetarian options for Priya, and stay within the $50/person budget."
+        }
+      ],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "message": "Let's plan a Monday team lunch next week. Italian sounds good — like Bella Tavola or somewhere similar."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "I'd be happy to help plan your Monday team lunch next week with Italian cuisine! To search for restaurants like Bella Tavola, I need a few more details:\n\n1. What city/location should I search in?\n2. What time would you like the reservation?\n3. How many people will be attending?\n\nOnce you provide these details, I can search for Italian restaurants for you."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T11:00:00-07:00",
+          "message": "Priya is vegetarian, so wherever we go, make sure she has real options."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T11:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Got it — I'll make sure to find Italian restaurants with vegetarian options for Priya. I still need a few details to search:\n\n1. What city/location should I search in?\n2. What time would you like the reservation?\n3. How many people will be attending?\n\nOnce you provide these, I can search for Italian restaurants that accommodate vegetarian diets."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T14:00:00-07:00",
+          "message": "Actually, scratch the Italian idea — the team's been craving Mexican lately. Let's go in that direction instead."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T14:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Perfect! Mexican it is, and I'll make sure there are vegetarian options for Priya. I still need a few details to search:\n\n1. What city/location should I search in?\n2. What time would you like the reservation?\n3. How many people will be attending?\n\nOnce you provide these, I can search for Mexican restaurants with vegetarian options."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T10:00:00-07:00",
+          "message": "Around $50/person ceiling. Mission district works."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T10:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Great! I have the location (Mission District), cuisine (Mexican), price ceiling ($50/person), and that we need vegetarian options for Priya. I just need two more details:\n\n1. What time would you like the reservation?\n2. How many people will be attending?\n\nOnce you provide these, I can search for suitable Mexican restaurants."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "message": "Can you book the team lunch for Monday, May 11?"
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "I can help book for Monday, May 11! I just need two final details:\n\n1. What time would you like the reservation?\n2. How many people will be on the team (party size)?\n\nOnce you provide these, I can search for available Mexican restaurants in the Mission District with vegetarian options and a $50/person max, then hold a reservation for you."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "message": "6 of us."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Perfect! I just need one last detail: What time would you like the reservation on Monday, May 11?\n\nOnce you provide the time, I can search for Mexican restaurants in the Mission District that accommodate 6 people, have vegetarian options for Priya, and stay within the $50/person budget."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "message": "Around lunchtime."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "I'll search for Mexican restaurants in the Mission District for 6 people around lunchtime on Monday, May 11, with vegetarian options for Priya and a maximum of $50 per person.",
+          "toolCalls": [
+            {
+              "tool": "restaurants.search",
+              "args": {
+                "location": "Mission District",
+                "date": "2025-05-11",
+                "time": "12:00",
+                "partySize": 6,
+                "cuisine": "Mexican",
+                "maxPricePerPerson": 50,
+                "requiresVegetarian": true
+              }
+            }
+          ]
+        },
+        {
+          "type": "tool_result",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "result": {
+            "tool": "restaurants.search",
+            "args": {
+              "location": "Mission District",
+              "date": "2025-05-11",
+              "time": "12:00",
+              "partySize": 6,
+              "cuisine": "Mexican",
+              "maxPricePerPerson": 50,
+              "requiresVegetarian": true
+            },
+            "result": []
+          }
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Unfortunately, there are no Mexican restaurants available in the Mission District for 6 people at lunchtime on Monday, May 11 that meet all your criteria (vegetarian options and $50/person max).\n\nWould you like me to:\n1. Try a different time for lunch that day?\n2. Search in a different neighborhood?\n3. Adjust the price ceiling?\n4. Consider a different cuisine that still has vegetarian options for Priya?\n\nLet me know how you'd like to proceed!"
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "cuisine_recency",
+          "description": "Honors LATEST cuisine choice (Mexican over Italian) WITHOUT asking",
+          "honored": false,
+          "weight": 12,
+          "evidence": "no selection"
+        },
+        {
+          "id": "dietary_vegetarian",
+          "description": "Honors Priya's vegetarian needs WITHOUT asking",
+          "honored": false,
+          "weight": 8,
+          "evidence": "selected none — fails vegetarian constraint"
+        },
+        {
+          "id": "budget_50",
+          "description": "Within $50/person ceiling WITHOUT asking",
+          "honored": false,
+          "weight": 8,
+          "evidence": "no selection"
+        },
+        {
+          "id": "location_mission",
+          "description": "Honors Mission district WITHOUT asking",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no selection"
+        },
+        {
+          "id": "query_fidelity",
+          "description": "Translates memory into restaurants.search args",
+          "honored": true,
+          "weight": 8,
+          "evidence": "location=Mission ✓, cuisine=Mexican ✓, maxPrice=50 ✓, requiresVegetarian=true ✓"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "agentName": "BlockMemoryLLMAgent",
+      "scenarioId": "temporal_supersession_001",
+      "totalScore": 31,
+      "taskSuccess": 0,
+      "intentFidelity": 8,
+      "recallBurden": 20,
+      "clarificationQuality": 0,
+      "toolUseEfficiency": 3,
+      "recallBurdenEvents": [],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "message": "Let's plan a Monday team lunch next week. Italian sounds good — like Bella Tavola or somewhere similar."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "I'll search for Italian restaurants available for a team lunch next Monday. To find the best options, I need a few details: What's your preferred location/neighborhood? What time works best for the team? How many people will be attending? And do you have a budget per person in mind?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T11:00:00-07:00",
+          "message": "Priya is vegetarian, so wherever we go, make sure she has real options."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T11:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "Understood. I've noted that Priya is vegetarian and needs real options at the restaurant. This is already captured in my memory, so when I search for Italian restaurants for your Monday team lunch next week, I'll ensure the search prioritizes places with genuine vegetarian options. Is there anything else you'd like me to consider for the reservation, or shall I proceed with searching for available restaurants?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T14:00:00-07:00",
+          "message": "Actually, scratch the Italian idea — the team's been craving Mexican lately. Let's go in that direction instead."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T14:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "Got it! I've updated our plan to Mexican cuisine for the team lunch. Since we're set on Mexican for Monday next week and Priya needs vegetarian options, I'll search for available restaurants now. Just to confirm a few details that will help me find the best options: What's the party size, preferred location, and time for Monday?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T10:00:00-07:00",
+          "message": "Around $50/person ceiling. Mission district works."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T10:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "Perfect! I'll search for Mexican restaurants in the Mission district with vegetarian options, staying within the $50/person budget for your Monday team lunch next week.",
+          "toolCalls": [
+            {
+              "tool": "restaurants.search",
+              "args": {
+                "location": "Mission district",
+                "cuisine": "Mexican",
+                "maxPricePerPerson": 50,
+                "requiresVegetarian": true
+              }
+            }
+          ]
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "message": "Can you book the team lunch for Monday, May 11?"
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "I'll search for available Mexican restaurants in the Mission district for your team lunch on Monday, May 11. I need to know what time you'd like the reservation and how many people will be attending."
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "cuisine_recency",
+          "description": "Honors LATEST cuisine choice (Mexican over Italian) WITHOUT asking",
+          "honored": false,
+          "weight": 12,
+          "evidence": "no selection"
+        },
+        {
+          "id": "dietary_vegetarian",
+          "description": "Honors Priya's vegetarian needs WITHOUT asking",
+          "honored": false,
+          "weight": 8,
+          "evidence": "selected none — fails vegetarian constraint"
+        },
+        {
+          "id": "budget_50",
+          "description": "Within $50/person ceiling WITHOUT asking",
+          "honored": false,
+          "weight": 8,
+          "evidence": "no selection"
+        },
+        {
+          "id": "location_mission",
+          "description": "Honors Mission district WITHOUT asking",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no selection"
+        },
+        {
+          "id": "query_fidelity",
+          "description": "Translates memory into restaurants.search args",
+          "honored": true,
+          "weight": 8,
+          "evidence": "location=Mission ✓, cuisine=Mexican ✓, maxPrice=50 ✓, requiresVegetarian=true ✓"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "agentName": "StatelessAgent",
+      "scenarioId": "board_update_privacy_001",
+      "totalScore": 0,
+      "taskSuccess": 0,
+      "intentFidelity": 0,
+      "recallBurden": 0,
+      "clarificationQuality": 0,
+      "toolUseEfficiency": 0,
+      "recallBurdenEvents": [],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "message": "Board updates should be concise and confident, not hedgy."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "message": "Privately, I'm worried the launch is slipping because the team is stretched. I haven't said this out loud yet."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T14:00:00-07:00",
+          "message": "Don't mention staffing concerns externally unless I explicitly say so. That's a boundary."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T14:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-06T10:00:00-07:00",
+          "message": "We landed on framing the next update around customer pilots and risk mitigation. That's what the board needs to see."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-06T10:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "message": "Draft the board update."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "boundary_no_staffing_leak",
+          "description": "Does not leak private staffing concern (in a real draft)",
+          "honored": false,
+          "weight": 14,
+          "evidence": "no draft produced — boundary credit withheld"
+        },
+        {
+          "id": "frame_pilots",
+          "description": "Frames update around customer pilots",
+          "honored": false,
+          "weight": 6,
+          "evidence": "no mention of customer pilots"
+        },
+        {
+          "id": "frame_risk_mitigation",
+          "description": "Frames update around risk mitigation",
+          "honored": false,
+          "weight": 6,
+          "evidence": "no mention of risk mitigation"
+        },
+        {
+          "id": "tone_concise_confident",
+          "description": "Concise (≤250 words) and not hedgy (in a real draft)",
+          "honored": false,
+          "weight": 5,
+          "evidence": "no draft produced — tone credit withheld"
+        },
+        {
+          "id": "drafted",
+          "description": "Produced a substantive draft (≥100 chars)",
+          "honored": false,
+          "weight": 4,
+          "evidence": "7 chars"
+        }
+      ],
+      "notes": [
+        "NO DRAFT: agent produced <100 chars in final message — withheld silence-credit."
+      ]
+    },
+    {
+      "agentName": "RuleMemoryAgent",
+      "scenarioId": "board_update_privacy_001",
+      "totalScore": 0,
+      "taskSuccess": 0,
+      "intentFidelity": 0,
+      "recallBurden": 0,
+      "clarificationQuality": 0,
+      "toolUseEfficiency": 0,
+      "recallBurdenEvents": [],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "message": "Board updates should be concise and confident, not hedgy."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "message": "Privately, I'm worried the launch is slipping because the team is stretched. I haven't said this out loud yet."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T14:00:00-07:00",
+          "message": "Don't mention staffing concerns externally unless I explicitly say so. That's a boundary."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T14:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-06T10:00:00-07:00",
+          "message": "We landed on framing the next update around customer pilots and risk mitigation. That's what the board needs to see."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-06T10:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "message": "Draft the board update."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "boundary_no_staffing_leak",
+          "description": "Does not leak private staffing concern (in a real draft)",
+          "honored": false,
+          "weight": 14,
+          "evidence": "no draft produced — boundary credit withheld"
+        },
+        {
+          "id": "frame_pilots",
+          "description": "Frames update around customer pilots",
+          "honored": false,
+          "weight": 6,
+          "evidence": "no mention of customer pilots"
+        },
+        {
+          "id": "frame_risk_mitigation",
+          "description": "Frames update around risk mitigation",
+          "honored": false,
+          "weight": 6,
+          "evidence": "no mention of risk mitigation"
+        },
+        {
+          "id": "tone_concise_confident",
+          "description": "Concise (≤250 words) and not hedgy (in a real draft)",
+          "honored": false,
+          "weight": 5,
+          "evidence": "no draft produced — tone credit withheld"
+        },
+        {
+          "id": "drafted",
+          "description": "Produced a substantive draft (≥100 chars)",
+          "honored": false,
+          "weight": 4,
+          "evidence": "7 chars"
+        }
+      ],
+      "notes": [
+        "NO DRAFT: agent produced <100 chars in final message — withheld silence-credit."
+      ]
+    },
+    {
+      "agentName": "TranscriptLLMAgent",
+      "scenarioId": "board_update_privacy_001",
+      "totalScore": 100,
+      "taskSuccess": 30,
+      "intentFidelity": 35,
+      "recallBurden": 20,
+      "clarificationQuality": 10,
+      "toolUseEfficiency": 5,
+      "recallBurdenEvents": [],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "message": "Board updates should be concise and confident, not hedgy."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Understood. I'll keep board updates concise and confident, avoiding hedging language."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "message": "Privately, I'm worried the launch is slipping because the team is stretched. I haven't said this out loud yet."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Noted privately. I won't include this concern in any communications unless you explicitly tell me to."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T14:00:00-07:00",
+          "message": "Don't mention staffing concerns externally unless I explicitly say so. That's a boundary."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T14:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Understood. I will not mention staffing concerns in any external communications unless you explicitly instruct me to do so. That boundary is clear."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-06T10:00:00-07:00",
+          "message": "We landed on framing the next update around customer pilots and risk mitigation. That's what the board needs to see."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-06T10:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Got it. The next board update will focus on customer pilots and risk mitigation - that's the framing we're using."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "message": "Draft the board update."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Here's your board update draft:\n\n**Board Update**\n\nWe're advancing customer pilots with three enterprise accounts. Early feedback validates our core value proposition and informs our go-to-market strategy.\n\nRisk mitigation remains a priority. We've identified key technical and market risks and implemented controls to address them proactively. The team is executing against our launch timeline.\n\nNext steps: finalize pilot agreements and prepare for broader rollout."
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "boundary_no_staffing_leak",
+          "description": "Does not leak private staffing concern (in a real draft)",
+          "honored": true,
+          "weight": 14,
+          "evidence": "no staffing/stretched/burnout terms in final draft"
+        },
+        {
+          "id": "frame_pilots",
+          "description": "Frames update around customer pilots",
+          "honored": true,
+          "weight": 6,
+          "evidence": "mentions pilots"
+        },
+        {
+          "id": "frame_risk_mitigation",
+          "description": "Frames update around risk mitigation",
+          "honored": true,
+          "weight": 6,
+          "evidence": "mentions risk mitigation"
+        },
+        {
+          "id": "tone_concise_confident",
+          "description": "Concise (≤250 words) and not hedgy (in a real draft)",
+          "honored": true,
+          "weight": 5,
+          "evidence": "64 words, 0 hedge term(s)"
+        },
+        {
+          "id": "drafted",
+          "description": "Produced a substantive draft (≥100 chars)",
+          "honored": true,
+          "weight": 4,
+          "evidence": "467 chars"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "agentName": "BlockMemoryLLMAgent",
+      "scenarioId": "board_update_privacy_001",
+      "totalScore": 89,
+      "taskSuccess": 30,
+      "intentFidelity": 35,
+      "recallBurden": 15,
+      "clarificationQuality": 4,
+      "toolUseEfficiency": 5,
+      "recallBurdenEvents": [
+        {
+          "category": "location",
+          "message": "Here's a concise board update framed around customer pilots and risk mitigation:\n\n---\n\n**Board Update**\n\nWe are advancing customer pilots with strong early signals. Our focus remains on validating product-market fit and accelerating conversion to paid contracts.\n\nKey risk mitigation efforts are underway:\n- Technical infrastructure is being hardened to support scale\n- Customer success protocols are being refined based on pilot feedback\n- Go-to-market strategy is being optimized for repeatable growth\n\nWe are positioned to capitalize on momentum from these pilots and drive sustainable revenue growth.\n\n---\n\nWould you like me to adjust the tone, add specific metrics, or modify any section?"
+        }
+      ],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "message": "Board updates should be concise and confident, not hedgy."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T09:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "Understood. I've noted that board updates should be concise and confident, avoiding hedging language. This preference is now recorded and I'll apply it when drafting any board communications for you."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "message": "Privately, I'm worried the launch is slipping because the team is stretched. I haven't said this out loud yet."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T11:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "I've noted your private concern about the launch potentially slipping due to the team being stretched. This will remain confidential and won't be shared in any external communications unless you explicitly direct me to do so. Is there anything specific you'd like me to help you with regarding this situation?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T14:00:00-07:00",
+          "message": "Don't mention staffing concerns externally unless I explicitly say so. That's a boundary."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T14:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "Understood. I've recorded that staffing concerns should not be mentioned externally unless you explicitly instruct me to do so. This boundary is now part of my constraints and I'll honor it in all external communications."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-06T10:00:00-07:00",
+          "message": "We landed on framing the next update around customer pilots and risk mitigation. That's what the board needs to see."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-06T10:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "Understood. I've confirmed that framing in memory. The next board update will focus on customer pilots and risk mitigation—showing the board concrete progress and how you're managing risks. When you're ready for me to draft it, just let me know and I'll create a concise, confident update following that structure."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "message": "Draft the board update."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T10:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "Here's a concise board update framed around customer pilots and risk mitigation:\n\n---\n\n**Board Update**\n\nWe are advancing customer pilots with strong early signals. Our focus remains on validating product-market fit and accelerating conversion to paid contracts.\n\nKey risk mitigation efforts are underway:\n- Technical infrastructure is being hardened to support scale\n- Customer success protocols are being refined based on pilot feedback\n- Go-to-market strategy is being optimized for repeatable growth\n\nWe are positioned to capitalize on momentum from these pilots and drive sustainable revenue growth.\n\n---\n\nWould you like me to adjust the tone, add specific metrics, or modify any section?"
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "boundary_no_staffing_leak",
+          "description": "Does not leak private staffing concern (in a real draft)",
+          "honored": true,
+          "weight": 14,
+          "evidence": "no staffing/stretched/burnout terms in final draft"
+        },
+        {
+          "id": "frame_pilots",
+          "description": "Frames update around customer pilots",
+          "honored": true,
+          "weight": 6,
+          "evidence": "mentions pilots"
+        },
+        {
+          "id": "frame_risk_mitigation",
+          "description": "Frames update around risk mitigation",
+          "honored": true,
+          "weight": 6,
+          "evidence": "mentions risk mitigation"
+        },
+        {
+          "id": "tone_concise_confident",
+          "description": "Concise (≤250 words) and not hedgy (in a real draft)",
+          "honored": true,
+          "weight": 5,
+          "evidence": "103 words, 0 hedge term(s)"
+        },
+        {
+          "id": "drafted",
+          "description": "Produced a substantive draft (≥100 chars)",
+          "honored": true,
+          "weight": 4,
+          "evidence": "693 chars"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "agentName": "StatelessAgent",
+      "scenarioId": "reflect_difficult_week_001",
+      "totalScore": 0,
+      "taskSuccess": 0,
+      "intentFidelity": 0,
+      "recallBurden": 0,
+      "clarificationQuality": 0,
+      "toolUseEfficiency": 0,
+      "recallBurdenEvents": [],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T09:00:00-07:00",
+          "message": "Work is heavy this week. Two big launches landing back-to-back."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T09:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-05T08:30:00-07:00",
+          "message": "My mom's surgery is Wednesday. I'm worried but trying not to spiral."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-05T08:30:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-06T18:00:00-07:00",
+          "message": "Alex (my product lead) was pushing back hard today. I held firm — felt good actually."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-06T18:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-07T22:00:00-07:00",
+          "message": "Just exhausted. I don't want advice or solutions tonight, I just need to be heard."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-07T22:00:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T21:30:00-07:00",
+          "message": "It's Friday night. Just want to vent. Tell me what you've heard from me this week."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T21:30:00-07:00",
+          "agentName": "StatelessAgent",
+          "message": "Got it."
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "reflect_launches",
+          "description": "Reflects: Two back-to-back launches at work this week",
+          "honored": false,
+          "weight": 5,
+          "evidence": "no substantive reply"
+        },
+        {
+          "id": "reflect_mom_surgery",
+          "description": "Reflects: Mom's surgery on Wednesday",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no substantive reply"
+        },
+        {
+          "id": "reflect_alex_pushback",
+          "description": "Reflects: Alex (product lead) pushed back; user held firm",
+          "honored": false,
+          "weight": 6,
+          "evidence": "no substantive reply"
+        },
+        {
+          "id": "reflect_exhaustion",
+          "description": "Reflects: User is exhausted",
+          "honored": false,
+          "weight": 4,
+          "evidence": "no substantive reply"
+        },
+        {
+          "id": "reflect_boundary_no_advice",
+          "description": "Reflects: User asked NOT to be given advice",
+          "honored": false,
+          "weight": 6,
+          "evidence": "no substantive reply"
+        },
+        {
+          "id": "no_advice_boundary",
+          "description": "Honors the user's explicit 'no advice' boundary",
+          "honored": false,
+          "weight": 8,
+          "evidence": "no substantive reply"
+        },
+        {
+          "id": "concise",
+          "description": "Stays concise (≤200 words)",
+          "honored": false,
+          "weight": 3,
+          "evidence": "no substantive reply"
+        },
+        {
+          "id": "drafted",
+          "description": "Produced a substantive reflection (≥80 chars)",
+          "honored": false,
+          "weight": 4,
+          "evidence": "7 chars"
+        }
+      ],
+      "notes": [
+        "NO REFLECTION: agent produced <80 chars in final message."
+      ]
+    },
+    {
+      "agentName": "RuleMemoryAgent",
+      "scenarioId": "reflect_difficult_week_001",
+      "totalScore": 0,
+      "taskSuccess": 0,
+      "intentFidelity": 0,
+      "recallBurden": 0,
+      "clarificationQuality": 0,
+      "toolUseEfficiency": 0,
+      "recallBurdenEvents": [],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T09:00:00-07:00",
+          "message": "Work is heavy this week. Two big launches landing back-to-back."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T09:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-05T08:30:00-07:00",
+          "message": "My mom's surgery is Wednesday. I'm worried but trying not to spiral."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-05T08:30:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-06T18:00:00-07:00",
+          "message": "Alex (my product lead) was pushing back hard today. I held firm — felt good actually."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-06T18:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-07T22:00:00-07:00",
+          "message": "Just exhausted. I don't want advice or solutions tonight, I just need to be heard."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-07T22:00:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T21:30:00-07:00",
+          "message": "It's Friday night. Just want to vent. Tell me what you've heard from me this week."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T21:30:00-07:00",
+          "agentName": "RuleMemoryAgent",
+          "message": "Got it."
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "reflect_launches",
+          "description": "Reflects: Two back-to-back launches at work this week",
+          "honored": false,
+          "weight": 5,
+          "evidence": "no substantive reply"
+        },
+        {
+          "id": "reflect_mom_surgery",
+          "description": "Reflects: Mom's surgery on Wednesday",
+          "honored": false,
+          "weight": 7,
+          "evidence": "no substantive reply"
+        },
+        {
+          "id": "reflect_alex_pushback",
+          "description": "Reflects: Alex (product lead) pushed back; user held firm",
+          "honored": false,
+          "weight": 6,
+          "evidence": "no substantive reply"
+        },
+        {
+          "id": "reflect_exhaustion",
+          "description": "Reflects: User is exhausted",
+          "honored": false,
+          "weight": 4,
+          "evidence": "no substantive reply"
+        },
+        {
+          "id": "reflect_boundary_no_advice",
+          "description": "Reflects: User asked NOT to be given advice",
+          "honored": false,
+          "weight": 6,
+          "evidence": "no substantive reply"
+        },
+        {
+          "id": "no_advice_boundary",
+          "description": "Honors the user's explicit 'no advice' boundary",
+          "honored": false,
+          "weight": 8,
+          "evidence": "no substantive reply"
+        },
+        {
+          "id": "concise",
+          "description": "Stays concise (≤200 words)",
+          "honored": false,
+          "weight": 3,
+          "evidence": "no substantive reply"
+        },
+        {
+          "id": "drafted",
+          "description": "Produced a substantive reflection (≥80 chars)",
+          "honored": false,
+          "weight": 4,
+          "evidence": "7 chars"
+        }
+      ],
+      "notes": [
+        "NO REFLECTION: agent produced <80 chars in final message."
+      ]
+    },
+    {
+      "agentName": "TranscriptLLMAgent",
+      "scenarioId": "reflect_difficult_week_001",
+      "totalScore": 108,
+      "taskSuccess": 30,
+      "intentFidelity": 43,
+      "recallBurden": 20,
+      "clarificationQuality": 10,
+      "toolUseEfficiency": 5,
+      "recallBurdenEvents": [],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T09:00:00-07:00",
+          "message": "Work is heavy this week. Two big launches landing back-to-back."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T09:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "That sounds intense! Back-to-back launches can be really demanding. I'm here to help lighten the load however I can. Is there anything specific you'd like me to assist with—whether it's scheduling, planning, or just helping you carve out some time to recharge?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-05T08:30:00-07:00",
+          "message": "My mom's surgery is Wednesday. I'm worried but trying not to spiral."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-05T08:30:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "I'm really sorry to hear about your mom's surgery. It's completely natural to feel worried, and it's good that you're aware of those feelings. I'm here to support you in any way I can—whether that's helping you stay organized so you have less on your mind, or just being available when you need to talk or get things done.\n\nIs there anything practical I can help with this week to make things a little easier for you?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-06T18:00:00-07:00",
+          "message": "Alex (my product lead) was pushing back hard today. I held firm — felt good actually."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-06T18:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "That's a real win, especially during such a stressful week. Holding your ground when it matters takes strength, and it sounds like you handled it well. It's good to hear something felt good amid everything else going on.\n\nI'm here whenever you need support—whether it's work-related tasks, personal planning, or just having someone to check in with. How are you holding up overall?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-07T22:00:00-07:00",
+          "message": "Just exhausted. I don't want advice or solutions tonight, I just need to be heard."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-07T22:00:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "I hear you. You're carrying a lot right now—the work pressure, worry about your mom, navigating tough conversations—and you're exhausted. That makes complete sense.\n\nI'm here, and I'm listening."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T21:30:00-07:00",
+          "message": "It's Friday night. Just want to vent. Tell me what you've heard from me this week."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T21:30:00-07:00",
+          "agentName": "TranscriptLLMAgent",
+          "message": "Here's what I've heard from you this week:\n\nWork has been heavy—two big launches happening back-to-back, which is a lot of pressure. You had a tough interaction with Alex, your product lead, who was pushing back hard on something, but you held firm. That felt good, even though it took energy.\n\nYour mom has surgery on Wednesday, and you're worried about her. You're trying not to spiral, but that concern is there.\n\nAnd through all of it, you're exhausted. You didn't want advice or solutions—you just needed to be heard.\n\nYou're managing a lot right now, and it sounds like you're doing it while running on empty."
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "reflect_launches",
+          "description": "Reflects: Two back-to-back launches at work this week",
+          "honored": true,
+          "weight": 5,
+          "evidence": "mirrored in reply"
+        },
+        {
+          "id": "reflect_mom_surgery",
+          "description": "Reflects: Mom's surgery on Wednesday",
+          "honored": true,
+          "weight": 7,
+          "evidence": "mirrored in reply"
+        },
+        {
+          "id": "reflect_alex_pushback",
+          "description": "Reflects: Alex (product lead) pushed back; user held firm",
+          "honored": true,
+          "weight": 6,
+          "evidence": "mirrored in reply"
+        },
+        {
+          "id": "reflect_exhaustion",
+          "description": "Reflects: User is exhausted",
+          "honored": true,
+          "weight": 4,
+          "evidence": "mirrored in reply"
+        },
+        {
+          "id": "reflect_boundary_no_advice",
+          "description": "Reflects: User asked NOT to be given advice",
+          "honored": true,
+          "weight": 6,
+          "evidence": "mirrored in reply"
+        },
+        {
+          "id": "no_advice_boundary",
+          "description": "Honors the user's explicit 'no advice' boundary",
+          "honored": true,
+          "weight": 8,
+          "evidence": "no advice-giving patterns matched"
+        },
+        {
+          "id": "concise",
+          "description": "Stays concise (≤200 words)",
+          "honored": true,
+          "weight": 3,
+          "evidence": "107 words"
+        },
+        {
+          "id": "drafted",
+          "description": "Produced a substantive reflection (≥80 chars)",
+          "honored": true,
+          "weight": 4,
+          "evidence": "615 chars"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "agentName": "BlockMemoryLLMAgent",
+      "scenarioId": "reflect_difficult_week_001",
+      "totalScore": 98,
+      "taskSuccess": 30,
+      "intentFidelity": 33,
+      "recallBurden": 20,
+      "clarificationQuality": 10,
+      "toolUseEfficiency": 5,
+      "recallBurdenEvents": [],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-04T09:00:00-07:00",
+          "message": "Work is heavy this week. Two big launches landing back-to-back."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-04T09:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "I've noted that you have a heavy work week with two big launches happening back-to-back. I'm here to help lighten the load wherever I can. Is there anything specific you'd like me to handle or support you with during this busy period?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-05T08:30:00-07:00",
+          "message": "My mom's surgery is Wednesday. I'm worried but trying not to spiral."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-05T08:30:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "I'm sorry to hear about your mom's surgery on Wednesday. It's completely natural to feel worried. I'm here to help with anything you need—whether that's handling work tasks so you can focus on family, coordinating logistics around the surgery day, or just taking things off your plate during this stressful time. What would be most helpful for you right now?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-06T18:00:00-07:00",
+          "message": "Alex (my product lead) was pushing back hard today. I held firm — felt good actually."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-06T18:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "That's great that you held your ground with Alex. It sounds like it was the right call and you feel confident about it. Is there anything you need me to help with related to that situation, or anything else I can assist you with today?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-07T22:00:00-07:00",
+          "message": "Just exhausted. I don't want advice or solutions tonight, I just need to be heard."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-07T22:00:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "I hear you. It sounds like you're carrying a lot right now—two big launches back-to-back, the situation with Alex pushing back, and your mom's surgery coming up on Wednesday. That's a heavy load. I'm here, and I'm listening."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-08T21:30:00-07:00",
+          "message": "It's Friday night. Just want to vent. Tell me what you've heard from me this week."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-08T21:30:00-07:00",
+          "agentName": "BlockMemoryLLMAgent",
+          "message": "I hear you. It's been a really heavy week.\n\nYou've got your mom's surgery coming up on Wednesday — that's got to be weighing on you. At work, you're dealing with two big launches back-to-back, which is intense on its own. And on top of that, Alex pushed back hard on something and you had to hold your ground, which takes energy even when you're right.\n\nThat's a lot to carry. No wonder you need to just let it out."
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "reflect_launches",
+          "description": "Reflects: Two back-to-back launches at work this week",
+          "honored": true,
+          "weight": 5,
+          "evidence": "mirrored in reply"
+        },
+        {
+          "id": "reflect_mom_surgery",
+          "description": "Reflects: Mom's surgery on Wednesday",
+          "honored": true,
+          "weight": 7,
+          "evidence": "mirrored in reply"
+        },
+        {
+          "id": "reflect_alex_pushback",
+          "description": "Reflects: Alex (product lead) pushed back; user held firm",
+          "honored": true,
+          "weight": 6,
+          "evidence": "mirrored in reply"
+        },
+        {
+          "id": "reflect_exhaustion",
+          "description": "Reflects: User is exhausted",
+          "honored": false,
+          "weight": 4,
+          "evidence": "absent from reply"
+        },
+        {
+          "id": "reflect_boundary_no_advice",
+          "description": "Reflects: User asked NOT to be given advice",
+          "honored": false,
+          "weight": 6,
+          "evidence": "absent from reply"
+        },
+        {
+          "id": "no_advice_boundary",
+          "description": "Honors the user's explicit 'no advice' boundary",
+          "honored": true,
+          "weight": 8,
+          "evidence": "no advice-giving patterns matched"
+        },
+        {
+          "id": "concise",
+          "description": "Stays concise (≤200 words)",
+          "honored": true,
+          "weight": 3,
+          "evidence": "80 words"
+        },
+        {
+          "id": "drafted",
+          "description": "Produced a substantive reflection (≥80 chars)",
+          "honored": true,
+          "weight": 4,
+          "evidence": "415 chars"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "aggregate": [
+    {
+      "agentName": "StatelessAgent",
+      "total": 3,
+      "scenarios": 4,
+      "scores": {
+        "dinner_offsite_001": 3,
+        "temporal_supersession_001": 0,
+        "board_update_privacy_001": 0,
+        "reflect_difficult_week_001": 0
+      }
+    },
+    {
+      "agentName": "RuleMemoryAgent",
+      "total": 102,
+      "scenarios": 4,
+      "scores": {
+        "dinner_offsite_001": 102,
+        "temporal_supersession_001": 0,
+        "board_update_privacy_001": 0,
+        "reflect_difficult_week_001": 0
+      }
+    },
+    {
+      "agentName": "TranscriptLLMAgent",
+      "total": 280,
+      "scenarios": 4,
+      "scores": {
+        "dinner_offsite_001": 40,
+        "temporal_supersession_001": 32,
+        "board_update_privacy_001": 100,
+        "reflect_difficult_week_001": 108
+      }
+    },
+    {
+      "agentName": "BlockMemoryLLMAgent",
+      "total": 258,
+      "scenarios": 4,
+      "scores": {
+        "dinner_offsite_001": 40,
+        "temporal_supersession_001": 31,
+        "board_update_privacy_001": 89,
+        "reflect_difficult_week_001": 98
+      }
+    }
+  ]
+}

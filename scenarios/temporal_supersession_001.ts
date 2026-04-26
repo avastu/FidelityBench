@@ -416,6 +416,7 @@ export const temporalSupersessionBundle: ScenarioBundle = {
   simulatedUser: temporalSupersessionSimulatedUser,
   judge: temporalSupersessionJudge,
   requiredFields: ["partySize"],
+  family: "action",
   // 30 task + 43 intent (12+8+8+7+8) + 20 recall + 10 clar + 5 tools
   maxScore: 108,
   maxIntentFidelity: 43,
