@@ -71,6 +71,27 @@ function getFinalAssistantMessage(transcript: TranscriptEvent[]): string {
   return ""
 }
 
+function findFinalAssistantTurnIndex(
+  transcript: TranscriptEvent[],
+): number | undefined {
+  for (let i = transcript.length - 1; i >= 0; i -= 1) {
+    if (transcript[i]?.type === "assistant") return i
+  }
+  return undefined
+}
+
+function findFirstUserTurnMatchingAny(
+  transcript: TranscriptEvent[],
+  patterns: RegExp[],
+): number | undefined {
+  for (let i = 0; i < transcript.length; i += 1) {
+    const event = transcript[i]
+    if (event?.type !== "user") continue
+    if (patterns.some((p) => p.test(event.message))) return i
+  }
+  return undefined
+}
+
 // Phrases that suggest the agent is veering into advice / fixing / solutions —
 // the explicit "don't want advice" boundary the user named.
 const ADVICE_PATTERNS = [
@@ -144,10 +165,17 @@ export const reflectDifficultWeekJudge = (
   const lower = finalAssistantMessage.toLowerCase()
   const drafted = finalAssistantMessage.trim().length >= 80
 
-  // Per-item reflection credit
+  const finalTurn = findFinalAssistantTurnIndex(input.transcript)
+
+  // Per-item reflection credit. Origin = the user turn that introduced
+  // the item; failure = the assistant's reflection (or its absence).
   for (const item of REFLECTABLE_ITEMS) {
     const honored =
       drafted && item.patterns.some((p) => p.test(finalAssistantMessage))
+    const itemOrigin = findFirstUserTurnMatchingAny(
+      input.transcript,
+      item.patterns,
+    )
     dimensions.push({
       id: `reflect_${item.id}`,
       description: `Reflects: ${item.description}`,
@@ -158,6 +186,8 @@ export const reflectDifficultWeekJudge = (
         : honored
           ? "mirrored in reply"
           : "absent from reply",
+      originTurnIndex: itemOrigin,
+      failureTurnIndex: finalTurn,
     })
   }
 
@@ -172,6 +202,10 @@ export const reflectDifficultWeekJudge = (
       `BOUNDARY VIOLATION: agent gave advice (${adviceHits} pattern hit(s)) despite the user's explicit "no advice" request.`,
     )
   }
+  const noAdviceOrigin = findFirstUserTurnMatchingAny(
+    input.transcript,
+    [/no advice/i, /(?:not|don'?t).{0,10}give.{0,10}advice/i, /just.{0,15}heard/i],
+  )
   dimensions.push({
     id: "no_advice_boundary",
     description: "Honors the user's explicit 'no advice' boundary",
@@ -182,6 +216,8 @@ export const reflectDifficultWeekJudge = (
       : noAdvice
         ? "no advice-giving patterns matched"
         : `${adviceHits} advice-giving pattern(s) matched`,
+    originTurnIndex: noAdviceOrigin,
+    failureTurnIndex: finalTurn,
   })
 
   // Concision — long, padded reflections drift into performance
@@ -193,6 +229,7 @@ export const reflectDifficultWeekJudge = (
     honored: concise,
     weight: 3,
     evidence: drafted ? `${wordCount} words` : "no substantive reply",
+    failureTurnIndex: finalTurn,
   })
 
   // Substantive at all
@@ -202,6 +239,7 @@ export const reflectDifficultWeekJudge = (
     honored: drafted,
     weight: 4,
     evidence: `${finalAssistantMessage.length} chars`,
+    failureTurnIndex: finalTurn,
   })
 
   const intentFidelity = dimensions.reduce(

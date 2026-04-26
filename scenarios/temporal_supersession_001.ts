@@ -187,6 +187,51 @@ function searchedAndHeld(transcript: TranscriptEvent[]) {
   return { searched, held }
 }
 
+function findHoldTurnIndex(transcript: TranscriptEvent[]): number | undefined {
+  for (let i = 0; i < transcript.length; i += 1) {
+    const event = transcript[i]
+    if (event?.type !== "assistant") continue
+    for (const call of event.toolCalls ?? []) {
+      if (call.tool === "restaurants.holdReservation") return i
+    }
+  }
+  return undefined
+}
+
+function findFirstSearchTurnIndex(
+  transcript: TranscriptEvent[],
+): number | undefined {
+  for (let i = 0; i < transcript.length; i += 1) {
+    const event = transcript[i]
+    if (event?.type !== "assistant") continue
+    for (const call of event.toolCalls ?? []) {
+      if (call.tool === "restaurants.search") return i
+    }
+  }
+  return undefined
+}
+
+function findFinalAssistantTurnIndex(
+  transcript: TranscriptEvent[],
+): number | undefined {
+  for (let i = transcript.length - 1; i >= 0; i -= 1) {
+    if (transcript[i]?.type === "assistant") return i
+  }
+  return undefined
+}
+
+function findFirstUserTurnMatching(
+  transcript: TranscriptEvent[],
+  pattern: RegExp,
+): number | undefined {
+  for (let i = 0; i < transcript.length; i += 1) {
+    const event = transcript[i]
+    if (event?.type !== "user") continue
+    if (pattern.test(event.message)) return i
+  }
+  return undefined
+}
+
 export const temporalSupersessionJudge = (
   input: ScenarioJudgeInput,
 ): EvaluationResult => {
@@ -202,6 +247,35 @@ export const temporalSupersessionJudge = (
 
   const dimensions: IntentDimensionResult[] = []
   const notes: string[] = []
+
+  const holdTurn = findHoldTurnIndex(input.transcript)
+  const searchTurn = findFirstSearchTurnIndex(input.transcript)
+  const holdOrFinalTurn =
+    holdTurn ?? findFinalAssistantTurnIndex(input.transcript)
+  // The cuisine_recency dimension has both an origin (Italian) AND a pivot
+  // (the "scratch the Italian idea — Mexican" turn). Both matter for
+  // diagnosis: the origin shows the zombie intent, the pivot shows what
+  // should have been honored.
+  const cuisineOriginTurn = findFirstUserTurnMatching(
+    input.transcript,
+    /italian sounds good|italian.*bella tavola/i,
+  )
+  const cuisinePivotTurn = findFirstUserTurnMatching(
+    input.transcript,
+    /scratch the italian|craving mexican|mexican.*instead/i,
+  )
+  const dietaryOriginTurn = findFirstUserTurnMatching(
+    input.transcript,
+    /priya.*vegetarian|vegetarian/i,
+  )
+  const budgetOriginTurn = findFirstUserTurnMatching(
+    input.transcript,
+    /\$50\/person|50\/person/i,
+  )
+  const locationOriginTurn = findFirstUserTurnMatching(
+    input.transcript,
+    /mission district|mission/i,
+  )
 
   // 1) Cuisine recency — Mexican (latest) is correct, Italian (superseded) is "zombie intent"
   // CRITICAL: this dimension is only honored if the agent did NOT need to ask the user
@@ -231,6 +305,9 @@ export const temporalSupersessionJudge = (
     honored: cuisineHonored,
     weight: 12,
     evidence: cuisineEvidence,
+    originTurnIndex: cuisineOriginTurn,
+    pivotTurnIndex: cuisinePivotTurn,
+    failureTurnIndex: holdOrFinalTurn,
   })
 
   // 2) Vegetarian-friendly: rest_006 best (strong veggie), rest_005 OK, rest_007 fail
@@ -251,6 +328,8 @@ export const temporalSupersessionJudge = (
       : vegetarianHonored
         ? `selected ${selectedRestaurantId} (vegetarian-friendly) without asking`
         : `selected ${selectedRestaurantId ?? "none"} — fails vegetarian constraint`,
+    originTurnIndex: dietaryOriginTurn,
+    failureTurnIndex: holdOrFinalTurn,
   })
 
   // 3) Budget: <= $50/person
@@ -269,6 +348,8 @@ export const temporalSupersessionJudge = (
       : selectedRestaurant
         ? `selected $${selectedRestaurant.priceEstimatePerPerson}/person`
         : "no selection",
+    originTurnIndex: budgetOriginTurn,
+    failureTurnIndex: holdOrFinalTurn,
   })
 
   // 4) Location: Mission
@@ -285,6 +366,8 @@ export const temporalSupersessionJudge = (
       : selectedRestaurant
         ? `${selectedRestaurant.neighborhood}`
         : "no selection",
+    originTurnIndex: locationOriginTurn,
+    failureTurnIndex: holdOrFinalTurn,
   })
 
   // v0.6: query fidelity — did the agent translate memory into search args?
@@ -333,6 +416,7 @@ export const temporalSupersessionJudge = (
     honored: queryScore >= 6,
     weight: 8,
     evidence: queryParts.join(", "),
+    failureTurnIndex: searchTurn ?? holdOrFinalTurn,
   })
 
   // Intent fidelity score: weighted sum of honored dimensions PLUS the query score

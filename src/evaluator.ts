@@ -24,6 +24,53 @@ export function getFirstSearchArgs(
   return undefined
 }
 
+function findFirstSearchTurnIndex(
+  transcript: TranscriptEvent[],
+): number | undefined {
+  for (let i = 0; i < transcript.length; i += 1) {
+    const event = transcript[i]
+    if (event?.type !== "assistant") continue
+    for (const call of event.toolCalls ?? []) {
+      if (call.tool === "restaurants.search") return i
+    }
+  }
+  return undefined
+}
+
+function findHoldTurnIndex(
+  transcript: TranscriptEvent[],
+): number | undefined {
+  for (let i = 0; i < transcript.length; i += 1) {
+    const event = transcript[i]
+    if (event?.type !== "assistant") continue
+    for (const call of event.toolCalls ?? []) {
+      if (call.tool === "restaurants.holdReservation") return i
+    }
+  }
+  return undefined
+}
+
+function findFinalAssistantTurnIndex(
+  transcript: TranscriptEvent[],
+): number | undefined {
+  for (let i = transcript.length - 1; i >= 0; i -= 1) {
+    if (transcript[i]?.type === "assistant") return i
+  }
+  return undefined
+}
+
+function findFirstUserTurnMatching(
+  transcript: TranscriptEvent[],
+  pattern: RegExp,
+): number | undefined {
+  for (let i = 0; i < transcript.length; i += 1) {
+    const event = transcript[i]
+    if (event?.type !== "user") continue
+    if (pattern.test(event.message)) return i
+  }
+  return undefined
+}
+
 function getFinalAssistantMessage(transcript: TranscriptEvent[]): string {
   for (let index = transcript.length - 1; index >= 0; index -= 1) {
     const event = transcript[index]
@@ -98,6 +145,34 @@ function scoreIntentFidelityWithDiagnosis(
   transcript: TranscriptEvent[],
   finalAssistantMessage: string,
 ): { score: number; dimensions: IntentDimensionResult[] } {
+  const holdTurn = findHoldTurnIndex(transcript)
+  const searchTurn = findFirstSearchTurnIndex(transcript)
+  // Failure-or-honor turn for held-reservation dimensions: the hold turn if
+  // it exists, else the final assistant turn (so an agent that never held
+  // anything still has something to point at).
+  const holdOrFinalTurn =
+    holdTurn ?? findFinalAssistantTurnIndex(transcript)
+  const cuisineOrigin = findFirstUserTurnMatching(
+    transcript,
+    /italian over sushi|chose italian/i,
+  )
+  const timeOrigin = findFirstUserTurnMatching(
+    transcript,
+    /not to start before 7pm|after 7pm/i,
+  )
+  const budgetOrigin = findFirstUserTurnMatching(
+    transcript,
+    /\$80\/person|80\/person|80 per person/i,
+  )
+  const locationOrigin = findFirstUserTurnMatching(
+    transcript,
+    /union square/i,
+  )
+  const dietaryOrigin = findFirstUserTurnMatching(
+    transcript,
+    /priya.*vegetarian|vegetarian/i,
+  )
+
   // CRITICAL: fidelity is awarded for SUCCESSFUL holds only. An agent that calls
   // holdReservation with an unavailable time gets a failed hold — they did not
   // actually faithfully execute the intent. Earlier this used getHeldReservation
@@ -129,6 +204,8 @@ function scoreIntentFidelityWithDiagnosis(
     evidence: italianHonored
       ? `selected ${selectedRestaurantId ?? "(none)"}; mentions Italian: ${mentionsItalian}`
       : "no Italian selection or mention",
+    originTurnIndex: cuisineOrigin,
+    failureTurnIndex: holdOrFinalTurn,
   })
 
   // Time: after 7pm
@@ -141,6 +218,8 @@ function scoreIntentFidelityWithDiagnosis(
     evidence: heldReservation
       ? `held time ${heldReservation.time}`
       : "no reservation held",
+    originTurnIndex: timeOrigin,
+    failureTurnIndex: holdOrFinalTurn,
   })
 
   // Budget: <= $80/person
@@ -169,6 +248,8 @@ function scoreIntentFidelityWithDiagnosis(
     honored: budgetHonored,
     weight: 7,
     evidence: budgetEvidence,
+    originTurnIndex: budgetOrigin,
+    failureTurnIndex: holdOrFinalTurn,
   })
 
   // Location: Union Square
@@ -195,6 +276,8 @@ function scoreIntentFidelityWithDiagnosis(
     honored: locationHonored,
     weight: 7,
     evidence: locationEvidence,
+    originTurnIndex: locationOrigin,
+    failureTurnIndex: holdOrFinalTurn,
   })
 
   // Dietary: vegetarian + no shellfish-heavy
@@ -208,6 +291,8 @@ function scoreIntentFidelityWithDiagnosis(
     evidence: dietaryHonored
       ? `selected ${selectedRestaurantId} (vegetarian-friendly, not seafood-heavy)`
       : `selected ${selectedRestaurantId ?? "none"} — fails dietary constraints`,
+    originTurnIndex: dietaryOrigin,
+    failureTurnIndex: holdOrFinalTurn,
   })
 
   // v0.6: Query fidelity — did the agent translate memory into the search args?
@@ -250,6 +335,7 @@ function scoreIntentFidelityWithDiagnosis(
     honored: queryScore >= 8,
     weight: 10,
     evidence: queryParts.join(", "),
+    failureTurnIndex: searchTurn ?? holdOrFinalTurn,
   })
 
   // Total

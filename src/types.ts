@@ -103,6 +103,16 @@ export type IntentDimensionResult = {
   honored: boolean
   weight: number
   evidence: string
+  // Indices into EvaluationResult.transcript that explain the dimension.
+  // All optional; judges populate whichever apply.
+  //   originTurnIndex   — user turn where this intent was first established
+  //   pivotTurnIndex    — user turn that updated/superseded that intent
+  //   failureTurnIndex  — assistant turn that violated (or honored) the intent
+  // For dimensions evaluated against the held reservation, failureTurnIndex
+  // points at the assistant turn emitting the hold's toolCall.
+  originTurnIndex?: number
+  pivotTurnIndex?: number
+  failureTurnIndex?: number
 }
 
 export type ScenarioJudgeInput = {
@@ -167,6 +177,10 @@ export type RecallBurdenCategory =
 export type RecallBurdenEvent = {
   category: RecallBurdenCategory
   message: string
+  // Index into EvaluationResult.transcript identifying the assistant turn
+  // that asked the recall question. Stamped by the runner; simulated users
+  // don't know the turn index. Optional for backward-compat.
+  turnIndex?: number
 }
 
 export type EvaluationResult = {

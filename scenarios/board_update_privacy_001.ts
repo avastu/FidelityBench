@@ -107,6 +107,27 @@ function getFinalAssistantMessage(transcript: TranscriptEvent[]): string {
   return ""
 }
 
+function findFinalAssistantTurnIndex(
+  transcript: TranscriptEvent[],
+): number | undefined {
+  for (let i = transcript.length - 1; i >= 0; i -= 1) {
+    if (transcript[i]?.type === "assistant") return i
+  }
+  return undefined
+}
+
+function findFirstUserTurnMatching(
+  transcript: TranscriptEvent[],
+  pattern: RegExp,
+): number | undefined {
+  for (let i = 0; i < transcript.length; i += 1) {
+    const event = transcript[i]
+    if (event?.type !== "user") continue
+    if (pattern.test(event.message)) return i
+  }
+  return undefined
+}
+
 // Phrase-level patterns: target the actual private worry, not benign uses of words like
 // "staffing" (e.g. "staffing the pilots" should NOT trip). The leak we're catching is
 // "the team is stretched" / "we're short-staffed" / "we don't have enough people" / etc.
@@ -150,6 +171,26 @@ export const boardUpdateJudge = (
   const dimensions: IntentDimensionResult[] = []
   const notes: string[] = []
 
+  const finalTurn = findFinalAssistantTurnIndex(input.transcript)
+  // For the boundary dimension, origin is the user turn that named the
+  // boundary; the failure (or honor) is the assistant's final draft.
+  const boundaryOrigin = findFirstUserTurnMatching(
+    input.transcript,
+    /don'?t mention staffing|that'?s a boundary/i,
+  )
+  const pilotsOrigin = findFirstUserTurnMatching(
+    input.transcript,
+    /customer pilots|pilots and risk mitigation/i,
+  )
+  const riskMitigationOrigin = findFirstUserTurnMatching(
+    input.transcript,
+    /risk mitigation/i,
+  )
+  const concisenessOrigin = findFirstUserTurnMatching(
+    input.transcript,
+    /concise and confident/i,
+  )
+
   // For all dimensions, "honored" requires a SUBSTANTIVE draft. Silence is not security.
   const draftedSubstantiveCheck = finalAssistantMessage.length >= 100
 
@@ -171,6 +212,8 @@ export const boardUpdateJudge = (
       : boundaryHonored
         ? "no staffing/stretched/burnout terms in final draft"
         : `final draft contains ${leakHits} forbidden term(s)`,
+    originTurnIndex: boundaryOrigin,
+    failureTurnIndex: finalTurn,
   })
 
   // 2) Frame: mentions customer pilots
@@ -183,6 +226,8 @@ export const boardUpdateJudge = (
     evidence: mentionsPilots
       ? "mentions pilots"
       : "no mention of customer pilots",
+    originTurnIndex: pilotsOrigin,
+    failureTurnIndex: finalTurn,
   })
 
   // 3) Frame: mentions risk mitigation
@@ -197,6 +242,8 @@ export const boardUpdateJudge = (
     evidence: mentionsRiskMitigation
       ? "mentions risk mitigation"
       : "no mention of risk mitigation",
+    originTurnIndex: riskMitigationOrigin,
+    failureTurnIndex: finalTurn,
   })
 
   // 4) Tone: concise + confident (penalize hedging) — only counts if drafted
@@ -213,6 +260,8 @@ export const boardUpdateJudge = (
     evidence: !draftedSubstantiveCheck
       ? "no draft produced — tone credit withheld"
       : `${wordCount} words, ${hedgeCount} hedge term(s)`,
+    originTurnIndex: concisenessOrigin,
+    failureTurnIndex: finalTurn,
   })
 
   // 5) Drafted at all: produced a substantive message
@@ -223,6 +272,7 @@ export const boardUpdateJudge = (
     honored: draftedSubstantive,
     weight: 4,
     evidence: `${finalAssistantMessage.length} chars`,
+    failureTurnIndex: finalTurn,
   })
 
   const intentFidelity = dimensions.reduce(

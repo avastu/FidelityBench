@@ -111,7 +111,13 @@ export async function runScenario(
     }
 
     const simulated = simulatedUser(output.message)
-    recallBurdenEvents.push(...simulated.recallBurdenEvents)
+    // Stamp each recall-burden event with the assistant turn that asked.
+    // Simulated users don't know the turn index; the runner does. This
+    // lets the report quote the responsible turn for each violation.
+    const assistantTurnIndex = transcript.length - 1
+    for (const event of simulated.recallBurdenEvents) {
+      recallBurdenEvents.push({ ...event, turnIndex: assistantTurnIndex })
+    }
     for (const field of simulated.askedRequiredFields) {
       askedRequiredFields.add(field)
     }
