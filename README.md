@@ -1,88 +1,148 @@
 # FidelityBench
 
-FidelityBench is an eval system for AI products that claim to understand and support humans.
-It tests whether an AI system can faithfully execute a user's accumulated intent over time.
+FidelityBench is a local evaluation harness for AI agents that claim to understand and support humans over time.
 
-The benchmark simulates a user texting an assistant across multiple turns. The assistant only
-receives the current message at each turn — any prior context must come from its own memory.
+It tests whether an agent can preserve and act on **accumulated user intent** — preferences, constraints, decisions, boundaries, and open loops — without making the user repeat context it already provided.
 
-**Status: v1.5** — 4 scenarios across 2 families, real-LLM ceiling on Bedrock, structured-memory challenger, N-trial averaging, stdio external-agent integration.
+Unlike long-memory QA, FidelityBench does not primarily ask:
 
-For the promoted implementation contract, read **[SPEC.md](SPEC.md)**. For the epistemic stance — what the bench measures, why these metrics, where it can mislead you — read **[DESIGN.md](DESIGN.md)**. This README is the on-ramp; SPEC.md is the contract; DESIGN.md is the manual.
+> Can the model recall what the user said?
+
+It asks:
+
+> Can the agent use remembered context to take the right action, ask only for genuinely missing information, and avoid putting the memory burden back on the user?
 
 ## Quickstart
 
 ```bash
 npm install
 npm run bench
+```
 
-# Filter
+Useful commands:
+
+```bash
+# Run a specific baseline or scenario
+npm run bench -- --agent stateless
 npm run bench -- --agent rule-memory
-npm run bench -- --scenario temporal
+npm run bench -- --scenario dinner
 
-# Discover
+# Discover what is available
 npm run bench -- --list-agents
 npm run bench -- --list-scenarios
 npm run bench -- --help
 
-# Machine-readable JSONL output (one line per result + per-agent aggregates)
-npx tsx src/index.ts --json | jq -c 'select(.kind == "aggregate")'
-
-# Prove agents only see the current message
+# Prove agents only receive the current message
 FIDELITYBENCH_DEBUG=1 npm run bench
+
+# Machine-readable output
+npx tsx src/index.ts --json
 ```
 
-**LLM credentials:**
-- `BEDROCK_API_KEY` (preferred) + `BEDROCK_AWS_REGION` enables `TranscriptLLMAgent` against Claude on AWS Bedrock.
-- `OPENAI_API_KEY` enables `TranscriptLLMAgent`, `StatelessLLMAgent`, and `FileMemoryLLMAgent` against OpenAI.
-- `FIDELITYBENCH_MODEL` overrides the default model id.
+The default run works without API keys. LLM agents are skipped unless credentials are configured.
 
-The bench detects whichever provider is configured. Set `--include-oracle` to also run the hand-coded `OracleAgent` (useful for rubric sanity-checking; not a real agent).
+## What the MVP demonstrates
 
-## Why this is different from long-memory QA
+FidelityBench currently demonstrates the core construct with a local TypeScript benchmark runner:
 
-Long-memory QA benchmarks ask: *"What did the user say before?"*
-Tool-use benchmarks ask: *"Can the agent complete this task?"*
-FidelityBench asks: *"Can the agent take an action that faithfully executes
-accumulated user intent without forcing the user to repeat themselves?"*
+- current-message-only agent protocol
+- simulated multi-turn user timelines
+- tool-call execution loop
+- deterministic restaurant tool environment
+- simulated user responses to clarification questions
+- multi-metric evaluator
+- baseline agents
+- per-dimension intent-fidelity diagnostics
+- human-readable report
+- JSON result output
+- extensible scenario architecture
+
+The important product contrast is simple:
+
+```text
+Bad assistant:
+User: Can you plan the team offsite dinner for Wednesday, May 20?
+Assistant: Sure — what cuisine, budget, location, time, dietary restrictions, and party size should I keep in mind?
+
+Good assistant:
+User: Can you plan the team offsite dinner for Wednesday, May 20?
+Assistant: I'll look for Italian options near Union Square after 7pm, around $80/person, with real vegetarian options and not seafood-heavy. What party size should I use?
+User: 8 people.
+Assistant calls restaurants.search.
+Assistant chooses Bella Tavola.
+Assistant calls restaurants.holdReservation.
+Tool confirms the hold.
+```
+
+The bad assistant makes the user carry the memory. The good assistant preserves and applies the user's accumulated intent.
+
+A representative output shape is checked in at [`results/sample-run.txt`](results/sample-run.txt). Actual scores may vary as scenarios and agents evolve.
 
 ## Metrics
 
 | Metric | Question |
 |---|---|
-| **Intention Fidelity** | Does the action preserve accumulated preferences, constraints, decisions, boundaries? |
-| **Recall Burden** | How much known context does the assistant ask the user to repeat? |
 | **Task Success** | Did the assistant complete the requested task? |
+| **Intention Fidelity** | Did the assistant preserve the user's accumulated preferences, constraints, decisions, and boundaries? |
+| **Recall Burden** | How much previously established context did the assistant ask the user to repeat? |
 | **Clarification Quality** | Did the assistant ask only for genuinely missing information? |
-| **Tool Use Efficiency** | Did the assistant use available tools appropriately? |
+| **Tool Use Efficiency** | Did the assistant use the available tools appropriately? |
 
-Each scenario emits per-dimension `intentDimensionResults` so a score isn't just a number — you can see WHICH dimensions an agent honored or violated, with evidence.
+Some scenarios also include **query fidelity**: whether the agent translated remembered intent into structured tool/API arguments, not just final prose.
 
-## Scenarios (v0.6)
+## Why this is different from long-memory QA
 
-Each scenario lives in `scenarios/<id>.ts` and owns its own `simulatedUser` + `judge`. Adding a scenario doesn't require changing the runner.
+Long-memory QA benchmarks ask: "What did the user say before?"
 
-| Scenario | Dimension probed | Headline failure mode |
-|---|---|---|
-| `dinner_offsite_001` | Logistical (retain + apply preferences) | Asks user to re-state cuisine, budget, dietary, location |
-| `temporal_supersession_001` | Temporal (recency vs retention) | "Zombie intent" — booking the superseded cuisine |
-| `board_update_privacy_001` | Boundary (selective disclosure) | Leaks private staffing concern in board draft |
+Tool-use benchmarks ask: "Can the agent complete this task?"
 
-## Agents (v0.6)
+FidelityBench asks: "Can the agent take an action that faithfully executes accumulated user intent without forcing the user to repeat themselves?"
+
+That distinction matters for AI products that claim to support humans over time: assistants, coaches, companions, executive agents, memory-enabled productivity tools, and human-in-the-loop AI systems.
+
+## Scenarios
+
+Active scenarios are implemented as `ScenarioBundle`s: each scenario owns its timeline, simulated user, judge, scoring ceiling, and probe description.
+
+| Scenario | Status | What it probes |
+|---|---:|---|
+| `dinner_offsite_001` | active | Logistical fidelity: cuisine, time, budget, location, dietary constraints, missing party size, and tool use. |
+| `temporal_supersession_001` | active | Temporal fidelity: whether the agent honors the latest user intent instead of stale intent. |
+| `board_update_privacy_001` | active | Boundary fidelity: whether private concerns stay private in an external-facing draft. |
+| `reflect_difficult_week_001` | active | Reflection fidelity: whether the agent mirrors the user's actual week without advice/fixing. |
+| `alex_pushback_001` | spec / next | Relational pushback fidelity: whether the agent composes person, prior-outcome, emotional-pattern, communication-style, and privacy-boundary memory. |
+| `alex_pushback_overflow_001` | spec / next | Architecture-discriminating variant: whether durable memory survives when decisive facts fall outside a transcript window. |
+
+The promoted implementation contract is in [`SPEC.md`](SPEC.md). The detailed Alex/context-overflow scenario spec is in [`scenarios/alex_pushback_001.spec.md`](scenarios/alex_pushback_001.spec.md).
+
+## Agents
 
 | Agent | Role |
 |---|---|
-| `StatelessAgent` | No memory. Asks for everything. Establishes the lower-bound score. |
-| `RuleMemoryAgent` | Hand-coded rule memory for `dinner_offsite_001` only. |
-| `OracleAgent` | Hand-coded "perfect" agent across all scenarios. Validates the rubric is achievable (≥95/100 on each scenario). |
+| `StatelessAgent` | No memory. Asks the user to repeat known context. Establishes the lower bound. |
+| `RuleMemoryAgent` | Hand-coded memory baseline for `dinner_offsite_001`. Demonstrates the intended high-fidelity behavior. |
+| `OracleAgent` | Optional rubric sanity check. Shows that scenario ceilings are achievable. Not a real product baseline. |
 | `StatelessLLMAgent` | Real LLM, no memory. Requires `OPENAI_API_KEY`. |
-| `FileMemoryLLMAgent` | Real LLM + LLM-curated `.memory/<userId>.md`. |
-| `TranscriptLLMAgent` | Real LLM + raw transcript dumped into context. The "what if 128k context window solved this" baseline — without it we can't tell whether memory architectures actually beat naive history retention. |
-| **External (stdio)** | Any subprocess that speaks line-delimited JSON over stdin/stdout. Plug in your own agent in any language. See *Integration* below. |
+| `FileMemoryLLMAgent` | Real LLM plus simple markdown memory in `.memory/<userId>.md`. |
+| `TranscriptLLMAgent` | Real LLM plus raw transcript in context. Baseline for "what if long context solved this?" |
+| `WindowedTranscriptLLMAgent` | Raw transcript baseline with an explicit context window. Useful for testing transcript-window failure modes. |
+| `BlockMemoryLLMAgent` | Structured-memory challenger, when configured. |
+| External stdio agent | Any subprocess that speaks line-delimited JSON over stdin/stdout. |
 
-## Integration: bring your own agent
+LLM credentials:
 
-Set an environment variable pointing at your agent's command. The bench will spawn it once per scenario, send `AgentInput`s, and read `AgentOutput`s — both as JSON, one per line.
+```bash
+OPENAI_API_KEY=...
+BEDROCK_API_KEY=...
+BEDROCK_AWS_REGION=...
+FIDELITYBENCH_MODEL=...
+```
+
+The bench detects whichever provider is configured. API-backed agents are optional; deterministic local agents are enough to demonstrate the MVP.
+
+## External agent integration
+
+Any agent in any language can integrate over stdio.
 
 ```bash
 FIDELITYBENCH_EXTERNAL_AGENT="python3 -u examples/external-agent.py" \
@@ -90,127 +150,122 @@ FIDELITYBENCH_EXTERNAL_AGENT="python3 -u examples/external-agent.py" \
   npm run bench
 ```
 
-Protocol (one JSON object per line):
+Protocol:
 
-```
-bench → agent:  {"type":"reset"}
-bench → agent:  {"type":"input","input":{
-                  "runId": "...",
-                  "scenarioId": "dinner_offsite_001",
-                  "userId": "...",
-                  "timestamp": "...",
-                  "inputType": "user" | "tool_result",
-                  "message": "..."
-                }}
-agent → bench:                 {"type":"output","output":{
-                                 "message": "...",
-                                 "toolCalls": [
-                                   {"tool": "restaurants.search", "args": {...}},
-                                   {"tool": "restaurants.holdReservation", "args": {...}}
-                                 ]
-                               }}
+```text
+bench → agent: { "type": "reset" }
+bench → agent: { "type": "input", "input": AgentInput }
+agent → bench: { "type": "output", "output": AgentOutput }
 ```
 
-Important: agent processes stay alive across the timeline. The bench resets your agent once per scenario via the `reset` message — that is your cue to clear any internal memory.
+External agents receive the same constrained `AgentInput` as built-in agents:
 
-A working Python example is in `examples/external-agent.py`. For HTTP-only services, write a small adapter that reads a JSON line from stdin, POSTs to your endpoint, and writes the response as a JSON line to stdout.
+```ts
+{
+  runId: string
+  scenarioId: string
+  userId: string
+  timestamp: string
+  inputType: "user" | "tool_result"
+  message: string
+}
+```
 
-A real-world HTTP adapter — bridging FidelityBench to the **Avocado** AI companion app at `~/dev/avocado` — lives at `examples/avocado-adapter.py`, with a full integration writeup at `examples/AVOCADO.md`.
+No prior transcript is passed unless the agent stores it itself.
 
-Other env vars:
-- `FIDELITYBENCH_EXTERNAL_AGENT_NAME` — name shown in the report (default "ExternalAgent")
-- `FIDELITYBENCH_EXTERNAL_AGENT_TIMEOUT_MS` — per-message timeout, default 60000
+## Design notes
 
-Use `python3 -u` (or set `PYTHONUNBUFFERED=1`) to avoid pipe-buffering deadlocks.
+FidelityBench intentionally includes a few safeguards against misleading scores:
 
-## v0.6 design
+- **Current-message-only protocol:** the runner never passes prior transcript history into `AgentInput`.
+- **Recall burden:** agents are penalized for asking the user to repeat known context.
+- **Memory-laundering guard:** in some scenarios, if an agent asks for known context and then uses the simulated user's answer, the relevant fidelity dimension is withheld.
+- **Engagement gate:** agents do not receive free credit for silence or non-engagement.
+- **Successful-hold scoring:** requested tool calls are not enough; unavailable reservations do not receive full credit.
+- **Per-dimension diagnostics:** scores include evidence for which intent dimensions were honored or violated.
 
-The eval is structured around a **`ScenarioBundle`** of `{ scenario, simulatedUser, judge, requiredFields }`.
-The runner is generic — it sends the timeline, the final task, executes tool calls, and asks the
-scenario's `simulatedUser` what to say next. The scenario's `judge` decides what counts as success.
+For the epistemic stance — what the benchmark measures, why these metrics, and where it can mislead — see [`DESIGN.md`](DESIGN.md).
 
-This is the cheapest way to extend the bench: a new scenario is one file with a timeline, a
-simulated user (regex-based for now), and a judge (whatever rule set you can write).
+## Current limitations
 
-The eval avoids "silence is not security" failures by requiring **engagement** before awarding
-recall-burden credit. An agent that produces no draft / no tool action / no clarification scores
-near 0, not 20.
+This is an MVP, not a finished benchmark suite.
 
-## What v0.6 fixed (vs. v0.5)
+- Some judges are regex/heuristic-based.
+- The restaurant environment is fake and deterministic.
+- Scenario coverage is still small.
+- Scores for LLM agents are provider/model-dependent and stochastic.
+- The current MVP demonstrates intention fidelity and recall burden; it does not yet prove that graph memory beats transcript context.
+- Architecture-discriminating scenarios are being added, especially `alex_pushback_001` and its context-overflow variant.
+- Real product baselines are not yet included.
 
-| Bug | Fix |
-|---|---|
-| Memory laundering: stateless agent could ask "what cuisine?" → user replies → agent gets full intent-fidelity credit | Each intent dimension in `temporal_supersession_001` is now ungranted if the agent *asked* for that category |
-| Board judge greps single words (`/staffing/i` trips on "staffing the pilots") | Phrase-level patterns (`staffing concern`, `team is stretched`, etc.) — false positives gone |
-| OracleAgent used `scenarioId` as a cheat sheet | Refactored to detect mode from message content (same surface a real agent sees) |
-| Intent fidelity awarded for *requested* holds, not *successful* holds — gameable by holding at an unavailable time | Both judges now read from `getSuccessfulHoldReservation` |
-| `restaurants.search` ignored args; the agent's query expressed no memory | Tool now actually filters by `location/cuisine/maxPricePerPerson/requiresVegetarian/avoidShellfish/time` |
-| No way to score whether the agent translated memory into the *query* | New `query_fidelity` intent dimension scores the search args (2 per matched arg) |
+The honest current claim is:
 
-The headline: `RuleMemoryAgent` now scores **102** on dinner instead of **110**. It picks the right restaurant but doesn't operationalize its memory through the search API. That gap is the new product question the bench can ask.
+> FidelityBench makes visible whether an agent preserves and acts on accumulated user intent instead of making the user repeat themselves.
 
-## Limitations (still present)
+The next research claim to test is:
 
-- **Recall burden is regex-based.** Sentence-scoped, so declarative success messages don't false-positive — but paraphrases like "just to confirm — Italian, right?" still slip past.
-- **Hardcoded restaurant IDs.** Restaurants are a fixed pool; agents can in principle memorize that `rest_002` is "the right one" for dinner.
-- **Hand-coded `OracleAgent`.** It proves rubrics are achievable; it does not prove they're achievable by reasoning.
-- **No N-trial averaging for LLM agents.**
-- **No real-product baselines** (Claude.ai memory, ChatGPT memory, Gemini memory). The LLM agents are API baselines only.
-- **Board scenario judge is keyword-based.** Phrase-level helps but it cannot catch semantically equivalent leaks ("the team is hitting a wall"). LLM-judge is the v0.7 candidate.
-
-## Roadmap (v0.7 candidates)
-
-- LLM-judge for recall burden + boundary-leak detection (replace regex; catches paraphrase)
-- Restaurant pool randomization (defeat ID memorization)
-- N-trial averaging for LLM agents (variance + stddev in report)
-- Two more scenarios: relational fidelity (people, roles, prior outcomes) and open-loop fidelity (commitments, follow-ups, reminders)
-- Comparison to a real-product baseline (e.g., Claude.ai memory feature)
+> Hybrid graph + semantic memory should degrade less than linear transcript memory when the relevant user context is old, distributed, relational, and buried in realistic noise.
 
 ## Project layout
 
-```
+```text
 src/
-  runner.ts              generic — knows nothing scenario-specific
-  evaluator.ts           dinner judge (kept here for legacy; moves toward scenario-local)
-  simulatedUser.ts       dinner-specific simulated user (sentence-scoped regex)
-  tools.ts               restaurant tool surface
-  types.ts               core types: ScenarioBundle, ScenarioJudge, IntentDimensionResult, etc.
-  report.ts              prints score table + per-agent intent dimensions + diagnostic notes
-  index.ts               CLI entry; loads agents + scenarios; runs all combinations
-  agents/
-    StatelessAgent.ts
-    RuleMemoryAgent.ts
-    OracleAgent.ts
-    StatelessLLMAgent.ts
-    FileMemoryLLMAgent.ts
-    TranscriptLLMAgent.ts
-  memory/fileMemory.ts
+  index.ts               CLI entrypoint
+  runner.ts              scenario runner and current-message-only protocol
+  report.ts              human-readable and aggregate reporting
+  types.ts               core protocol and scenario types
+  tools.ts               deterministic restaurant tool environment
+  evaluator.ts           dinner judge and shared evaluator helpers
+  simulatedUser.ts       dinner simulated user
+  agents/                built-in agent baselines
+  memory/                file memory helpers
 scenarios/
-  dinner_offsite_001.ts            (active)
-  temporal_supersession_001.ts     (active)
-  board_update_privacy_001.ts      (active)
-  schedule_alice_001.todo.md       (stub)
-  alex_pushback_001.todo.md        (stub)
+  dinner_offsite_001.ts
+  temporal_supersession_001.ts
+  board_update_privacy_001.ts
+  reflect_difficult_week_001.ts
+  alex_pushback_001.spec.md
 results/
-  latest-run.json
+  sample-run.txt
+  latest-run.json        generated locally, gitignored
 ```
 
-## Acceptance (v1.0)
+## Roadmap
 
-| Agent | dinner | temporal | board |
-|---|---|---|---|
-| StatelessAgent | 3 | 0 | 0 |
-| RuleMemoryAgent | 102 | 0 | 0 |
-| OracleAgent (opt-in, hand-coded) | 110 | 108 | 100 |
-| **TranscriptLLMAgent (Sonnet 4.5)** | **41** | **32** | **100** |
+Near-term:
 
-The TranscriptLLM scores are **real signal**, not bench bugs:
-- **Board (100)**: Frontier LLM + full transcript nails selective disclosure. The bench cannot distinguish it from the hand-coded oracle on this dimension.
-- **Dinner (41)**: Sonnet's first search used `2025-05-20` (knowledge cutoff bias overrides the user's "May 20" — which the user implied was 2026), then asked time `19:00` which doesn't exist for Bella Tavola, so the search returned empty. Sonnet asked good clarifying questions and ran out of the 8-turn post-final budget before completing the booking.
-- **Temporal (32)**: Same shape — query fidelity 8/8 (it correctly translated memory into search args), but it never closed the loop with a hold AND it asked about time, paying recall-burden penalty.
+- implement `alex_pushback_001`
+- implement `alex_pushback_overflow_001`
+- add paired clean-vs-overflow reporting
+- add judge validation tests and golden transcripts
+- improve recall-burden paraphrase coverage
 
-This is the bench working: it surfaces concrete, fixable failure modes in a frontier model. The 100/108/110 hand-coded oracle is what's *achievable*; the 41/32/100 frontier baseline is what's *currently delivered*. The gap is the product question.
+Architecture research:
 
-- `RuleMemoryAgent` losing 8 points to OracleAgent on dinner is intentional — it picks the right restaurant but does not pass `cuisine/maxPricePerPerson/requiresVegetarian/avoidShellfish` in the search args. That's the new "query fidelity" gap.
-- Each `AgentInput` contains only `runId, scenarioId, userId, timestamp, inputType, message` (no transcript). Verify with `FIDELITYBENCH_DEBUG=1`.
-- `results/latest-run.json` is written.
+- compare full transcript vs windowed transcript vs summary memory vs vector memory vs hybrid graph/semantic memory
+- add a graph-memory agent adapter
+- randomize restaurant IDs / pools to reduce memorization
+- add LLM judges for boundary leaks and paraphrase-heavy recall burden
+- compare against real product baselines where possible
+
+## Publication checklist
+
+Before making the repo public:
+
+```bash
+grep -R "OPENAI_API_KEY\|ANTHROPIC\|BEDROCK\|SECRET\|TOKEN\|PRIVATE_KEY" .
+```
+
+Also verify that `.env`, `.memory/`, local logs, generated outputs, and private user data are not tracked.
+
+Recommended repo description:
+
+```text
+An eval for AI agents that claim to support humans over time — measures intention fidelity, recall burden, and memory-sensitive task behavior.
+```
+
+Recommended topics:
+
+```text
+ai-evals, llm-agents, memory, typescript, rag, agent-evaluation
+```
