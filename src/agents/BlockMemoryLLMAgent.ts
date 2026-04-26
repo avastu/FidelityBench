@@ -215,6 +215,7 @@ function truncateError(error: unknown): string {
 
 export class BlockMemoryLLMAgent implements Agent {
   name = "BlockMemoryLLMAgent"
+  nondeterministic = true
   private blocks: Blocks = { ...EMPTY_BLOCKS, people: [], preferences: [], decisions: [], locations: [], constraints: [] }
   // Latest tool result is the only "transcript" the response LLM sees besides
   // the current user message and the blocks. This lets it close the search →

@@ -5,8 +5,13 @@ import { StatelessAgent } from "./agents/StatelessAgent.js"
 import { StdioAgent } from "./agents/StdioAgent.js"
 import { printReport, printAggregateSummary } from "./report.js"
 import { runScenario } from "./runner.js"
+import { aggregateTrials } from "./trials.js"
 import type { Agent } from "./agents/Agent.js"
-import type { EvaluationResult, ScenarioBundle } from "./types.js"
+import type {
+  AggregatedResult,
+  EvaluationResult,
+  ScenarioBundle,
+} from "./types.js"
 import fs from "node:fs/promises"
 
 type AgentConstructor = new () => Agent
@@ -238,8 +243,12 @@ Usage:
 Options:
   --agent <name>           run only the given agent (alias or class name)
   --scenario <substring>   run only scenarios whose id contains <substring>
+  --trials <N>             run nondeterministic agents N times per scenario;
+                           report mean ± stddev. Deterministic agents always run once.
+                           Default: 1.
+  --include-oracle         include the hand-coded OracleAgent (rubric sanity check)
   --json                   emit machine-readable JSONL to stdout
-                           (one EvaluationResult per line; human report stays on stderr)
+                           (each trial + each result; human report stays on stderr)
   --list-agents            print the agents that would run, then exit
   --list-scenarios         print the scenarios available, then exit
   --help, -h               this help
@@ -350,35 +359,70 @@ async function main() {
       )
     }
 
-    const allResults: EvaluationResult[] = []
+    const trialsArg = requestedFilter("--trials")
+    const trialsRequested = trialsArg ? Math.max(1, parseInt(trialsArg, 10)) : 1
+    if (trialsRequested > 1) {
+      process.stderr.write(
+        `[FidelityBench] --trials ${trialsRequested} — nondeterministic agents will run ${trialsRequested}×; deterministic agents run once.\n`,
+      )
+    }
+
+    const allResults: (EvaluationResult | AggregatedResult)[] = []
     for (const bundle of scenarios) {
-      const scenarioResults: EvaluationResult[] = []
+      const scenarioResults: (EvaluationResult | AggregatedResult)[] = []
       for (const agent of agents) {
-        const result = await runScenario(agent, bundle)
-        scenarioResults.push(result)
-        if (jsonMode) {
+        const trials = agent.nondeterministic ? trialsRequested : 1
+        const trialResults: EvaluationResult[] = []
+        for (let t = 0; t < trials; t += 1) {
+          const r = await runScenario(agent, bundle)
+          r.trialIndex = t
+          trialResults.push(r)
+          if (jsonMode) {
+            emitJsonLine({
+              kind: "trial",
+              trialIndex: t,
+              trialsTotal: trials,
+              agentName: r.agentName,
+              scenarioId: r.scenarioId,
+              totalScore: r.totalScore,
+              taskSuccess: r.taskSuccess,
+              intentFidelity: r.intentFidelity,
+              recallBurden: r.recallBurden,
+              clarificationQuality: r.clarificationQuality,
+              toolUseEfficiency: r.toolUseEfficiency,
+              recallBurdenCategories: [
+                ...new Set(r.recallBurdenEvents.map((e) => e.category)),
+              ],
+              selectedRestaurantId: r.selectedRestaurantId,
+              heldReservation: r.heldReservation,
+              intentDimensionResults: r.intentDimensionResults,
+              notes: r.notes,
+            })
+          }
+        }
+        const display = trials > 1 ? aggregateTrials(trialResults) : trialResults[0]
+        if (display) scenarioResults.push(display)
+        if (jsonMode && trials > 1 && display) {
+          const agg = display as AggregatedResult
           emitJsonLine({
             kind: "result",
-            agentName: result.agentName,
-            scenarioId: result.scenarioId,
-            totalScore: result.totalScore,
-            taskSuccess: result.taskSuccess,
-            intentFidelity: result.intentFidelity,
-            recallBurden: result.recallBurden,
-            clarificationQuality: result.clarificationQuality,
-            toolUseEfficiency: result.toolUseEfficiency,
-            recallBurdenCategories: [
-              ...new Set(result.recallBurdenEvents.map((e) => e.category)),
-            ],
-            selectedRestaurantId: result.selectedRestaurantId,
-            heldReservation: result.heldReservation,
-            intentDimensionResults: result.intentDimensionResults,
-            notes: result.notes,
+            agentName: agg.agentName,
+            scenarioId: agg.scenarioId,
+            totalScore: agg.totalScore,
+            stddev: agg.stddev,
+            trials: agg.trials,
+          })
+        } else if (jsonMode && display) {
+          emitJsonLine({
+            kind: "result",
+            agentName: display.agentName,
+            scenarioId: display.scenarioId,
+            totalScore: display.totalScore,
+            trials: 1,
           })
         }
       }
       printReport(scenarioResults, bundle)
-      // (printReport currently writes to console.log → captured to stderr in jsonMode)
       console.log("")
       allResults.push(...scenarioResults)
     }

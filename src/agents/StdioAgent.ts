@@ -117,6 +117,11 @@ export type StdioAgentOptions = {
 
 export class StdioAgent implements Agent {
   readonly name: string
+  // External agents may or may not be deterministic. Treat them as
+  // nondeterministic by default — that's the safer assumption for any
+  // LLM-backed integration. A deterministic external agent can opt out
+  // by reporting consistent scores; the only cost of N-trial is wall time.
+  readonly nondeterministic = true
   private readonly command: string
   private readonly args: string[]
   private readonly cwd?: string

@@ -1,4 +1,5 @@
 import type {
+  AggregatedResult,
   EvaluationResult,
   RecallBurdenCategory,
   ScenarioBundle,
@@ -7,6 +8,17 @@ import type {
 
 const DEFAULT_MAX_TOTAL = 100
 const DEFAULT_MAX_INTENT = 35
+
+function isAggregated(r: EvaluationResult): r is AggregatedResult {
+  return "trials" in r && (r as AggregatedResult).trials > 1
+}
+
+function formatScore(r: EvaluationResult, value: number, max: number, sd?: number): string {
+  if (isAggregated(r) && sd !== undefined && sd > 0) {
+    return `${value}±${sd}/${max}`
+  }
+  return `${value}/${max}`
+}
 
 function uniqueRecallCategories(result: EvaluationResult): RecallBurdenCategory[] {
   return [...new Set(result.recallBurdenEvents.map((event) => event.category))]
@@ -123,24 +135,29 @@ export function printReport(results: EvaluationResult[], bundle?: ScenarioBundle
 
   const header =
     `${pad("Agent", 22, "start")}` +
-    `${pad("Score", 12)}` +
-    `${pad("Task", 9)}` +
-    `${pad("Intent", 11)}` +
+    `${pad("Score", 16)}` +
+    `${pad("Task", 12)}` +
+    `${pad("Intent", 14)}` +
     `${pad("RecallBurden", 16)}` +
     `${pad("Clarification", 16)}` +
-    `${pad("Tools", 8)}`
+    `${pad("Tools", 10)}`
   console.log(header)
 
   for (const result of results) {
+    const sd = isAggregated(result) ? result.stddev : undefined
     const row =
       `${pad(result.agentName, 22, "start")}` +
-      `${pad(`${result.totalScore}/${maxTotal}`, 12)}` +
-      `${pad(`${result.taskSuccess}/30`, 9)}` +
-      `${pad(`${result.intentFidelity}/${maxIntent}`, 11)}` +
-      `${pad(`${result.recallBurden}/20`, 16)}` +
-      `${pad(`${result.clarificationQuality}/10`, 16)}` +
-      `${pad(`${result.toolUseEfficiency}/5`, 8)}`
+      `${pad(formatScore(result, result.totalScore, maxTotal, sd?.totalScore), 16)}` +
+      `${pad(formatScore(result, result.taskSuccess, 30, sd?.taskSuccess), 12)}` +
+      `${pad(formatScore(result, result.intentFidelity, maxIntent, sd?.intentFidelity), 14)}` +
+      `${pad(formatScore(result, result.recallBurden, 20, sd?.recallBurden), 16)}` +
+      `${pad(formatScore(result, result.clarificationQuality, 10, sd?.clarificationQuality), 16)}` +
+      `${pad(formatScore(result, result.toolUseEfficiency, 5, sd?.toolUseEfficiency), 10)}`
     console.log(row)
+  }
+  if (results.some(isAggregated)) {
+    const trials = (results.find(isAggregated) as AggregatedResult).trials
+    console.log(`(N=${trials} trials for nondeterministic agents; ± is sample stddev)`)
   }
 
   for (const result of results) {

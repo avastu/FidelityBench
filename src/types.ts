@@ -186,4 +186,25 @@ export type EvaluationResult = {
   intentDimensionResults?: IntentDimensionResult[]
   // Free-form notes the judge wants surfaced in the report (e.g. "zombie intent").
   notes?: string[]
+  // Set by the runner when this result represents one trial out of many
+  // (--trials N). The display result for that agent×scenario will be the
+  // averaged result; per-trial results are kept in the JSON output for
+  // post-hoc analysis.
+  trialIndex?: number
+}
+
+// Aggregated across N trials of the same agent on the same scenario.
+// Per-metric mean + sample stddev. Other rich fields (transcript, dimensions)
+// are taken from the FIRST trial — they're meant for qualitative inspection,
+// not statistics.
+export type AggregatedResult = EvaluationResult & {
+  trials: number
+  stddev: {
+    totalScore: number
+    taskSuccess: number
+    intentFidelity: number
+    recallBurden: number
+    clarificationQuality: number
+    toolUseEfficiency: number
+  }
 }

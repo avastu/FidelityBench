@@ -115,6 +115,7 @@ async function createOpenAIClient() {
 
 export class FileMemoryLLMAgent implements Agent {
   name = "FileMemoryLLMAgent"
+  nondeterministic = true
   private readonly model = DEFAULT_MODEL
   private userId = DEFAULT_USER_ID
 

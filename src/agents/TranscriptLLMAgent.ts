@@ -148,6 +148,7 @@ function truncateError(error: unknown): string {
 
 export class TranscriptLLMAgent implements Agent {
   name = "TranscriptLLMAgent"
+  nondeterministic = true
   private history: StoredMessage[] = []
 
   reset() {

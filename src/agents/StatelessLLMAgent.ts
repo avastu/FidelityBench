@@ -124,6 +124,7 @@ async function createOpenAIClient() {
 
 export class StatelessLLMAgent implements Agent {
   name = "StatelessLLMAgent"
+  nondeterministic = true
   private readonly model = DEFAULT_MODEL
 
   async handleMessage(input: AgentInput): Promise<AgentOutput> {
