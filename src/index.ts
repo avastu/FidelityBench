@@ -94,6 +94,7 @@ const AGENT_ALIASES = new Map<string, string>([
   ["StatelessLLMAgent", "stateless-llm"],
   ["FileMemoryLLMAgent", "file-memory-llm"],
   ["TranscriptLLMAgent", "transcript-llm"],
+  ["BlockMemoryLLMAgent", "block-memory"],
 ])
 
 function matchesAgentFilter(agent: Agent, filter: string | undefined): boolean {
@@ -165,6 +166,15 @@ async function buildAgents(): Promise<Agent[]> {
       "TranscriptLLMAgent",
     )
     if (transcriptLLM) agents.push(transcriptLLM)
+
+    // BlockMemoryLLMAgent: structured-memory architecture (clean-room, in
+    // the spirit of avocado's 5-block memory). Same LLM, no transcript —
+    // tests whether structured memory beats history-dumping.
+    const blockMemory = await loadOptionalAgent(
+      "./agents/BlockMemoryLLMAgent.js",
+      "BlockMemoryLLMAgent",
+    )
+    if (blockMemory) agents.push(blockMemory)
 
     // The other LLM agents are optional research baselines. Currently they
     // only run on OPENAI_API_KEY (legacy from v0.6); leaving as-is until they
