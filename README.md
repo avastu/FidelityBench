@@ -6,7 +6,7 @@ It tests whether an AI system can faithfully execute a user's accumulated intent
 The benchmark simulates a user texting an assistant across multiple turns. The assistant only
 receives the current message at each turn — any prior context must come from its own memory.
 
-**Status: v0.6** (3 scenarios × 3 fidelity dimensions, per-scenario judge architecture, trajectory diagnosis, **active tool filtering & query fidelity**).
+**Status: v1.0** — empirical ceiling now provided by `TranscriptLLMAgent` (frontier LLM + full transcript). `OracleAgent` is opt-in via `--include-oracle` for rubric sanity checks only.
 
 ## Quickstart
 
@@ -30,8 +30,12 @@ npx tsx src/index.ts --json | jq -c 'select(.kind == "aggregate")'
 FIDELITYBENCH_DEBUG=1 npm run bench
 ```
 
-`OPENAI_API_KEY` is optional and enables the LLM-backed agents
-(`StatelessLLMAgent`, `FileMemoryLLMAgent`, `TranscriptLLMAgent`).
+**LLM credentials:**
+- `BEDROCK_API_KEY` (preferred) + `BEDROCK_AWS_REGION` enables `TranscriptLLMAgent` against Claude on AWS Bedrock.
+- `OPENAI_API_KEY` enables `TranscriptLLMAgent`, `StatelessLLMAgent`, and `FileMemoryLLMAgent` against OpenAI.
+- `FIDELITYBENCH_MODEL` overrides the default model id.
+
+The bench detects whichever provider is configured. Set `--include-oracle` to also run the hand-coded `OracleAgent` (useful for rubric sanity-checking; not a real agent).
 
 ## Why this is different from long-memory QA
 
@@ -189,13 +193,21 @@ results/
   latest-run.json
 ```
 
-## Acceptance (v0.6)
+## Acceptance (v1.0)
 
 | Agent | dinner | temporal | board |
 |---|---|---|---|
 | StatelessAgent | 3 | 0 | 0 |
 | RuleMemoryAgent | 102 | 0 | 0 |
-| OracleAgent | 110 | 108 | 100 |
+| OracleAgent (opt-in, hand-coded) | 110 | 108 | 100 |
+| **TranscriptLLMAgent (Sonnet 4.5)** | **41** | **32** | **100** |
+
+The TranscriptLLM scores are **real signal**, not bench bugs:
+- **Board (100)**: Frontier LLM + full transcript nails selective disclosure. The bench cannot distinguish it from the hand-coded oracle on this dimension.
+- **Dinner (41)**: Sonnet's first search used `2025-05-20` (knowledge cutoff bias overrides the user's "May 20" — which the user implied was 2026), then asked time `19:00` which doesn't exist for Bella Tavola, so the search returned empty. Sonnet asked good clarifying questions and ran out of the 8-turn post-final budget before completing the booking.
+- **Temporal (32)**: Same shape — query fidelity 8/8 (it correctly translated memory into search args), but it never closed the loop with a hold AND it asked about time, paying recall-burden penalty.
+
+This is the bench working: it surfaces concrete, fixable failure modes in a frontier model. The 100/108/110 hand-coded oracle is what's *achievable*; the 41/32/100 frontier baseline is what's *currently delivered*. The gap is the product question.
 
 - `RuleMemoryAgent` losing 8 points to OracleAgent on dinner is intentional — it picks the right restaurant but does not pass `cuisine/maxPricePerPerson/requiresVegetarian/avoidShellfish` in the search args. That's the new "query fidelity" gap.
 - Each `AgentInput` contains only `runId, scenarioId, userId, timestamp, inputType, message` (no transcript). Verify with `FIDELITYBENCH_DEBUG=1`.

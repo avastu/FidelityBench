@@ -1,4 +1,13 @@
-import OpenAI from "openai"
+// TranscriptLLMAgent: the empirical "transcript baseline" — feeds the full
+// prior transcript to a frontier LLM at every turn. This is the answer to
+// "what if 128k context just solves it?" Without this baseline we cannot tell
+// whether structured memory architectures actually beat naive history retention.
+//
+// As of v1.0 this is the public CEILING agent. OracleAgent is hand-coded and
+// only useful for rubric sanity-checking. If TranscriptLLMAgent does not
+// achieve high scores here, the bench's targets are unreachable for any
+// real LLM-based agent and the rubrics need rebalancing.
+
 import type { Agent } from "./Agent.js"
 import type {
   AgentInput,
@@ -7,30 +16,34 @@ import type {
   RestaurantSearchArgs,
   ToolCall,
 } from "../types.js"
+import { callLlm, detectProvider, type LlmMessage } from "../llm/client.js"
 
-const DEFAULT_MODEL = process.env.FIDELITYBENCH_MODEL ?? "gpt-4o-mini"
-
-const SYSTEM_PROMPT = `You are an executive assistant.
-You are given the FULL prior transcript of your conversation with the user (so the user does not have to repeat themselves).
+const SYSTEM_PROMPT = `You are an executive assistant operating inside an evaluation harness.
+You have been given the FULL prior transcript of your conversation with the user (so the user does not have to repeat themselves).
 Use that history to faithfully execute the user's accumulated intent.
-Ask only for genuinely missing information.
-Prefer taking action over asking when the user has already given you enough to proceed.
-If multiple statements conflict, follow the MOST RECENT one (recency wins).
-Tools available:
-- restaurants.search({ location?, date?, time?, partySize? })
-- restaurants.holdReservation({ restaurantId, date, time, partySize })
-Return strict JSON: { "message": string, "toolCalls": Array<{ "tool": string, "args": object }> }
-Set toolCalls=[] if no tool is needed.`
+
+Rules of engagement:
+- Ask only for genuinely missing information.
+- Prefer taking action over asking when the user has already given you enough to proceed.
+- If multiple statements conflict, follow the MOST RECENT one (recency wins).
+- When the user asked you to keep a piece of information private, do not include it in any draft.
+- Translate what you remember into TOOL ARGUMENTS, not just into your prose. The bench scores both.
+
+Tools available (call zero or more per turn):
+1. restaurants.search({
+     location?, date?, time?, partySize?,
+     cuisine?, maxPricePerPerson?, requiresVegetarian?, avoidShellfish?
+   })
+2. restaurants.holdReservation({ restaurantId, date, time, partySize })
+
+Return STRICT JSON, no markdown fences:
+{ "message": string, "toolCalls": [ { "tool": string, "args": object } ] }
+Set toolCalls=[] if no tool is needed this turn.`
 
 type StoredMessage =
   | { role: "user"; content: string }
   | { role: "assistant"; content: string; toolCallSummary?: string }
   | { role: "tool"; content: string }
-
-function truncateError(error: unknown): string {
-  const message = error instanceof Error ? error.message : String(error)
-  return message.length > 160 ? `${message.slice(0, 157)}...` : message
-}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null
@@ -38,10 +51,34 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function isRestaurantSearchArgs(value: unknown): value is RestaurantSearchArgs {
   if (!isRecord(value)) return false
-  if ("location" in value && value.location !== undefined && typeof value.location !== "string") return false
-  if ("date" in value && value.date !== undefined && typeof value.date !== "string") return false
-  if ("time" in value && value.time !== undefined && typeof value.time !== "string") return false
-  if ("partySize" in value && value.partySize !== undefined && typeof value.partySize !== "number") return false
+  const stringFields = ["location", "date", "time", "cuisine"]
+  for (const k of stringFields) {
+    if (k in value && value[k] !== undefined && typeof value[k] !== "string") return false
+  }
+  if (
+    "partySize" in value &&
+    value.partySize !== undefined &&
+    typeof value.partySize !== "number"
+  )
+    return false
+  if (
+    "maxPricePerPerson" in value &&
+    value.maxPricePerPerson !== undefined &&
+    typeof value.maxPricePerPerson !== "number"
+  )
+    return false
+  if (
+    "requiresVegetarian" in value &&
+    value.requiresVegetarian !== undefined &&
+    typeof value.requiresVegetarian !== "boolean"
+  )
+    return false
+  if (
+    "avoidShellfish" in value &&
+    value.avoidShellfish !== undefined &&
+    typeof value.avoidShellfish !== "boolean"
+  )
+    return false
   return true
 }
 
@@ -66,36 +103,48 @@ function toToolCall(value: unknown): ToolCall | null {
   return null
 }
 
+function stripCodeFences(text: string): string {
+  // The model occasionally wraps JSON in ```json ... ``` despite being told not to.
+  const trimmed = text.trim()
+  if (trimmed.startsWith("```")) {
+    const noFence = trimmed.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "")
+    return noFence.trim()
+  }
+  return trimmed
+}
+
 function parseAgentOutput(rawText: string): AgentOutput {
   try {
-    const parsed: unknown = JSON.parse(rawText)
-    if (!isRecord(parsed) || typeof parsed.message !== "string" || !Array.isArray(parsed.toolCalls)) {
+    const parsed: unknown = JSON.parse(stripCodeFences(rawText))
+    if (
+      !isRecord(parsed) ||
+      typeof parsed.message !== "string" ||
+      !Array.isArray(parsed.toolCalls)
+    ) {
       return { message: rawText }
     }
     const toolCalls = parsed.toolCalls
       .map(toToolCall)
       .filter((c): c is ToolCall => c !== null)
-    return { message: parsed.message, toolCalls }
+    return toolCalls.length > 0
+      ? { message: parsed.message, toolCalls }
+      : { message: parsed.message }
   } catch {
     return { message: rawText }
   }
 }
 
+function truncateError(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error)
+  return message.length > 200 ? `${message.slice(0, 197)}...` : message
+}
+
 export class TranscriptLLMAgent implements Agent {
   name = "TranscriptLLMAgent"
-  private readonly model = DEFAULT_MODEL
   private history: StoredMessage[] = []
-  private client: OpenAI | null = null
 
   reset() {
     this.history = []
-  }
-
-  private getClient(): OpenAI {
-    if (!this.client) {
-      this.client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-    }
-    return this.client
   }
 
   async handleMessage(input: AgentInput): Promise<AgentOutput> {
@@ -105,37 +154,28 @@ export class TranscriptLLMAgent implements Agent {
       this.history.push({ role: "tool", content: input.message })
     }
 
-    try {
-      const messages: Array<{
-        role: "system" | "user" | "assistant"
-        content: string
-      }> = [{ role: "system", content: SYSTEM_PROMPT }]
-
-      for (const msg of this.history) {
-        if (msg.role === "user") {
-          messages.push({ role: "user", content: msg.content })
-        } else if (msg.role === "tool") {
-          messages.push({
-            role: "user",
-            content: `[tool_result]\n${msg.content}`,
-          })
-        } else {
-          const content = msg.toolCallSummary
-            ? `${msg.content}\n[tool_calls]\n${msg.toolCallSummary}`
-            : msg.content
-          messages.push({ role: "assistant", content })
-        }
+    const messages: LlmMessage[] = [{ role: "system", content: SYSTEM_PROMPT }]
+    for (const msg of this.history) {
+      if (msg.role === "user") {
+        messages.push({ role: "user", content: msg.content })
+      } else if (msg.role === "tool") {
+        messages.push({
+          role: "user",
+          content: `[tool_result]\n${msg.content}`,
+        })
+      } else {
+        const content = msg.toolCallSummary
+          ? `${msg.content}\n[tool_calls]\n${msg.toolCallSummary}`
+          : msg.content
+        messages.push({ role: "assistant", content })
       }
+    }
 
-      const completion = await this.getClient().chat.completions.create({
-        model: this.model,
-        response_format: { type: "json_object" },
-        messages,
-      })
-
-      const rawText = completion.choices[0]?.message?.content ?? ""
+    try {
+      // Detection raises a clear error if no provider is configured.
+      detectProvider()
+      const rawText = await callLlm({ messages, responseFormat: "json_object" })
       const output = parseAgentOutput(rawText)
-
       const toolCallSummary = output.toolCalls?.length
         ? JSON.stringify(output.toolCalls)
         : undefined
@@ -144,7 +184,6 @@ export class TranscriptLLMAgent implements Agent {
         content: output.message,
         toolCallSummary,
       })
-
       return output
     } catch (error) {
       return { message: `[LLM error: ${truncateError(error)}]` }

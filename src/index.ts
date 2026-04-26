@@ -144,28 +144,43 @@ function parseExternalAgentCommand(spec: string): { command: string; args: strin
   return { command, args }
 }
 
+function hasLlmCredentials(): boolean {
+  return !!(
+    process.env.BEDROCK_API_KEY ||
+    process.env.AWS_BEARER_TOKEN_BEDROCK ||
+    process.env.OPENAI_API_KEY
+  )
+}
+
 async function buildAgents(): Promise<Agent[]> {
-  const agents: Agent[] = [
-    new StatelessAgent(),
-    new RuleMemoryAgent(),
-    new OracleAgent(),
-  ]
-  if (process.env.OPENAI_API_KEY) {
+  const includeOracle = hasFlag("--include-oracle")
+  const agents: Agent[] = [new StatelessAgent(), new RuleMemoryAgent()]
+  if (includeOracle) agents.push(new OracleAgent())
+
+  if (hasLlmCredentials()) {
+    // TranscriptLLMAgent is the public empirical ceiling — full transcript +
+    // frontier LLM. Always preferred when credentials exist.
     const transcriptLLM = await loadOptionalAgent(
       "./agents/TranscriptLLMAgent.js",
       "TranscriptLLMAgent",
     )
     if (transcriptLLM) agents.push(transcriptLLM)
-    const statelessLLM = await loadOptionalAgent(
-      "./agents/StatelessLLMAgent.js",
-      "StatelessLLMAgent",
-    )
-    if (statelessLLM) agents.push(statelessLLM)
-    const fileMemoryLLM = await loadOptionalAgent(
-      "./agents/FileMemoryLLMAgent.js",
-      "FileMemoryLLMAgent",
-    )
-    if (fileMemoryLLM) agents.push(fileMemoryLLM)
+
+    // The other LLM agents are optional research baselines. Currently they
+    // only run on OPENAI_API_KEY (legacy from v0.6); leaving as-is until they
+    // get refactored onto the provider abstraction.
+    if (process.env.OPENAI_API_KEY) {
+      const statelessLLM = await loadOptionalAgent(
+        "./agents/StatelessLLMAgent.js",
+        "StatelessLLMAgent",
+      )
+      if (statelessLLM) agents.push(statelessLLM)
+      const fileMemoryLLM = await loadOptionalAgent(
+        "./agents/FileMemoryLLMAgent.js",
+        "FileMemoryLLMAgent",
+      )
+      if (fileMemoryLLM) agents.push(fileMemoryLLM)
+    }
   }
 
   const externalSpec = process.env.FIDELITYBENCH_EXTERNAL_AGENT
