@@ -235,7 +235,7 @@ async function loadScenarios(): Promise<ScenarioBundle[]> {
 }
 
 function printHelp() {
-  console.log(`FidelityBench v0.9 — eval intention fidelity in AI agents
+  console.log(`FidelityBench v1.6 — eval intention fidelity in AI agents
 
 Usage:
   npm run bench [-- options]
@@ -247,6 +247,10 @@ Options:
                            report mean ± stddev. Deterministic agents always run once.
                            Default: 1.
   --include-oracle         include the hand-coded OracleAgent (rubric sanity check)
+                           — also enables the side-by-side contrast block in the
+                           diagnostic report
+  --no-diagnose            suppress the v1.6 Diagnosis + Contrast blocks
+                           (recovers the pre-v1.6 report shape)
   --json                   emit machine-readable JSONL to stdout
                            (each trial + each result; human report stays on stderr)
   --list-agents            print the agents that would run, then exit
@@ -318,6 +322,8 @@ async function main() {
   }
 
   const jsonMode = hasFlag("--json")
+  // Diagnosis is on by default. --no-diagnose recovers the pre-v1.6 report shape.
+  const diagnose = !hasFlag("--no-diagnose")
   const log = (msg: string) => {
     if (jsonMode) process.stderr.write(msg + "\n")
     else console.log(msg)
@@ -422,7 +428,7 @@ async function main() {
           })
         }
       }
-      printReport(scenarioResults, bundle)
+      printReport(scenarioResults, bundle, { diagnose })
       console.log("")
       allResults.push(...scenarioResults)
     }

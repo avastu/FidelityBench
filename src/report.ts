@@ -241,8 +241,19 @@ function printContrast(
   }
 }
 
-export function printReport(results: EvaluationResult[], bundle?: ScenarioBundle) {
-  console.log("FidelityBench v1.0.1")
+export type PrintReportOptions = {
+  // When false, suppresses the Diagnosis and Contrast blocks (recovers
+  // the pre-v1.6 report shape). Default true.
+  diagnose?: boolean
+}
+
+export function printReport(
+  results: EvaluationResult[],
+  bundle?: ScenarioBundle,
+  options: PrintReportOptions = {},
+) {
+  const diagnose = options.diagnose !== false
+  console.log("FidelityBench v1.6")
   const scenarioId = results[0]?.scenarioId
   const maxTotal = bundle?.maxScore ?? DEFAULT_MAX_TOTAL
   const maxIntent = bundle?.maxIntentFidelity ?? DEFAULT_MAX_INTENT
@@ -310,10 +321,11 @@ export function printReport(results: EvaluationResult[], bundle?: ScenarioBundle
       }
     }
 
-    printDiagnosis(result)
-
-    if (result.agentName !== "OracleAgent") {
-      printContrast(result, oracleResult)
+    if (diagnose) {
+      printDiagnosis(result)
+      if (result.agentName !== "OracleAgent") {
+        printContrast(result, oracleResult)
+      }
     }
 
     if (result.notes && result.notes.length > 0) {
@@ -331,6 +343,13 @@ function printDiagnosis(result: EvaluationResult) {
   if (violations.length === 0 && recallEvents.length === 0) return
 
   console.log("Diagnosis (why this agent lost):")
+  if (isAggregated(result)) {
+    // Rich fields (transcript, dimensions, recallBurdenEvents) come from
+    // trial 0; only scores are aggregated. Keep that honest in the report.
+    console.log(
+      `  (diagnosis from trial 0 of ${result.trials}; scores are averaged but excerpts are illustrative)`,
+    )
+  }
 
   for (const dim of violations) {
     console.log(
