@@ -167,12 +167,12 @@ export type TranscriptEvent =
       result: ToolResult
     }
 
-export type RecallBurdenCategory =
-  | "cuisine"
-  | "budget"
-  | "dietary"
-  | "location"
-  | "time"
+// Recall-burden categories are scenario-local. Each scenario defines its own
+// vocabulary (e.g. cuisine/budget/time for dinner; alex_identity/private_boundary
+// for alex_pushback). The type is a plain string alias so adding a scenario
+// doesn't require editing this file. The report renders the category labels
+// verbatim, so pick names that read clearly.
+export type RecallBurdenCategory = string
 
 export type RecallBurdenEvent = {
   category: RecallBurdenCategory

@@ -79,7 +79,7 @@ export const dinnerSimulatedUser = (
   const questions = questionSentences(assistantMessage)
   const categories = Object.keys(PATTERNS) as RecallBurdenCategory[]
   for (const category of categories) {
-    const patterns = PATTERNS[category]
+    const patterns = PATTERNS[category] ?? []
     if (matchAnyInQuestionSentences(questions, patterns)) {
       recallBurdenEvents.push({ category, message: assistantMessage })
     }

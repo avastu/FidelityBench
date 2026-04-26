@@ -72,7 +72,7 @@ export const boardUpdateSimulatedUser = (
   const questionText = questionPortion(assistantMessage)
   const categories = Object.keys(PATTERNS) as RecallBurdenCategory[]
   for (const category of categories) {
-    if (questionText && matchAny(questionText, PATTERNS[category])) {
+    if (questionText && matchAny(questionText, PATTERNS[category] ?? [])) {
       recallBurdenEvents.push({ category, message: assistantMessage })
     }
   }

@@ -98,7 +98,7 @@ export const temporalSupersessionSimulatedUser = (
   const questions = questionSentences(assistantMessage)
   const categories = Object.keys(PATTERNS) as RecallBurdenCategory[]
   for (const category of categories) {
-    if (matchAnyInQuestions(questions, PATTERNS[category])) {
+    if (matchAnyInQuestions(questions, PATTERNS[category] ?? [])) {
       recallBurdenEvents.push({ category, message: assistantMessage })
     }
   }
