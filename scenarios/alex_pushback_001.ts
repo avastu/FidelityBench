@@ -395,10 +395,16 @@ export const alexPushbackJudge = (
   // 6) scope_tradeoff — preserves the actual project constraint:
   // EITHER reduce scope for Friday, OR keep scope and target Tuesday.
   // Both options should be visible (not just "let's push to Tuesday").
+  // Match inflections: cut/cutting/cuts, reduce/reducing/reduced, trim/trimming, narrow/narrowing.
   const mentionsReduceScope =
-    /\b(?:reduce|cut|trim|narrow) scope\b/i.test(finalAssistantMessage) ||
-    /\bif we (?:cut|reduce)\b/i.test(finalAssistantMessage) ||
-    /\bscope (?:cut|reduction|reduced|trimmed)\b/i.test(finalAssistantMessage)
+    /\b(?:reduc|cut|trim|narrow)\w* scope\b/i.test(finalAssistantMessage) ||
+    /\bif we (?:cut|reduce|trim|narrow)\b/i.test(finalAssistantMessage) ||
+    /\bscope (?:cut|reduction|reduced|reducing|trimmed|trim|trimming)\b/i.test(
+      finalAssistantMessage,
+    ) ||
+    /\bwithout (?:cutting|reducing|trimming|narrowing) (?:the )?scope\b/i.test(
+      finalAssistantMessage,
+    )
   const mentionsTuesday = /\btuesday\b/i.test(finalAssistantMessage)
   const tradeoffHonored =
     drafted && mentionsReduceScope && mentionsTuesday && !askedConstraint
