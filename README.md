@@ -99,6 +99,8 @@ Important: agent processes stay alive across the timeline. The bench resets your
 
 A working Python example is in `examples/external-agent.py`. For HTTP-only services, write a small adapter that reads a JSON line from stdin, POSTs to your endpoint, and writes the response as a JSON line to stdout.
 
+A real-world HTTP adapter — bridging FidelityBench to the **Avocado** AI companion app at `~/dev/avocado` — lives at `examples/avocado-adapter.py`, with a full integration writeup at `examples/AVOCADO.md`.
+
 Other env vars:
 - `FIDELITYBENCH_EXTERNAL_AGENT_NAME` — name shown in the report (default "ExternalAgent")
 - `FIDELITYBENCH_EXTERNAL_AGENT_TIMEOUT_MS` — per-message timeout, default 60000
