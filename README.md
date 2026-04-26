@@ -6,7 +6,9 @@ It tests whether an AI system can faithfully execute a user's accumulated intent
 The benchmark simulates a user texting an assistant across multiple turns. The assistant only
 receives the current message at each turn — any prior context must come from its own memory.
 
-**Status: v1.0** — empirical ceiling now provided by `TranscriptLLMAgent` (frontier LLM + full transcript). `OracleAgent` is opt-in via `--include-oracle` for rubric sanity checks only.
+**Status: v1.5** — 4 scenarios across 2 families, real-LLM ceiling on Bedrock, structured-memory challenger, N-trial averaging, stdio external-agent integration.
+
+For the epistemic stance — what the bench measures, why these metrics, where it can mislead you — read **[DESIGN.md](DESIGN.md)**. This README is the on-ramp; DESIGN.md is the manual.
 
 ## Quickstart
 
