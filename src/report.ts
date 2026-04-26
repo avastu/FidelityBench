@@ -48,6 +48,36 @@ function formatHeldReservation(result: EvaluationResult): string {
   return `${r.restaurantId} on ${r.date} at ${r.time} for ${r.partySize}`
 }
 
+function truncate(text: string, maxChars: number): string {
+  const oneLine = text.replace(/\s+/g, " ").trim()
+  if (oneLine.length <= maxChars) return oneLine
+  return `${oneLine.slice(0, maxChars - 1)}…`
+}
+
+function turnExcerpt(
+  transcript: TranscriptEvent[],
+  index: number | undefined,
+  maxChars = 110,
+): string | undefined {
+  if (index === undefined) return undefined
+  const event = transcript[index]
+  if (!event) return undefined
+  if (event.type === "user") {
+    return `turn ${index} (user, ${event.timestamp}): "${truncate(event.message, maxChars)}"`
+  }
+  if (event.type === "assistant") {
+    const calls = event.toolCalls ?? []
+    if (calls.length > 0) {
+      const summary = calls
+        .map((c) => `${c.tool} ${JSON.stringify(c.args)}`)
+        .join("; ")
+      return `turn ${index} (assistant): ${truncate(summary, maxChars)}`
+    }
+    return `turn ${index} (assistant): "${truncate(event.message, maxChars)}"`
+  }
+  return `turn ${index} (tool_result)`
+}
+
 function getKeyBehavior(result: EvaluationResult): string {
   const recallCategories = uniqueRecallCategories(result)
   if (recallCategories.length > 0) {
@@ -190,8 +220,49 @@ export function printReport(results: EvaluationResult[], bundle?: ScenarioBundle
       }
     }
 
+    printDiagnosis(result)
+
     if (result.notes && result.notes.length > 0) {
       for (const note of result.notes) console.log(`! ${note}`)
     }
+  }
+}
+
+function printDiagnosis(result: EvaluationResult) {
+  const violations = (result.intentDimensionResults ?? []).filter(
+    (d) => !d.honored,
+  )
+  const recallEvents = result.recallBurdenEvents
+
+  if (violations.length === 0 && recallEvents.length === 0) return
+
+  console.log("Diagnosis (why this agent lost):")
+
+  for (const dim of violations) {
+    console.log(
+      `  ✗ ${dim.id} (-${dim.weight}) — ${dim.evidence}`,
+    )
+    const origin = turnExcerpt(result.transcript, dim.originTurnIndex)
+    const pivot = turnExcerpt(result.transcript, dim.pivotTurnIndex)
+    const failure = turnExcerpt(result.transcript, dim.failureTurnIndex)
+    if (origin) console.log(`       origin   ${origin}`)
+    if (pivot) console.log(`       pivot    ${pivot}`)
+    if (failure) console.log(`       failure  ${failure}`)
+  }
+
+  if (recallEvents.length > 0) {
+    // Group by category, show one excerpt per unique category (the first asking turn).
+    const seen = new Set<string>()
+    const rows: string[] = []
+    for (const event of recallEvents) {
+      if (seen.has(event.category)) continue
+      seen.add(event.category)
+      const excerpt =
+        turnExcerpt(result.transcript, event.turnIndex) ??
+        `(turn unknown): "${truncate(event.message, 110)}"`
+      rows.push(`    ${event.category} — ${excerpt}`)
+    }
+    console.log("  Recall burden:")
+    for (const row of rows) console.log(row)
   }
 }
