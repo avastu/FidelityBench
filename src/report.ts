@@ -1,8 +1,10 @@
 import type {
   AggregatedResult,
   EvaluationResult,
+  IntentDimensionResult,
   RecallBurdenCategory,
   ScenarioBundle,
+  ToolCall,
   TranscriptEvent,
 } from "./types.js"
 
@@ -154,6 +156,91 @@ export function printAggregateSummary(
   }
 }
 
+function getToolCallAtTurn(
+  transcript: TranscriptEvent[],
+  index: number | undefined,
+): ToolCall | undefined {
+  if (index === undefined) return undefined
+  const event = transcript[index]
+  if (event?.type !== "assistant") return undefined
+  return event.toolCalls?.[0]
+}
+
+function diffToolArgs(
+  thisCall: ToolCall,
+  refCall: ToolCall,
+): string | undefined {
+  if (thisCall.tool !== refCall.tool) return undefined
+  const thisArgs = thisCall.args as Record<string, unknown>
+  const refArgs = refCall.args as Record<string, unknown>
+  const parts: string[] = []
+  const keys = new Set([...Object.keys(thisArgs), ...Object.keys(refArgs)])
+  for (const key of keys) {
+    const a = thisArgs[key]
+    const b = refArgs[key]
+    if (a === undefined && b !== undefined) {
+      parts.push(`+ ${key}: ${JSON.stringify(b)}`)
+    } else if (a !== undefined && b === undefined) {
+      parts.push(`- ${key}`)
+    } else if (JSON.stringify(a) !== JSON.stringify(b)) {
+      parts.push(`${key}: ${JSON.stringify(a)} → ${JSON.stringify(b)}`)
+    }
+  }
+  if (parts.length === 0) return undefined
+  return parts.join("    ")
+}
+
+function printContrast(
+  result: EvaluationResult,
+  oracle: EvaluationResult | undefined,
+) {
+  if (!oracle) {
+    if (
+      result.intentDimensionResults?.some((d) => !d.honored) ||
+      result.recallBurdenEvents.length > 0
+    ) {
+      console.log(
+        "Contrast: pass --include-oracle to compare against the rubric ceiling.",
+      )
+    }
+    return
+  }
+
+  const oracleDimsById = new Map<string, IntentDimensionResult>()
+  for (const dim of oracle.intentDimensionResults ?? []) {
+    oracleDimsById.set(dim.id, dim)
+  }
+
+  // Only render dimensions where THIS lost AND Oracle honored — those are
+  // the instructive deltas.
+  const violations = (result.intentDimensionResults ?? []).filter((dim) => {
+    if (dim.honored) return false
+    const ref = oracleDimsById.get(dim.id)
+    return !!ref?.honored
+  })
+
+  if (violations.length === 0) return
+
+  console.log(
+    "Contrast — vs OracleAgent (same dimension, Oracle's turn):",
+  )
+  for (const dim of violations) {
+    const ref = oracleDimsById.get(dim.id)
+    if (!ref) continue
+    console.log(`  ${dim.id}`)
+    const thisExcerpt = turnExcerpt(result.transcript, dim.failureTurnIndex)
+    const refExcerpt = turnExcerpt(oracle.transcript, ref.failureTurnIndex)
+    if (thisExcerpt) console.log(`    THIS  ${thisExcerpt}`)
+    if (refExcerpt) console.log(`    REF   ${refExcerpt}`)
+    const thisCall = getToolCallAtTurn(result.transcript, dim.failureTurnIndex)
+    const refCall = getToolCallAtTurn(oracle.transcript, ref.failureTurnIndex)
+    if (thisCall && refCall) {
+      const diff = diffToolArgs(thisCall, refCall)
+      if (diff) console.log(`    diff: ${diff}`)
+    }
+  }
+}
+
 export function printReport(results: EvaluationResult[], bundle?: ScenarioBundle) {
   console.log("FidelityBench v1.0.1")
   const scenarioId = results[0]?.scenarioId
@@ -190,6 +277,9 @@ export function printReport(results: EvaluationResult[], bundle?: ScenarioBundle
     console.log(`(N=${trials} trials for nondeterministic agents; ± is sample stddev)`)
   }
 
+  // Oracle is the contrast partner. Skip if absent or if THIS agent IS Oracle.
+  const oracleResult = results.find((r) => r.agentName === "OracleAgent")
+
   for (const result of results) {
     const recallCategories = uniqueRecallCategories(result)
     console.log("")
@@ -221,6 +311,10 @@ export function printReport(results: EvaluationResult[], bundle?: ScenarioBundle
     }
 
     printDiagnosis(result)
+
+    if (result.agentName !== "OracleAgent") {
+      printContrast(result, oracleResult)
+    }
 
     if (result.notes && result.notes.length > 0) {
       for (const note of result.notes) console.log(`! ${note}`)
