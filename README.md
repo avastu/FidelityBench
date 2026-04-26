@@ -14,10 +14,20 @@ receives the current message at each turn — any prior context must come from i
 npm install
 npm run bench
 
-# Filter to a single agent or scenario
+# Filter
 npm run bench -- --agent rule-memory
 npm run bench -- --scenario temporal
-FIDELITYBENCH_DEBUG=1 npm run bench   # prove agents only see current message
+
+# Discover
+npm run bench -- --list-agents
+npm run bench -- --list-scenarios
+npm run bench -- --help
+
+# Machine-readable JSONL output (one line per result + per-agent aggregates)
+npx tsx src/index.ts --json | jq -c 'select(.kind == "aggregate")'
+
+# Prove agents only see the current message
+FIDELITYBENCH_DEBUG=1 npm run bench
 ```
 
 `OPENAI_API_KEY` is optional and enables the LLM-backed agents

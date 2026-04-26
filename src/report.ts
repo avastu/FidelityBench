@@ -41,6 +41,33 @@ function getKeyBehavior(result: EvaluationResult): string {
   return "no tool action (response-only scenario)"
 }
 
+export function printAggregateSummary(results: EvaluationResult[]) {
+  if (results.length === 0) return
+  const byAgent = new Map<string, { total: number; n: number; per: Record<string, number> }>()
+  for (const r of results) {
+    const e = byAgent.get(r.agentName) ?? { total: 0, n: 0, per: {} }
+    e.total += r.totalScore
+    e.n += 1
+    e.per[r.scenarioId] = r.totalScore
+    byAgent.set(r.agentName, e)
+  }
+  const scenarioIds = [...new Set(results.map((r) => r.scenarioId))]
+  console.log("")
+  console.log("Aggregate (score per agent across scenarios)")
+  const header =
+    `${pad("Agent", 22, "start")}` +
+    scenarioIds.map((id) => pad(id.slice(0, 14), 16)).join("") +
+    pad("Total", 10)
+  console.log(header)
+  for (const [agentName, entry] of byAgent.entries()) {
+    const row =
+      `${pad(agentName, 22, "start")}` +
+      scenarioIds.map((id) => pad(entry.per[id] ?? "—", 16)).join("") +
+      pad(entry.total, 10)
+    console.log(row)
+  }
+}
+
 export function printReport(results: EvaluationResult[]) {
   console.log("FidelityBench v0.6")
   const scenarioId = results[0]?.scenarioId

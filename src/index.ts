@@ -3,7 +3,7 @@ import { OracleAgent } from "./agents/OracleAgent.js"
 import { RuleMemoryAgent } from "./agents/RuleMemoryAgent.js"
 import { StatelessAgent } from "./agents/StatelessAgent.js"
 import { StdioAgent } from "./agents/StdioAgent.js"
-import { printReport } from "./report.js"
+import { printReport, printAggregateSummary } from "./report.js"
 import { runScenario } from "./runner.js"
 import type { Agent } from "./agents/Agent.js"
 import type { EvaluationResult, ScenarioBundle } from "./types.js"
@@ -77,25 +77,31 @@ async function loadOptionalScenario(
   }
 }
 
+function hasFlag(flag: string): boolean {
+  return process.argv.includes(flag)
+}
+
 function requestedFilter(flag: string): string | undefined {
   const idx = process.argv.findIndex((arg) => arg === flag)
   if (idx === -1) return undefined
   return process.argv[idx + 1]
 }
 
+const AGENT_ALIASES = new Map<string, string>([
+  ["StatelessAgent", "stateless"],
+  ["RuleMemoryAgent", "rule-memory"],
+  ["OracleAgent", "oracle"],
+  ["StatelessLLMAgent", "stateless-llm"],
+  ["FileMemoryLLMAgent", "file-memory-llm"],
+  ["TranscriptLLMAgent", "transcript-llm"],
+])
+
 function matchesAgentFilter(agent: Agent, filter: string | undefined): boolean {
   if (!filter) return true
   const normalized = filter.toLowerCase()
-  const aliases = new Map<string, string>([
-    ["StatelessAgent", "stateless"],
-    ["RuleMemoryAgent", "rule-memory"],
-    ["StatelessLLMAgent", "stateless-llm"],
-    ["FileMemoryLLMAgent", "file-memory-llm"],
-    ["TranscriptLLMAgent", "transcript-llm"],
-  ])
   return (
     agent.name.toLowerCase() === normalized ||
-    aliases.get(agent.name) === normalized
+    AGENT_ALIASES.get(agent.name) === normalized
   )
 }
 
@@ -108,7 +114,6 @@ function matchesScenarioFilter(
 }
 
 function parseExternalAgentCommand(spec: string): { command: string; args: string[] } {
-  // Simple shell-style tokenizer: split on whitespace, honoring quoted segments.
   const tokens: string[] = []
   let current = ""
   let inSingle = false
@@ -194,58 +199,182 @@ async function loadScenarios(): Promise<ScenarioBundle[]> {
   return scenarios
 }
 
-async function main() {
-  const allAgents = await buildAgents()
-  const allScenarios = await loadScenarios()
+function printHelp() {
+  console.log(`FidelityBench v0.9 — eval intention fidelity in AI agents
 
-  const agentFilter = requestedFilter("--agent")
-  const scenarioFilter = requestedFilter("--scenario")
+Usage:
+  npm run bench [-- options]
 
-  const agents = allAgents.filter((agent) =>
-    matchesAgentFilter(agent, agentFilter),
-  )
-  const scenarios = allScenarios.filter((bundle) =>
-    matchesScenarioFilter(bundle, scenarioFilter),
-  )
+Options:
+  --agent <name>           run only the given agent (alias or class name)
+  --scenario <substring>   run only scenarios whose id contains <substring>
+  --json                   emit machine-readable JSONL to stdout
+                           (one EvaluationResult per line; human report stays on stderr)
+  --list-agents            print the agents that would run, then exit
+  --list-scenarios         print the scenarios available, then exit
+  --help, -h               this help
 
-  if (agents.length === 0) {
-    throw new Error(
-      agentFilter
-        ? `No agent matched --agent ${agentFilter}.`
-        : "No agents are available to run.",
-    )
+External agents (any language) integrate via stdio JSON. See README.md and
+examples/external-agent.py.`)
+}
+
+async function listAgents(): Promise<void> {
+  const agents = await buildAgents()
+  for (const agent of agents) {
+    const alias = AGENT_ALIASES.get(agent.name) ?? "(no alias)"
+    console.log(`${agent.name}\t${alias}`)
   }
-  if (scenarios.length === 0) {
-    throw new Error(
-      scenarioFilter
-        ? `No scenario matched --scenario ${scenarioFilter}.`
-        : "No scenarios are available.",
-    )
-  }
+}
 
-  const allResults: EvaluationResult[] = []
+async function listScenarios(): Promise<void> {
+  const scenarios = await loadScenarios()
   for (const bundle of scenarios) {
-    const scenarioResults: EvaluationResult[] = []
-    for (const agent of agents) {
-      const result = await runScenario(agent, bundle)
-      scenarioResults.push(result)
+    console.log(`${bundle.scenario.id}\t${bundle.scenario.title}`)
+  }
+}
+
+// JSON output: write one EvaluationResult per line to stdout, plus an aggregate
+// summary line at the end. Each line is self-describing via a "kind" field so
+// downstream tooling can dispatch.
+function emitJsonLine(value: Record<string, unknown>) {
+  process.stdout.write(`${JSON.stringify(value)}\n`)
+}
+
+function buildAggregate(results: EvaluationResult[]) {
+  // Group by agent → sum totals across scenarios
+  const byAgent = new Map<
+    string,
+    { agentName: string; total: number; scenarios: number; scores: Record<string, number> }
+  >()
+  for (const r of results) {
+    const existing = byAgent.get(r.agentName)
+    if (!existing) {
+      byAgent.set(r.agentName, {
+        agentName: r.agentName,
+        total: r.totalScore,
+        scenarios: 1,
+        scores: { [r.scenarioId]: r.totalScore },
+      })
+    } else {
+      existing.total += r.totalScore
+      existing.scenarios += 1
+      existing.scores[r.scenarioId] = r.totalScore
     }
-    printReport(scenarioResults)
-    console.log("")
-    allResults.push(...scenarioResults)
+  }
+  return [...byAgent.values()]
+}
+
+async function main() {
+  if (hasFlag("--help") || hasFlag("-h")) {
+    printHelp()
+    return
+  }
+  if (hasFlag("--list-agents")) {
+    await listAgents()
+    return
+  }
+  if (hasFlag("--list-scenarios")) {
+    await listScenarios()
+    return
   }
 
-  await fs.mkdir("results", { recursive: true })
-  await fs.writeFile(
-    "results/latest-run.json",
-    JSON.stringify(allResults, null, 2),
-  )
-
-  // Tear down subprocess-backed agents so the bench process can exit cleanly.
-  for (const agent of allAgents) {
-    const candidate = agent as Agent & { dispose?: () => void }
-    if (typeof candidate.dispose === "function") candidate.dispose()
+  const jsonMode = hasFlag("--json")
+  const log = (msg: string) => {
+    if (jsonMode) process.stderr.write(msg + "\n")
+    else console.log(msg)
   }
+  // Redirect printReport to stderr in json mode by capturing console.log temporarily.
+  const origConsoleLog = console.log.bind(console)
+  if (jsonMode) {
+    console.log = (...args: unknown[]) => {
+      process.stderr.write(args.map(String).join(" ") + "\n")
+    }
+  }
+
+  try {
+    const allAgents = await buildAgents()
+    const allScenarios = await loadScenarios()
+
+    const agentFilter = requestedFilter("--agent")
+    const scenarioFilter = requestedFilter("--scenario")
+
+    const agents = allAgents.filter((agent) =>
+      matchesAgentFilter(agent, agentFilter),
+    )
+    const scenarios = allScenarios.filter((bundle) =>
+      matchesScenarioFilter(bundle, scenarioFilter),
+    )
+
+    if (agents.length === 0) {
+      throw new Error(
+        agentFilter
+          ? `No agent matched --agent ${agentFilter}.`
+          : "No agents are available to run.",
+      )
+    }
+    if (scenarios.length === 0) {
+      throw new Error(
+        scenarioFilter
+          ? `No scenario matched --scenario ${scenarioFilter}.`
+          : "No scenarios are available.",
+      )
+    }
+
+    const allResults: EvaluationResult[] = []
+    for (const bundle of scenarios) {
+      const scenarioResults: EvaluationResult[] = []
+      for (const agent of agents) {
+        const result = await runScenario(agent, bundle)
+        scenarioResults.push(result)
+        if (jsonMode) {
+          emitJsonLine({
+            kind: "result",
+            agentName: result.agentName,
+            scenarioId: result.scenarioId,
+            totalScore: result.totalScore,
+            taskSuccess: result.taskSuccess,
+            intentFidelity: result.intentFidelity,
+            recallBurden: result.recallBurden,
+            clarificationQuality: result.clarificationQuality,
+            toolUseEfficiency: result.toolUseEfficiency,
+            recallBurdenCategories: [
+              ...new Set(result.recallBurdenEvents.map((e) => e.category)),
+            ],
+            selectedRestaurantId: result.selectedRestaurantId,
+            heldReservation: result.heldReservation,
+            intentDimensionResults: result.intentDimensionResults,
+            notes: result.notes,
+          })
+        }
+      }
+      printReport(scenarioResults)
+      // (printReport currently writes to console.log → captured to stderr in jsonMode)
+      console.log("")
+      allResults.push(...scenarioResults)
+    }
+
+    const aggregate = buildAggregate(allResults)
+    printAggregateSummary(allResults)
+    if (jsonMode) {
+      for (const a of aggregate) {
+        emitJsonLine({ kind: "aggregate", ...a })
+      }
+    }
+
+    await fs.mkdir("results", { recursive: true })
+    await fs.writeFile(
+      "results/latest-run.json",
+      JSON.stringify({ results: allResults, aggregate }, null, 2),
+    )
+
+    for (const agent of allAgents) {
+      const candidate = agent as Agent & { dispose?: () => void }
+      if (typeof candidate.dispose === "function") candidate.dispose()
+    }
+  } finally {
+    if (jsonMode) console.log = origConsoleLog
+  }
+  log("")
 }
 
 main().catch((error: unknown) => {
