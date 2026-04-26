@@ -1,0 +1,34 @@
+FidelityBench v1.0.1
+Scenario: dinner_offsite_001
+Probes:   Logistical fidelity: does the agent retain & apply preferences (cuisine, time, budget, dietary, location) and translate them into the search query?
+
+Agent                            Score        Task        Intent    RecallBurden   Clarification     Tools
+StatelessAgent                   3/110        0/30          0/45            0/20            3/10       0/5
+RuleMemoryAgent                102/110       30/30         37/45           20/20           10/10       5/5
+
+── StatelessAgent ──
+Recall burden categories: cuisine, budget, dietary, location, time
+Key behavior: asked user to repeat: cuisine, budget, dietary, location, time
+Intent dimensions:
+  ✗ (0/7) Honors team's Italian-over-sushi decision — no Italian selection or mention
+  ✗ (0/7) Honors after-7pm preference — no reservation held
+  ✗ (0/7) Honors ~$80/person budget — no restaurant selected
+  ✗ (0/7) Honors Union Square location — no selection
+  ✗ (0/7) Honors Priya vegetarian + Miguel no-shellfish — selected none — fails dietary constraints
+  ✗ (0/10) Translates memory into restaurants.search args — no restaurants.search call
+
+── RuleMemoryAgent ──
+Selected restaurant: rest_002
+Held reservation: rest_002 on 2026-05-20 at 19:30 for 8
+Recall burden categories: none
+Tool calls: restaurants.search, restaurants.holdReservation
+Key behavior: asked only for missing field and placed a hold
+Intent dimensions:
+  ✓ (7/7) Honors team's Italian-over-sushi decision — selected rest_002; mentions Italian: true
+  ✓ (7/7) Honors after-7pm preference — held time 19:30
+  ✓ (7/7) Honors ~$80/person budget — selected $72/person
+  ✓ (7/7) Honors Union Square location — Union Square
+  ✓ (7/7) Honors Priya vegetarian + Miguel no-shellfish — selected rest_002 (vegetarian-friendly, not seafood-heavy)
+  ✗ (0/10) Translates memory into restaurants.search args — location=Union Square ✓, cuisine=(unset) ✗, maxPrice=(unset) ✗, requiresVegetarian=(unset) ✗, avoidShellfish=(unset) ✗
+
+Note: this is representative output checked in for README legibility. Run `npm run bench -- --scenario dinner` for current local results.
