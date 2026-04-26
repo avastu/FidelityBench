@@ -62,6 +62,48 @@ Each scenario lives in `scenarios/<id>.ts` and owns its own `simulatedUser` + `j
 | `StatelessLLMAgent` | Real LLM, no memory. Requires `OPENAI_API_KEY`. |
 | `FileMemoryLLMAgent` | Real LLM + LLM-curated `.memory/<userId>.md`. |
 | `TranscriptLLMAgent` | Real LLM + raw transcript dumped into context. The "what if 128k context window solved this" baseline — without it we can't tell whether memory architectures actually beat naive history retention. |
+| **External (stdio)** | Any subprocess that speaks line-delimited JSON over stdin/stdout. Plug in your own agent in any language. See *Integration* below. |
+
+## Integration: bring your own agent
+
+Set an environment variable pointing at your agent's command. The bench will spawn it once per scenario, send `AgentInput`s, and read `AgentOutput`s — both as JSON, one per line.
+
+```bash
+FIDELITYBENCH_EXTERNAL_AGENT="python3 -u examples/external-agent.py" \
+  FIDELITYBENCH_EXTERNAL_AGENT_NAME="MyAgent" \
+  npm run bench
+```
+
+Protocol (one JSON object per line):
+
+```
+bench → agent:  {"type":"reset"}
+bench → agent:  {"type":"input","input":{
+                  "runId": "...",
+                  "scenarioId": "dinner_offsite_001",
+                  "userId": "...",
+                  "timestamp": "...",
+                  "inputType": "user" | "tool_result",
+                  "message": "..."
+                }}
+agent → bench:                 {"type":"output","output":{
+                                 "message": "...",
+                                 "toolCalls": [
+                                   {"tool": "restaurants.search", "args": {...}},
+                                   {"tool": "restaurants.holdReservation", "args": {...}}
+                                 ]
+                               }}
+```
+
+Important: agent processes stay alive across the timeline. The bench resets your agent once per scenario via the `reset` message — that is your cue to clear any internal memory.
+
+A working Python example is in `examples/external-agent.py`. For HTTP-only services, write a small adapter that reads a JSON line from stdin, POSTs to your endpoint, and writes the response as a JSON line to stdout.
+
+Other env vars:
+- `FIDELITYBENCH_EXTERNAL_AGENT_NAME` — name shown in the report (default "ExternalAgent")
+- `FIDELITYBENCH_EXTERNAL_AGENT_TIMEOUT_MS` — per-message timeout, default 60000
+
+Use `python3 -u` (or set `PYTHONUNBUFFERED=1`) to avoid pipe-buffering deadlocks.
 
 ## v0.6 design
 

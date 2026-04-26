@@ -2,6 +2,7 @@ import { dinnerOffsiteBundle } from "../scenarios/dinner_offsite_001.js"
 import { OracleAgent } from "./agents/OracleAgent.js"
 import { RuleMemoryAgent } from "./agents/RuleMemoryAgent.js"
 import { StatelessAgent } from "./agents/StatelessAgent.js"
+import { StdioAgent } from "./agents/StdioAgent.js"
 import { printReport } from "./report.js"
 import { runScenario } from "./runner.js"
 import type { Agent } from "./agents/Agent.js"
@@ -106,6 +107,38 @@ function matchesScenarioFilter(
   return bundle.scenario.id.toLowerCase().includes(filter.toLowerCase())
 }
 
+function parseExternalAgentCommand(spec: string): { command: string; args: string[] } {
+  // Simple shell-style tokenizer: split on whitespace, honoring quoted segments.
+  const tokens: string[] = []
+  let current = ""
+  let inSingle = false
+  let inDouble = false
+  for (const ch of spec) {
+    if (ch === "'" && !inDouble) {
+      inSingle = !inSingle
+      continue
+    }
+    if (ch === '"' && !inSingle) {
+      inDouble = !inDouble
+      continue
+    }
+    if (/\s/.test(ch) && !inSingle && !inDouble) {
+      if (current.length > 0) {
+        tokens.push(current)
+        current = ""
+      }
+      continue
+    }
+    current += ch
+  }
+  if (current.length > 0) tokens.push(current)
+  if (tokens.length === 0) {
+    throw new Error("FIDELITYBENCH_EXTERNAL_AGENT is empty")
+  }
+  const [command, ...args] = tokens as [string, ...string[]]
+  return { command, args }
+}
+
 async function buildAgents(): Promise<Agent[]> {
   const agents: Agent[] = [
     new StatelessAgent(),
@@ -129,6 +162,16 @@ async function buildAgents(): Promise<Agent[]> {
     )
     if (fileMemoryLLM) agents.push(fileMemoryLLM)
   }
+
+  const externalSpec = process.env.FIDELITYBENCH_EXTERNAL_AGENT
+  if (externalSpec && externalSpec.trim().length > 0) {
+    const { command, args } = parseExternalAgentCommand(externalSpec.trim())
+    const name = process.env.FIDELITYBENCH_EXTERNAL_AGENT_NAME?.trim() || "ExternalAgent"
+    const timeoutEnv = process.env.FIDELITYBENCH_EXTERNAL_AGENT_TIMEOUT_MS
+    const timeoutMs = timeoutEnv ? parseInt(timeoutEnv, 10) : undefined
+    agents.push(new StdioAgent({ name, command, args, timeoutMs }))
+  }
+
   return agents
 }
 
@@ -197,6 +240,12 @@ async function main() {
     "results/latest-run.json",
     JSON.stringify(allResults, null, 2),
   )
+
+  // Tear down subprocess-backed agents so the bench process can exit cleanly.
+  for (const agent of allAgents) {
+    const candidate = agent as Agent & { dispose?: () => void }
+    if (typeof candidate.dispose === "function") candidate.dispose()
+  }
 }
 
 main().catch((error: unknown) => {
