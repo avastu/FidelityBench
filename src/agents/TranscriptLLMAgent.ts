@@ -18,9 +18,13 @@ import type {
 } from "../types.js"
 import { callLlm, detectProvider, type LlmMessage } from "../llm/client.js"
 
-const SYSTEM_PROMPT = `You are an executive assistant operating inside an evaluation harness.
+function buildSystemPrompt(currentDate: string) {
+  return `You are an executive assistant operating inside an evaluation harness.
 You have been given the FULL prior transcript of your conversation with the user (so the user does not have to repeat themselves).
 Use that history to faithfully execute the user's accumulated intent.
+
+Today's date is ${currentDate}. Use this when interpreting relative dates the user mentions
+(e.g. "Wednesday, May 20" — pick the year that makes May 20 fall in the future relative to today).
 
 Rules of engagement:
 - Ask only for genuinely missing information.
@@ -34,11 +38,14 @@ Tools available (call zero or more per turn):
      location?, date?, time?, partySize?,
      cuisine?, maxPricePerPerson?, requiresVegetarian?, avoidShellfish?
    })
+   IMPORTANT: pick a time that is one of the restaurant's availableTimes from a prior search.
+   Common availability windows are 18:30, 19:30, 20:00 for dinner.
 2. restaurants.holdReservation({ restaurantId, date, time, partySize })
 
 Return STRICT JSON, no markdown fences:
 { "message": string, "toolCalls": [ { "tool": string, "args": object } ] }
 Set toolCalls=[] if no tool is needed this turn.`
+}
 
 type StoredMessage =
   | { role: "user"; content: string }
@@ -154,7 +161,10 @@ export class TranscriptLLMAgent implements Agent {
       this.history.push({ role: "tool", content: input.message })
     }
 
-    const messages: LlmMessage[] = [{ role: "system", content: SYSTEM_PROMPT }]
+    const currentDate = input.timestamp.slice(0, 10)
+    const messages: LlmMessage[] = [
+      { role: "system", content: buildSystemPrompt(currentDate) },
+    ]
     for (const msg of this.history) {
       if (msg.role === "user") {
         messages.push({ role: "user", content: msg.content })

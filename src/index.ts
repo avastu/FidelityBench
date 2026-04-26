@@ -159,26 +159,18 @@ async function buildAgents(): Promise<Agent[]> {
   if (includeOracle) agents.push(new OracleAgent())
 
   if (hasLlmCredentials()) {
-    // TranscriptLLMAgent is the public empirical ceiling — full transcript +
-    // frontier LLM. Always preferred when credentials exist.
     const transcriptLLM = await loadOptionalAgent(
       "./agents/TranscriptLLMAgent.js",
       "TranscriptLLMAgent",
     )
     if (transcriptLLM) agents.push(transcriptLLM)
 
-    // BlockMemoryLLMAgent: structured-memory architecture (clean-room, in
-    // the spirit of avocado's 5-block memory). Same LLM, no transcript —
-    // tests whether structured memory beats history-dumping.
     const blockMemory = await loadOptionalAgent(
       "./agents/BlockMemoryLLMAgent.js",
       "BlockMemoryLLMAgent",
     )
     if (blockMemory) agents.push(blockMemory)
 
-    // The other LLM agents are optional research baselines. Currently they
-    // only run on OPENAI_API_KEY (legacy from v0.6); leaving as-is until they
-    // get refactored onto the provider abstraction.
     if (process.env.OPENAI_API_KEY) {
       const statelessLLM = await loadOptionalAgent(
         "./agents/StatelessLLMAgent.js",
@@ -191,6 +183,15 @@ async function buildAgents(): Promise<Agent[]> {
       )
       if (fileMemoryLLM) agents.push(fileMemoryLLM)
     }
+  } else {
+    process.stderr.write(
+      "[FidelityBench] LLM agents skipped — set BEDROCK_API_KEY (preferred) or OPENAI_API_KEY to enable TranscriptLLMAgent + BlockMemoryLLMAgent.\n",
+    )
+  }
+  if (!includeOracle) {
+    process.stderr.write(
+      "[FidelityBench] OracleAgent skipped — pass --include-oracle to run the hand-coded sanity-check baseline.\n",
+    )
   }
 
   const externalSpec = process.env.FIDELITYBENCH_EXTERNAL_AGENT

@@ -69,23 +69,32 @@ Return STRICT JSON, no markdown:
   "remove": { "people": [], "preferences": [], "decisions": [], "locations": [], "constraints": [] }
 }`
 
-const RESPOND_SYSTEM = `You are an executive assistant operating inside an evaluation harness.
+function respondSystem(currentDate: string) {
+  return `You are an executive assistant operating inside an evaluation harness.
 You see ONLY the current user message AND your structured memory blocks. You do NOT see prior transcript.
 Your memory is your sole record of accumulated user intent.
+
+Today's date is ${currentDate}. Use this when interpreting relative dates the user mentions
+(e.g. "Wednesday, May 20" — pick the year that makes May 20 fall in the future relative to today).
 
 Use it to faithfully execute task requests. Ask only for genuinely missing information.
 Prefer action over asking when memory has enough. Translate memory into TOOL ARGUMENTS, not just into prose.
 
 When you decide on a restaurant, call restaurants.search FIRST with as many of these args as your memory supports:
 { location?, date?, time?, partySize?, cuisine?, maxPricePerPerson?, requiresVegetarian?, avoidShellfish? }
+Common dinner availability windows are 18:30, 19:30, 20:00 — prefer those when you have flexibility.
 Then once results come back, call restaurants.holdReservation({ restaurantId, date, time, partySize }) at an
 AVAILABLE time (the search result lists availableTimes per restaurant).
 
 When asked for written drafts (e.g. board updates), honor explicit constraints in memory (don't leak private info,
 honor the agreed framing, stay concise).
 
+When asked for reflection (e.g. "tell me what you've heard"), reflect SPECIFIC items from your memory blocks —
+name the people, the events, the boundaries. Acknowledge any explicit boundary the user named (like "no advice").
+
 Return STRICT JSON, no markdown:
 { "message": string, "toolCalls": [ { "tool": string, "args": object } ] }`
+}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null
@@ -252,8 +261,9 @@ export class BlockMemoryLLMAgent implements Agent {
         ? `CURRENT USER MESSAGE:\n${input.message}`
         : `LATEST TOOL RESULT (act on this — do NOT summarize it back to the user; choose a restaurant and call holdReservation if appropriate):\n${this.lastToolResult ?? input.message}`
 
+    const currentDate = input.timestamp.slice(0, 10)
     const messages: LlmMessage[] = [
-      { role: "system", content: RESPOND_SYSTEM },
+      { role: "system", content: respondSystem(currentDate) },
       {
         role: "user",
         content: `MEMORY (your only record of past turns):\n${memoryView}\n\n${userBlock}`,
