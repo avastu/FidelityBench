@@ -14,6 +14,17 @@ It asks:
 
 **Status: public MVP** — deterministic no-key benchmark by default, optional LLM baselines, scenario-local judges, and stdio external-agent integration.
 
+## 90-second demo
+
+```bash
+npm install
+npm run demo
+```
+
+`npm run demo` runs the dinner scenario with deterministic local baselines. You should see `StatelessAgent` ask the user to repeat known context, while `RuleMemoryAgent` asks only for the missing party size and successfully holds Bella Tavola.
+
+Representative output is checked in at [`results/sample-run.txt`](results/sample-run.txt).
+
 ## Quickstart
 
 ```bash
@@ -67,6 +78,7 @@ FidelityBench currently demonstrates the core construct with a local TypeScript 
 - human-readable report
 - JSON result output
 - extensible scenario architecture
+- stdio integration for evaluating external agents/products
 
 The important product contrast is simple:
 
@@ -87,7 +99,17 @@ Tool confirms the hold.
 
 The bad assistant makes the user carry the memory. The good assistant preserves and applies the user's accumulated intent.
 
-A representative output shape is checked in at [`results/sample-run.txt`](results/sample-run.txt). Actual scores may vary as scenarios and agents evolve.
+## Bring your own agent
+
+Any external agent can be evaluated if it speaks line-delimited JSON over stdio.
+
+```bash
+FIDELITYBENCH_EXTERNAL_AGENT="python3 -u examples/external-agent.py" \
+  FIDELITYBENCH_EXTERNAL_AGENT_NAME="ExampleExternalAgent" \
+  npm run bench -- --scenario dinner
+```
+
+For the full protocol, adapter pattern, tool-call schema, and a ready-to-use Claude Code/Codex prompt, see [`docs/EXTERNAL_AGENTS.md`](docs/EXTERNAL_AGENTS.md).
 
 ## Metrics
 
@@ -141,36 +163,7 @@ The promoted implementation contract is in [`SPEC.md`](SPEC.md). The detailed Al
 
 ## External agent integration
 
-Any agent in any language can integrate over stdio.
-
-```bash
-FIDELITYBENCH_EXTERNAL_AGENT="python3 -u examples/external-agent.py" \
-  FIDELITYBENCH_EXTERNAL_AGENT_NAME="MyAgent" \
-  npm run bench
-```
-
-Protocol:
-
-```text
-bench → agent: { "type": "reset" }
-bench → agent: { "type": "input", "input": AgentInput }
-agent → bench: { "type": "output", "output": AgentOutput }
-```
-
-External agents receive the same constrained `AgentInput` as built-in agents:
-
-```ts
-{
-  runId: string
-  scenarioId: string
-  userId: string
-  timestamp: string
-  inputType: "user" | "tool_result"
-  message: string
-}
-```
-
-No prior transcript is passed unless the agent stores it itself.
+Any agent in any language can integrate over stdio. See [`docs/EXTERNAL_AGENTS.md`](docs/EXTERNAL_AGENTS.md).
 
 A real-world HTTP adapter example lives at `examples/avocado-adapter.py`, with an integration writeup at `examples/AVOCADO.md`.
 
@@ -227,6 +220,8 @@ scenarios/
   reflect_difficult_week_001.ts
   alex_pushback_001.ts
   alex_pushback_001.spec.md
+docs/
+  EXTERNAL_AGENTS.md     stdio protocol and adapter guide
 results/
   sample-run.txt         representative deterministic output
   latest-run.json        generated locally, gitignored
@@ -236,7 +231,6 @@ results/
 
 Near-term:
 
-- implement `alex_pushback_001`
 - implement `alex_pushback_overflow_001`
 - add paired clean-vs-overflow reporting
 - add judge validation tests and golden transcripts
