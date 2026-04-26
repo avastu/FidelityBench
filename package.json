@@ -1,9 +1,10 @@
 {
   "name": "fidelitybench",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "bench": "tsx src/index.ts",
+    "demo": "tsx src/index.ts --scenario dinner --no-diagnose",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
