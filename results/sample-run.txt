@@ -1,4 +1,4 @@
-FidelityBench v1.0.1
+FidelityBench v1.6
 Scenario: dinner_offsite_001
 Probes:   Logistical fidelity: does the agent retain & apply preferences (cuisine, time, budget, dietary, location) and translate them into the search query?
 
