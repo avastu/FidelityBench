@@ -226,6 +226,10 @@ async function loadScenarios(): Promise<ScenarioBundle[]> {
       "../scenarios/reflect_difficult_week_001.js",
       "reflectDifficultWeekBundle",
     ],
+    [
+      "../scenarios/alex_pushback_001.js",
+      "alexPushbackBundle",
+    ],
   ]
   for (const [modulePath, exportName] of optional) {
     const bundle = await loadOptionalScenario(modulePath, exportName)
