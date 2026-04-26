@@ -100,6 +100,7 @@ const AGENT_ALIASES = new Map<string, string>([
   ["FileMemoryLLMAgent", "file-memory-llm"],
   ["TranscriptLLMAgent", "transcript-llm"],
   ["BlockMemoryLLMAgent", "block-memory"],
+  ["WindowedTranscriptLLMAgent", "windowed-transcript"],
 ])
 
 function matchesAgentFilter(agent: Agent, filter: string | undefined): boolean {
@@ -175,6 +176,12 @@ async function buildAgents(): Promise<Agent[]> {
       "BlockMemoryLLMAgent",
     )
     if (blockMemory) agents.push(blockMemory)
+
+    const windowedTranscript = await loadOptionalAgent(
+      "./agents/WindowedTranscriptLLMAgent.js",
+      "WindowedTranscriptLLMAgent",
+    )
+    if (windowedTranscript) agents.push(windowedTranscript)
 
     if (process.env.OPENAI_API_KEY) {
       const statelessLLM = await loadOptionalAgent(
