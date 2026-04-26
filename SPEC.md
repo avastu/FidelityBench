@@ -945,13 +945,16 @@ Agent aliases should include:
 - `file-memory-llm`
 - `transcript-llm`
 - `block-memory`
+- `windowed-transcript`
 
 The CLI should skip LLM agents unless credentials are configured.
 
 Provider detection:
 
-- `BEDROCK_API_KEY` or `AWS_BEARER_TOKEN_BEDROCK` enables Bedrock-compatible agents.
+- `FIDELITYBENCH_PROVIDER=anthropic|openai|bedrock` overrides auto-detection.
+- `ANTHROPIC_API_KEY` enables Anthropic-compatible agents and is the recommended LLM baseline.
 - `OPENAI_API_KEY` enables OpenAI-compatible agents.
+- `BEDROCK_API_KEY` or `AWS_BEARER_TOKEN_BEDROCK` enables optional/advanced Bedrock-compatible agents.
 - `FIDELITYBENCH_MODEL` overrides default model selection.
 
 ---

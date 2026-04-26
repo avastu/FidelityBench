@@ -6,11 +6,8 @@ import type {
   RestaurantSearchArgs,
   ToolCall,
 } from "../types.js"
+import { callLlm } from "../llm/client.js"
 import { clearMemory, readMemory, writeMemory } from "../memory/fileMemory.js"
-
-declare const process: { env: Record<string, string | undefined> }
-
-const DEFAULT_MODEL = process.env.FIDELITYBENCH_MODEL ?? "gpt-4o-mini"
 const DEFAULT_USER_ID = "eval_user_001"
 
 function truncateError(error: unknown): string {
@@ -80,7 +77,7 @@ function toToolCall(value: unknown): ToolCall | null {
 
 function parseAgentOutput(rawText: string): AgentOutput {
   try {
-    const parsed = JSON.parse(rawText)
+    const parsed = JSON.parse(stripCodeFences(rawText))
     if (
       !isRecord(parsed) ||
       typeof parsed.message !== "string" ||
@@ -102,21 +99,15 @@ function parseAgentOutput(rawText: string): AgentOutput {
   }
 }
 
-function extractTextContent(content: string | null): string {
-  return typeof content === "string" ? content : ""
-}
-
-async function createOpenAIClient() {
-  const moduleName = ["open", "ai"].join("")
-  const importedModule = await import(moduleName)
-  const OpenAI = importedModule.default
-  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+function stripCodeFences(text: string): string {
+  const trimmed = text.trim()
+  if (!trimmed.startsWith("```")) return trimmed
+  return trimmed.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "").trim()
 }
 
 export class FileMemoryLLMAgent implements Agent {
   name = "FileMemoryLLMAgent"
   nondeterministic = true
-  private readonly model = DEFAULT_MODEL
   private userId = DEFAULT_USER_ID
 
   reset() {
@@ -146,9 +137,7 @@ export class FileMemoryLLMAgent implements Agent {
     const existingMemory = readMemory(this.userId)
 
     try {
-      const client = await createOpenAIClient()
-      const completion = await client.chat.completions.create({
-        model: this.model,
+      const updatedMemory = await callLlm({
         messages: [
           {
             role: "system",
@@ -173,7 +162,6 @@ Return updated memory as concise markdown.`,
         ],
       })
 
-      const updatedMemory = extractTextContent(completion.choices[0]?.message?.content ?? null)
       writeMemory(this.userId, updatedMemory.trim())
       return { ok: true }
     } catch (error) {
@@ -188,10 +176,8 @@ Return updated memory as concise markdown.`,
     const savedMemory = readMemory(this.userId)
 
     try {
-      const client = await createOpenAIClient()
-      const completion = await client.chat.completions.create({
-        model: this.model,
-        response_format: { type: "json_object" },
+      const rawText = await callLlm({
+        responseFormat: "json_object",
         messages: [
           {
             role: "system",
@@ -223,7 +209,6 @@ Return strict JSON:
         ],
       })
 
-      const rawText = extractTextContent(completion.choices[0]?.message?.content ?? null)
       return parseAgentOutput(rawText)
     } catch (error) {
       return { message: `[LLM error: ${truncateError(error)}]` }

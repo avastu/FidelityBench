@@ -1,12 +1,5 @@
-// Tiny LLM provider abstraction. Picks Bedrock if BEDROCK_API_KEY (or
-// AWS_BEARER_TOKEN_BEDROCK) is set; falls back to OpenAI if OPENAI_API_KEY is
-// set; otherwise throws.
-//
-// Returns parsed JSON when responseFormat is "json_object" (we ask the model
-// to emit strict JSON and validate parse).
-//
-// This is intentionally minimal — the bench is not a generic AI library. Two
-// providers, one method, no streaming.
+// Tiny LLM provider abstraction. FidelityBench is not a generic AI library:
+// one resolver, one text-generation method, no streaming.
 
 import { generateText } from "ai"
 
@@ -22,49 +15,113 @@ export type LlmCallOptions = {
   maxTokens?: number
 }
 
-export type LlmProvider = "bedrock" | "openai"
+export type LlmProvider = "anthropic" | "openai" | "bedrock"
 
 export type LlmProviderInfo = {
   provider: LlmProvider
   model: string
 }
 
-function bedrockEnvReady(): boolean {
-  return !!(process.env.BEDROCK_API_KEY || process.env.AWS_BEARER_TOKEN_BEDROCK)
+const DEFAULT_MODELS: Record<LlmProvider, string> = {
+  anthropic: "claude-sonnet-4-5",
+  openai: "gpt-4.1",
+  bedrock: "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+}
+
+export const NO_LLM_PROVIDER_MESSAGE =
+  "[FidelityBench] LLM agents skipped — set ANTHROPIC_API_KEY or OPENAI_API_KEY to enable LLM baselines."
+
+export const NO_LLM_AGENT_AVAILABLE_MESSAGE =
+  "No LLM agent is available because no provider is configured. Set ANTHROPIC_API_KEY or OPENAI_API_KEY, or run --agent rule-memory."
+
+function readEnv(name: string): string | undefined {
+  const value = process.env[name]?.trim()
+  return value && value.length > 0 ? value : undefined
+}
+
+function anthropicEnvReady(): boolean {
+  return !!readEnv("ANTHROPIC_API_KEY")
 }
 
 function openaiEnvReady(): boolean {
-  return !!process.env.OPENAI_API_KEY
+  return !!readEnv("OPENAI_API_KEY")
 }
 
-export function detectProvider(): LlmProviderInfo {
-  if (bedrockEnvReady()) {
-    return {
-      provider: "bedrock",
-      // Default to Sonnet 4.6 — good balance of capability and cost. Override
-      // with FIDELITYBENCH_MODEL if you want Opus or Haiku.
-      model:
-        process.env.FIDELITYBENCH_MODEL ??
-        "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+function bedrockEnvReady(): boolean {
+  return !!(readEnv("BEDROCK_API_KEY") || readEnv("AWS_BEARER_TOKEN_BEDROCK"))
+}
+
+function isLlmProvider(value: string): value is LlmProvider {
+  return value === "anthropic" || value === "openai" || value === "bedrock"
+}
+
+function modelFor(provider: LlmProvider): string {
+  return readEnv("FIDELITYBENCH_MODEL") ?? DEFAULT_MODELS[provider]
+}
+
+export function detectProvider(): LlmProviderInfo | undefined {
+  const override = readEnv("FIDELITYBENCH_PROVIDER")
+  if (override) {
+    if (!isLlmProvider(override)) {
+      throw new Error(
+        "Invalid FIDELITYBENCH_PROVIDER. Expected anthropic, openai, or bedrock.",
+      )
     }
+    return { provider: override, model: modelFor(override) }
   }
-  if (openaiEnvReady()) {
-    return {
-      provider: "openai",
-      model: process.env.FIDELITYBENCH_MODEL ?? "gpt-4o-mini",
-    }
+
+  if (anthropicEnvReady()) return { provider: "anthropic", model: modelFor("anthropic") }
+  if (openaiEnvReady()) return { provider: "openai", model: modelFor("openai") }
+  if (bedrockEnvReady()) return { provider: "bedrock", model: modelFor("bedrock") }
+  return undefined
+}
+
+export function hasLlmProvider(): boolean {
+  return detectProvider() !== undefined
+}
+
+export function requireProvider(): LlmProviderInfo {
+  const info = detectProvider()
+  if (!info) {
+    throw new Error(
+      "No LLM provider configured. Set ANTHROPIC_API_KEY or OPENAI_API_KEY.",
+    )
   }
-  throw new Error(
-    "No LLM credentials found. Set BEDROCK_API_KEY (preferred) or OPENAI_API_KEY.",
-  )
+  return info
 }
 
 export async function callLlm(opts: LlmCallOptions): Promise<string> {
-  const info = detectProvider()
-  if (info.provider === "bedrock") {
-    return callBedrock(info.model, opts)
-  }
-  return callOpenAi(info.model, opts)
+  const info = requireProvider()
+  if (info.provider === "anthropic") return callAnthropic(info.model, opts)
+  if (info.provider === "openai") return callOpenAi(info.model, opts)
+  return callBedrock(info.model, opts)
+}
+
+async function callAnthropic(
+  modelId: string,
+  opts: LlmCallOptions,
+): Promise<string> {
+  const { anthropic } = await import("@ai-sdk/anthropic")
+  const model = anthropic(modelId)
+  const result = await generateText({
+    model,
+    messages: opts.messages,
+    temperature: opts.temperature ?? 0,
+    maxOutputTokens: opts.maxTokens,
+  })
+  return result.text
+}
+
+async function callOpenAi(modelId: string, opts: LlmCallOptions): Promise<string> {
+  const { openai } = await import("@ai-sdk/openai")
+  const model = openai(modelId)
+  const result = await generateText({
+    model,
+    messages: opts.messages,
+    temperature: opts.temperature ?? 0,
+    maxOutputTokens: opts.maxTokens,
+  })
+  return result.text
 }
 
 async function callBedrock(modelId: string, opts: LlmCallOptions): Promise<string> {
@@ -80,25 +137,9 @@ async function callBedrock(modelId: string, opts: LlmCallOptions): Promise<strin
   const model = bedrock(modelId)
   const result = await generateText({
     model,
-    messages: opts.messages.map((m) => ({ role: m.role, content: m.content })),
-    temperature: opts.temperature ?? 0,
-    // The Vercel AI SDK uses providerOptions for response_format hints in some
-    // providers. For Bedrock+Claude we just instruct via the system prompt —
-    // it's reliable when prompted correctly.
-  })
-  return result.text
-}
-
-async function callOpenAi(modelId: string, opts: LlmCallOptions): Promise<string> {
-  const { default: OpenAI } = await import("openai")
-  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-  const completion = await client.chat.completions.create({
-    model: modelId,
     messages: opts.messages,
     temperature: opts.temperature ?? 0,
-    ...(opts.responseFormat === "json_object"
-      ? { response_format: { type: "json_object" } }
-      : {}),
+    maxOutputTokens: opts.maxTokens,
   })
-  return completion.choices[0]?.message?.content ?? ""
+  return result.text
 }

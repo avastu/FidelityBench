@@ -28,7 +28,7 @@ import type {
   RestaurantSearchArgs,
   ToolCall,
 } from "../types.js"
-import { callLlm, detectProvider, type LlmMessage } from "../llm/client.js"
+import { callLlm, requireProvider, type LlmMessage } from "../llm/client.js"
 
 const DEFAULT_WINDOW_CHARS = 12000
 
@@ -266,7 +266,7 @@ export class WindowedTranscriptLLMAgent implements Agent {
     }
 
     try {
-      detectProvider()
+      requireProvider()
       const rawText = await callLlm({ messages, responseFormat: "json_object" })
       const output = parseAgentOutput(rawText)
       const toolCallSummary = output.toolCalls?.length

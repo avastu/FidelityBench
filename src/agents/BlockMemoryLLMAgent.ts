@@ -25,7 +25,7 @@ import type {
   RestaurantSearchArgs,
   ToolCall,
 } from "../types.js"
-import { callLlm, detectProvider, type LlmMessage } from "../llm/client.js"
+import { callLlm, requireProvider, type LlmMessage } from "../llm/client.js"
 
 const BLOCK_NAMES = [
   "people",
@@ -229,7 +229,7 @@ export class BlockMemoryLLMAgent implements Agent {
 
   async handleMessage(input: AgentInput): Promise<AgentOutput> {
     try {
-      detectProvider()
+      requireProvider()
       if (input.inputType === "user") {
         await this.extract(input.message)
         this.lastToolResult = null

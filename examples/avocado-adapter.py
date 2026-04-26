@@ -2,9 +2,8 @@
 """
 HTTP adapter: lets FidelityBench drive Avocado as an external agent.
 
-Avocado is the Anthropic-style AI companion at /Users/utsav/dev/avocado. It's
-a Next.js app exposing POST /api/chat that takes a chat history and streams a
-text response (Vercel AI SDK SSE).
+Avocado is an example local companion app exposing POST /api/chat that takes a
+chat history and streams a text response (Vercel AI SDK SSE).
 
 This adapter:
   - reads JSON lines from stdin (the FidelityBench protocol)

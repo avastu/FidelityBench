@@ -6,6 +6,11 @@ import { StdioAgent } from "./agents/StdioAgent.js"
 import { printReport, printAggregateSummary } from "./report.js"
 import { runScenario } from "./runner.js"
 import { aggregateTrials } from "./trials.js"
+import {
+  hasLlmProvider,
+  NO_LLM_AGENT_AVAILABLE_MESSAGE,
+  NO_LLM_PROVIDER_MESSAGE,
+} from "./llm/client.js"
 import type { Agent } from "./agents/Agent.js"
 import type {
   AggregatedResult,
@@ -151,20 +156,12 @@ function parseExternalAgentCommand(spec: string): { command: string; args: strin
   return { command, args }
 }
 
-function hasLlmCredentials(): boolean {
-  return !!(
-    process.env.BEDROCK_API_KEY ||
-    process.env.AWS_BEARER_TOKEN_BEDROCK ||
-    process.env.OPENAI_API_KEY
-  )
-}
-
 async function buildAgents(): Promise<Agent[]> {
   const includeOracle = hasFlag("--include-oracle")
   const agents: Agent[] = [new StatelessAgent(), new RuleMemoryAgent()]
   if (includeOracle) agents.push(new OracleAgent())
 
-  if (hasLlmCredentials()) {
+  if (hasLlmProvider()) {
     const transcriptLLM = await loadOptionalAgent(
       "./agents/TranscriptLLMAgent.js",
       "TranscriptLLMAgent",
@@ -183,22 +180,19 @@ async function buildAgents(): Promise<Agent[]> {
     )
     if (windowedTranscript) agents.push(windowedTranscript)
 
-    if (process.env.OPENAI_API_KEY) {
-      const statelessLLM = await loadOptionalAgent(
-        "./agents/StatelessLLMAgent.js",
-        "StatelessLLMAgent",
-      )
-      if (statelessLLM) agents.push(statelessLLM)
-      const fileMemoryLLM = await loadOptionalAgent(
-        "./agents/FileMemoryLLMAgent.js",
-        "FileMemoryLLMAgent",
-      )
-      if (fileMemoryLLM) agents.push(fileMemoryLLM)
-    }
-  } else {
-    process.stderr.write(
-      "[FidelityBench] LLM agents skipped — set BEDROCK_API_KEY (preferred) or OPENAI_API_KEY to enable TranscriptLLMAgent + BlockMemoryLLMAgent.\n",
+    const statelessLLM = await loadOptionalAgent(
+      "./agents/StatelessLLMAgent.js",
+      "StatelessLLMAgent",
     )
+    if (statelessLLM) agents.push(statelessLLM)
+
+    const fileMemoryLLM = await loadOptionalAgent(
+      "./agents/FileMemoryLLMAgent.js",
+      "FileMemoryLLMAgent",
+    )
+    if (fileMemoryLLM) agents.push(fileMemoryLLM)
+  } else {
+    process.stderr.write(`${NO_LLM_PROVIDER_MESSAGE}\n`)
   }
   if (!includeOracle) {
     process.stderr.write(
@@ -216,6 +210,23 @@ async function buildAgents(): Promise<Agent[]> {
   }
 
   return agents
+}
+
+function isLlmAgentFilter(filter: string): boolean {
+  const normalized = filter.toLowerCase()
+  const llmAliases = new Set([
+    "stateless-llm",
+    "file-memory-llm",
+    "transcript-llm",
+    "block-memory",
+    "windowed-transcript",
+    "statelessllmagent",
+    "filememoryllmagent",
+    "transcriptllmagent",
+    "blockmemoryllmagent",
+    "windowedtranscriptllmagent",
+  ])
+  return llmAliases.has(normalized)
 }
 
 async function loadScenarios(): Promise<ScenarioBundle[]> {
@@ -363,7 +374,9 @@ async function main() {
 
     if (agents.length === 0) {
       throw new Error(
-        agentFilter
+        agentFilter && isLlmAgentFilter(agentFilter) && !hasLlmProvider()
+          ? NO_LLM_AGENT_AVAILABLE_MESSAGE
+          : agentFilter
           ? `No agent matched --agent ${agentFilter}.`
           : "No agents are available to run.",
       )
@@ -469,6 +482,6 @@ async function main() {
 }
 
 main().catch((error: unknown) => {
-  console.error(error)
+  console.error(error instanceof Error ? error.message : error)
   process.exit(1)
 })

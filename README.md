@@ -12,6 +12,8 @@ It asks:
 
 > Can the agent use remembered context to take the right action, ask only for genuinely missing information, and avoid putting the memory burden back on the user?
 
+**Status: public MVP** — deterministic no-key benchmark by default, optional LLM baselines, scenario-local judges, and stdio external-agent integration.
+
 ## Quickstart
 
 ```bash
@@ -40,6 +42,15 @@ npx tsx src/index.ts --json
 ```
 
 The default run works without API keys. LLM agents are skipped unless credentials are configured.
+
+LLM credentials:
+
+- No API keys are needed for the default deterministic MVP. `npm run bench` runs `StatelessAgent` and `RuleMemoryAgent`.
+- Recommended for LLM baselines: Anthropic Claude via `ANTHROPIC_API_KEY`; OpenAI also works via `OPENAI_API_KEY`.
+- Bedrock is optional/advanced via `BEDROCK_API_KEY` or `AWS_BEARER_TOKEN_BEDROCK` plus any required AWS region configuration.
+- `FIDELITYBENCH_PROVIDER=anthropic|openai|bedrock` overrides auto-detection.
+- `FIDELITYBENCH_MODEL` overrides the default model id.
+- `OracleAgent` is skipped by default; pass `--include-oracle` to run the hand-coded sanity-check baseline.
 
 ## What the MVP demonstrates
 
@@ -110,10 +121,9 @@ Active scenarios are implemented as `ScenarioBundle`s: each scenario owns its ti
 | `temporal_supersession_001` | active | Temporal fidelity: whether the agent honors the latest user intent instead of stale intent. |
 | `board_update_privacy_001` | active | Boundary fidelity: whether private concerns stay private in an external-facing draft. |
 | `reflect_difficult_week_001` | active | Reflection fidelity: whether the agent mirrors the user's actual week without advice/fixing. |
-| `alex_pushback_001` | spec / next | Relational pushback fidelity: whether the agent composes person, prior-outcome, emotional-pattern, communication-style, and privacy-boundary memory. |
-| `alex_pushback_overflow_001` | spec / next | Architecture-discriminating variant: whether durable memory survives when decisive facts fall outside a transcript window. |
+| `alex_pushback_001` | active | Relational pushback fidelity: whether the agent composes person, prior-outcome, emotional-pattern, communication-style, and privacy-boundary memory. |
 
-The promoted implementation contract is in [`SPEC.md`](SPEC.md). The detailed Alex/context-overflow scenario spec is in [`scenarios/alex_pushback_001.spec.md`](scenarios/alex_pushback_001.spec.md).
+The promoted implementation contract is in [`SPEC.md`](SPEC.md). The detailed Alex scenario spec is in [`scenarios/alex_pushback_001.spec.md`](scenarios/alex_pushback_001.spec.md).
 
 ## Agents
 
@@ -121,24 +131,13 @@ The promoted implementation contract is in [`SPEC.md`](SPEC.md). The detailed Al
 |---|---|
 | `StatelessAgent` | No memory. Asks the user to repeat known context. Establishes the lower bound. |
 | `RuleMemoryAgent` | Hand-coded memory baseline for `dinner_offsite_001`. Demonstrates the intended high-fidelity behavior. |
-| `OracleAgent` | Optional rubric sanity check. Shows that scenario ceilings are achievable. Not a real product baseline. |
-| `StatelessLLMAgent` | Real LLM, no memory. Requires `OPENAI_API_KEY`. |
-| `FileMemoryLLMAgent` | Real LLM plus simple markdown memory in `.memory/<userId>.md`. |
-| `TranscriptLLMAgent` | Real LLM plus raw transcript in context. Baseline for "what if long context solved this?" |
-| `WindowedTranscriptLLMAgent` | Raw transcript baseline with an explicit context window. Useful for testing transcript-window failure modes. |
-| `BlockMemoryLLMAgent` | Structured-memory challenger, when configured. |
+| `OracleAgent` | Opt-in with `--include-oracle`. Hand-coded rubric sanity check, not a real product baseline. |
+| `StatelessLLMAgent` | Optional LLM baseline, no memory. Requires a configured LLM provider. |
+| `FileMemoryLLMAgent` | Optional LLM baseline plus simple markdown memory in `.memory/<userId>.md`. |
+| `TranscriptLLMAgent` | Optional LLM baseline plus raw transcript in context. Baseline for "what if long context solved this?" |
+| `WindowedTranscriptLLMAgent` | Optional LLM baseline with an explicit transcript window. Useful for testing transcript-window failure modes. |
+| `BlockMemoryLLMAgent` | Optional structured-memory LLM baseline. |
 | External stdio agent | Any subprocess that speaks line-delimited JSON over stdin/stdout. |
-
-LLM credentials:
-
-```bash
-OPENAI_API_KEY=...
-BEDROCK_API_KEY=...
-BEDROCK_AWS_REGION=...
-FIDELITYBENCH_MODEL=...
-```
-
-The bench detects whichever provider is configured. API-backed agents are optional; deterministic local agents are enough to demonstrate the MVP.
 
 ## External agent integration
 
@@ -172,6 +171,8 @@ External agents receive the same constrained `AgentInput` as built-in agents:
 ```
 
 No prior transcript is passed unless the agent stores it itself.
+
+A real-world HTTP adapter example lives at `examples/avocado-adapter.py`, with an integration writeup at `examples/AVOCADO.md`.
 
 ## Design notes
 
@@ -224,9 +225,10 @@ scenarios/
   temporal_supersession_001.ts
   board_update_privacy_001.ts
   reflect_difficult_week_001.ts
+  alex_pushback_001.ts
   alex_pushback_001.spec.md
 results/
-  sample-run.txt
+  sample-run.txt         representative deterministic output
   latest-run.json        generated locally, gitignored
 ```
 

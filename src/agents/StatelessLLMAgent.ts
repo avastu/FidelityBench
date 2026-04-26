@@ -6,10 +6,7 @@ import type {
   RestaurantSearchArgs,
   ToolCall,
 } from "../types.js"
-
-declare const process: { env: Record<string, string | undefined> }
-
-const DEFAULT_MODEL = process.env.FIDELITYBENCH_MODEL ?? "gpt-4o-mini"
+import { callLlm } from "../llm/client.js"
 
 const SYSTEM_PROMPT = `You are an executive assistant.
 You only see the current user message. Respond naturally and helpfully.
@@ -87,13 +84,9 @@ function toToolCall(value: unknown): ToolCall | null {
   return null
 }
 
-function extractTextContent(content: string | null): string {
-  return typeof content === "string" ? content : ""
-}
-
 function parseAgentOutput(rawText: string): AgentOutput {
   try {
-    const parsed = JSON.parse(rawText)
+    const parsed = JSON.parse(stripCodeFences(rawText))
     if (
       !isRecord(parsed) ||
       typeof parsed.message !== "string" ||
@@ -115,24 +108,20 @@ function parseAgentOutput(rawText: string): AgentOutput {
   }
 }
 
-async function createOpenAIClient() {
-  const moduleName = ["open", "ai"].join("")
-  const importedModule = await import(moduleName)
-  const OpenAI = importedModule.default
-  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+function stripCodeFences(text: string): string {
+  const trimmed = text.trim()
+  if (!trimmed.startsWith("```")) return trimmed
+  return trimmed.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "").trim()
 }
 
 export class StatelessLLMAgent implements Agent {
   name = "StatelessLLMAgent"
   nondeterministic = true
-  private readonly model = DEFAULT_MODEL
 
   async handleMessage(input: AgentInput): Promise<AgentOutput> {
     try {
-      const client = await createOpenAIClient()
-      const completion = await client.chat.completions.create({
-        model: this.model,
-        response_format: { type: "json_object" },
+      const rawText = await callLlm({
+        responseFormat: "json_object",
         messages: [
           {
             role: "system",
@@ -146,8 +135,6 @@ ${input.message}`,
           },
         ],
       })
-
-      const rawText = extractTextContent(completion.choices[0]?.message?.content ?? null)
       return parseAgentOutput(rawText)
     } catch (error) {
       return { message: `[LLM error: ${truncateError(error)}]` }

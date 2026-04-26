@@ -16,7 +16,7 @@ import type {
   RestaurantSearchArgs,
   ToolCall,
 } from "../types.js"
-import { callLlm, detectProvider, type LlmMessage } from "../llm/client.js"
+import { callLlm, requireProvider, type LlmMessage } from "../llm/client.js"
 
 function buildSystemPrompt(currentDate: string) {
   return `You are an executive assistant operating inside an evaluation harness.
@@ -183,8 +183,7 @@ export class TranscriptLLMAgent implements Agent {
     }
 
     try {
-      // Detection raises a clear error if no provider is configured.
-      detectProvider()
+      requireProvider()
       const rawText = await callLlm({ messages, responseFormat: "json_object" })
       const output = parseAgentOutput(rawText)
       const toolCallSummary = output.toolCalls?.length

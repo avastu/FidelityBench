@@ -1,13 +1,13 @@
 # Running FidelityBench against Avocado
 
-`examples/avocado-adapter.py` integrates Avocado (the AI companion app at
-`~/dev/avocado`) as a FidelityBench external agent over the stdio JSON protocol.
+`examples/avocado-adapter.py` integrates an Avocado-style local companion app
+as a FidelityBench external agent over the stdio JSON protocol.
 
 ## Quickstart
 
 ```bash
-# Make sure avocado dev server is running on http://localhost:3000
-cd ~/dev/avocado && npm run dev   # in a separate terminal
+# Make sure the target dev server is running on http://localhost:3000
+npm run dev   # in the target app, in a separate terminal
 
 # Then from FidelityBench:
 FIDELITYBENCH_EXTERNAL_AGENT="python3 -u examples/avocado-adapter.py" \
@@ -20,12 +20,10 @@ FIDELITYBENCH_EXTERNAL_AGENT="python3 -u examples/avocado-adapter.py" \
 
 ## Important: debug user gets mock responses
 
-The default token (`debug-simulator-token-12345`) maps to Avocado's debug
-user. Avocado has a hardcoded debug-mock path
-([`app/api/chat/route.ts:97-99`](../../avocado/app/api/chat/route.ts)) that
-returns `"This is a test response from Avocado's debug mode. The UI is working correctly!"`
-for every input — useful for iOS UI testing, useless for evaluating Avocado's
-actual fidelity.
+The default token (`debug-simulator-token-12345`) maps to the adapter's expected
+debug user. Some local apps route that token to a debug-mock response for every
+input, which is useful for smoke testing and useless for evaluating actual
+fidelity.
 
 To evaluate real Avocado responses, set `AVOCADO_AUTH_TOKEN` to a real
 phone-verified session token. The adapter passes it through as `Authorization: Bearer <token>`.

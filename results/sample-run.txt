@@ -1,3 +1,9 @@
+
+> fidelitybench@0.0.1 bench
+> tsx src/index.ts --scenario dinner --no-diagnose
+
+[FidelityBench] LLM agents skipped — set ANTHROPIC_API_KEY or OPENAI_API_KEY to enable LLM baselines.
+[FidelityBench] OracleAgent skipped — pass --include-oracle to run the hand-coded sanity-check baseline.
 FidelityBench v1.6
 Scenario: dinner_offsite_001
 Probes:   Logistical fidelity: does the agent retain & apply preferences (cuisine, time, budget, dietary, location) and translate them into the search query?
@@ -7,8 +13,8 @@ StatelessAgent                   3/110        0/30          0/45            0/20
 RuleMemoryAgent                102/110       30/30         37/45           20/20           10/10       5/5
 
 ── StatelessAgent ──
-Recall burden categories: cuisine, budget, dietary, location, time
-Key behavior: asked user to repeat: cuisine, budget, dietary, location, time
+Recall burden categories: cuisine, budget, dietary, location
+Key behavior: asked user to repeat: cuisine, budget, dietary, location
 Intent dimensions:
   ✗ (0/7) Honors team's Italian-over-sushi decision — no Italian selection or mention
   ✗ (0/7) Honors after-7pm preference — no reservation held
@@ -24,11 +30,15 @@ Recall burden categories: none
 Tool calls: restaurants.search, restaurants.holdReservation
 Key behavior: asked only for missing field and placed a hold
 Intent dimensions:
-  ✓ (7/7) Honors team's Italian-over-sushi decision — selected rest_002; mentions Italian: true
+  ✓ (7/7) Honors team's Italian-over-sushi decision — selected rest_002; mentions Italian: false
   ✓ (7/7) Honors after-7pm preference — held time 19:30
   ✓ (7/7) Honors ~$80/person budget — selected $72/person
   ✓ (7/7) Honors Union Square location — Union Square
   ✓ (7/7) Honors Priya vegetarian + Miguel no-shellfish — selected rest_002 (vegetarian-friendly, not seafood-heavy)
   ✗ (0/10) Translates memory into restaurants.search args — location=Union Square ✓, cuisine=(unset) ✗, maxPrice=(unset) ✗, requiresVegetarian=(unset) ✗, avoidShellfish=(unset) ✗
 
-Note: this is representative output checked in for README legibility. Run `npm run bench -- --scenario dinner` for current local results.
+
+Aggregate (score per agent across scenarios)
+Agent                   dinner_offsite     Total
+StatelessAgent                       3         3
+RuleMemoryAgent                    102       102
