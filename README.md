@@ -8,7 +8,7 @@ receives the current message at each turn — any prior context must come from i
 
 **Status: v1.5** — 4 scenarios across 2 families, real-LLM ceiling on Bedrock, structured-memory challenger, N-trial averaging, stdio external-agent integration.
 
-For the epistemic stance — what the bench measures, why these metrics, where it can mislead you — read **[DESIGN.md](DESIGN.md)**. This README is the on-ramp; DESIGN.md is the manual.
+For the promoted implementation contract, read **[SPEC.md](SPEC.md)**. For the epistemic stance — what the bench measures, why these metrics, where it can mislead you — read **[DESIGN.md](DESIGN.md)**. This README is the on-ramp; SPEC.md is the contract; DESIGN.md is the manual.
 
 ## Quickstart
 
