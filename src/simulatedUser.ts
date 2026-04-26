@@ -50,34 +50,45 @@ const PARTY_SIZE_PATTERNS = [
   /how many guests/i,
 ]
 
-function matchAny(message: string, patterns: RegExp[]) {
-  return patterns.some((pattern) => pattern.test(message))
-}
-
 // Limits regex matching to interrogative clauses so declarative success messages
 // like "...with real vegetarian options..." don't trigger false recall-burden hits.
-function questionPortion(message: string): string {
-  const sentences = message.split(/(?<=[.!?])\s+/)
-  const questions = sentences.filter((s) => s.trim().endsWith("?"))
-  return questions.join(" ")
+// Returns each question sentence separately — the caller must check patterns
+// per-sentence so regexes can't span boundaries (e.g. "...budget slightly?\n
+// Search in...neighborhood...?\n Cuisine?" should not match /budget.*for/i
+// across the joined string).
+function questionSentences(message: string): string[] {
+  return message
+    .split(/(?<=[.!?])\s+/)
+    .filter((s) => s.trim().endsWith("?"))
+}
+
+function matchAnyInQuestionSentences(
+  sentences: string[],
+  patterns: RegExp[],
+): boolean {
+  for (const sentence of sentences) {
+    if (patterns.some((p) => p.test(sentence))) return true
+  }
+  return false
 }
 
 export const dinnerSimulatedUser = (
   assistantMessage: string,
 ): SimulatedUserResultV2 => {
   const recallBurdenEvents: RecallBurdenEvent[] = []
-  const questionText = questionPortion(assistantMessage)
+  const questions = questionSentences(assistantMessage)
   const categories = Object.keys(PATTERNS) as RecallBurdenCategory[]
   for (const category of categories) {
     const patterns = PATTERNS[category]
-    if (questionText && matchAny(questionText, patterns)) {
+    if (matchAnyInQuestionSentences(questions, patterns)) {
       recallBurdenEvents.push({ category, message: assistantMessage })
     }
   }
 
-  const askedPartySize = questionText
-    ? matchAny(questionText, PARTY_SIZE_PATTERNS)
-    : false
+  const askedPartySize = matchAnyInQuestionSentences(
+    questions,
+    PARTY_SIZE_PATTERNS,
+  )
   const askedRequiredFields = askedPartySize ? ["partySize"] : []
 
   if (askedPartySize) {

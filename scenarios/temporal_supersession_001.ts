@@ -47,10 +47,18 @@ export const temporalSupersessionScenario: Scenario = {
   },
 }
 
-// Sentence-level question detection (same approach as dinner sim user).
-function questionPortion(message: string): string {
-  const sentences = message.split(/(?<=[.!?])\s+/)
-  return sentences.filter((s) => s.trim().endsWith("?")).join(" ")
+// Per-question-sentence detection — patterns evaluated independently per
+// question sentence so a regex like /budget.*for/i can't bridge across
+// "Adjust the budget slightly?\nSearch in a different neighborhood?"
+function questionSentences(message: string): string[] {
+  return message.split(/(?<=[.!?])\s+/).filter((s) => s.trim().endsWith("?"))
+}
+
+function matchAnyInQuestions(sentences: string[], patterns: RegExp[]): boolean {
+  for (const sentence of sentences) {
+    if (patterns.some((p) => p.test(sentence))) return true
+  }
+  return false
 }
 
 const PATTERNS: Record<RecallBurdenCategory, RegExp[]> = {
@@ -83,25 +91,19 @@ const PARTY_SIZE_PATTERNS = [
   /how many.*attending/i,
 ]
 
-function matchAny(message: string, patterns: RegExp[]) {
-  return patterns.some((pattern) => pattern.test(message))
-}
-
 export const temporalSupersessionSimulatedUser = (
   assistantMessage: string,
 ): SimulatedUserResultV2 => {
   const recallBurdenEvents: RecallBurdenEvent[] = []
-  const questionText = questionPortion(assistantMessage)
+  const questions = questionSentences(assistantMessage)
   const categories = Object.keys(PATTERNS) as RecallBurdenCategory[]
   for (const category of categories) {
-    if (questionText && matchAny(questionText, PATTERNS[category])) {
+    if (matchAnyInQuestions(questions, PATTERNS[category])) {
       recallBurdenEvents.push({ category, message: assistantMessage })
     }
   }
 
-  const askedPartySize = questionText
-    ? matchAny(questionText, PARTY_SIZE_PATTERNS)
-    : false
+  const askedPartySize = matchAnyInQuestions(questions, PARTY_SIZE_PATTERNS)
   const askedRequiredFields = askedPartySize ? ["partySize"] : []
 
   if (askedPartySize) {
@@ -414,4 +416,9 @@ export const temporalSupersessionBundle: ScenarioBundle = {
   simulatedUser: temporalSupersessionSimulatedUser,
   judge: temporalSupersessionJudge,
   requiredFields: ["partySize"],
+  // 30 task + 43 intent (12+8+8+7+8) + 20 recall + 10 clar + 5 tools
+  maxScore: 108,
+  maxIntentFidelity: 43,
+  probes:
+    "Temporal fidelity: when the user changes their mind, does the agent honor the LATEST intent (Mexican) without falling back on superseded intent (Italian)? And does it do so WITHOUT asking — recovery via clarification questions doesn't count as fidelity.",
 }

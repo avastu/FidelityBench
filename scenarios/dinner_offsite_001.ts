@@ -45,4 +45,9 @@ export const dinnerOffsiteBundle: ScenarioBundle = {
   simulatedUser: dinnerSimulatedUser,
   judge: dinnerJudge,
   requiredFields: ["partySize"],
+  // 30 task + 45 intent (5 dims × 7 + query 10) + 20 recall + 10 clar + 5 tools
+  maxScore: 110,
+  maxIntentFidelity: 45,
+  probes:
+    "Logistical fidelity: does the agent retain & apply preferences (cuisine, time, budget, dietary, location) and translate them into the search query?",
 }

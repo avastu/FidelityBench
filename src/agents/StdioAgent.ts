@@ -50,24 +50,60 @@ function isHoldReservationArgs(value: unknown): value is HoldReservationArgs {
   )
 }
 
-function toToolCall(value: unknown): ToolCall | null {
-  if (!isRecord(value) || typeof value.tool !== "string") return null
-  if (value.tool === "restaurants.search" && isRestaurantSearchArgs(value.args)) {
+// Returns the validated tool call, OR a string explaining why the input was
+// rejected. Surfacing the reason matters: silently dropping bad tool calls
+// makes external agents look "dumb" when the real failure is an adapter
+// contract mismatch (e.g. snake_case args, wrong tool name).
+function toToolCallOrReason(value: unknown): ToolCall | string {
+  if (!isRecord(value)) return "tool call is not an object"
+  if (typeof value.tool !== "string") return "missing string field 'tool'"
+  if (value.tool === "restaurants.search") {
+    if (!isRestaurantSearchArgs(value.args)) {
+      return `tool 'restaurants.search' has malformed args: ${JSON.stringify(value.args)}`
+    }
     return { tool: "restaurants.search", args: value.args }
   }
-  if (value.tool === "restaurants.holdReservation" && isHoldReservationArgs(value.args)) {
+  if (value.tool === "restaurants.holdReservation") {
+    if (!isHoldReservationArgs(value.args)) {
+      return `tool 'restaurants.holdReservation' has malformed args: ${JSON.stringify(value.args)}`
+    }
     return { tool: "restaurants.holdReservation", args: value.args }
   }
-  return null
+  return `unknown tool name '${value.tool}' (expected 'restaurants.search' or 'restaurants.holdReservation')`
 }
 
-function parseAgentOutput(value: unknown): AgentOutput {
-  if (!isRecord(value)) return { message: "" }
+function parseAgentOutput(value: unknown, agentName: string): AgentOutput {
+  if (!isRecord(value)) {
+    process.stderr.write(`[${agentName}] output is not a JSON object — skipping\n`)
+    return { message: "" }
+  }
   const msg = typeof value.message === "string" ? value.message : ""
-  const rawCalls = Array.isArray(value.toolCalls) ? value.toolCalls : []
-  const toolCalls = rawCalls
-    .map(toToolCall)
-    .filter((c): c is ToolCall => c !== null)
+  if (typeof value.message !== "string") {
+    process.stderr.write(`[${agentName}] output is missing string 'message' field\n`)
+  }
+  const rawCalls = Array.isArray(value.toolCalls)
+    ? value.toolCalls
+    : "tool_calls" in value && Array.isArray((value as Record<string, unknown>).tool_calls)
+      ? (value as Record<string, unknown>).tool_calls as unknown[]
+      : []
+  if (
+    !Array.isArray(value.toolCalls) &&
+    "tool_calls" in value &&
+    Array.isArray((value as Record<string, unknown>).tool_calls)
+  ) {
+    process.stderr.write(
+      `[${agentName}] used 'tool_calls' (snake_case); the protocol expects 'toolCalls'. Accepted, but please update your adapter.\n`,
+    )
+  }
+  const toolCalls: ToolCall[] = []
+  for (const candidate of rawCalls) {
+    const result = toToolCallOrReason(candidate)
+    if (typeof result === "string") {
+      process.stderr.write(`[${agentName}] dropping tool call — ${result}\n`)
+      continue
+    }
+    toolCalls.push(result)
+  }
   return toolCalls.length > 0 ? { message: msg, toolCalls } : { message: msg }
 }
 
@@ -223,7 +259,7 @@ export class StdioAgent implements Agent {
       process.stderr.write(`[${this.name}] unexpected message: ${line}\n`)
       return
     }
-    const output = parseAgentOutput(parsed.output)
+    const output = parseAgentOutput(parsed.output, this.name)
     if (this.pendingResolve) {
       const r = this.pendingResolve
       this.pendingResolve = null

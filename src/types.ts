@@ -119,6 +119,14 @@ export type ScenarioBundle = {
   simulatedUser: SimulatedUserFn
   judge: ScenarioJudge
   requiredFields: string[]
+  // Maximum total score this scenario can award. Surfaced in the report so
+  // readers can see "Total 102/110" rather than just "Total 102". Each
+  // scenario sets its own ceiling because intent dimensions vary by scenario.
+  maxScore: number
+  // Per-metric ceilings, optional. If unset, report falls back to defaults.
+  maxIntentFidelity?: number
+  // One-line summary of what this scenario probes; printed in the report.
+  probes?: string
 }
 
 export type TranscriptEvent =

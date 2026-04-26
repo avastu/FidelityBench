@@ -15,7 +15,14 @@ function logAgentInput(input: AgentInput) {
   }
 }
 
-const POST_FINAL_TURN_LIMIT = 8
+// 12 turns lets a frontier LLM recover from a bad first search (e.g. asking
+// for an unavailable time). Earlier value of 8 truncated some real LLM runs
+// before they could correct course. Override with FIDELITYBENCH_TURN_LIMIT.
+const POST_FINAL_TURN_LIMIT = (() => {
+  const env = process.env.FIDELITYBENCH_TURN_LIMIT
+  const n = env ? parseInt(env, 10) : NaN
+  return Number.isFinite(n) && n > 0 ? n : 12
+})()
 
 export async function runScenario(
   agent: Agent,

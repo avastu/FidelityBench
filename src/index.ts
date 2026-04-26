@@ -362,7 +362,7 @@ async function main() {
           })
         }
       }
-      printReport(scenarioResults)
+      printReport(scenarioResults, bundle)
       // (printReport currently writes to console.log → captured to stderr in jsonMode)
       console.log("")
       allResults.push(...scenarioResults)

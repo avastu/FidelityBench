@@ -1,4 +1,12 @@
-import type { EvaluationResult, RecallBurdenCategory, TranscriptEvent } from "./types.js"
+import type {
+  EvaluationResult,
+  RecallBurdenCategory,
+  ScenarioBundle,
+  TranscriptEvent,
+} from "./types.js"
+
+const DEFAULT_MAX_TOTAL = 100
+const DEFAULT_MAX_INTENT = 35
 
 function uniqueRecallCategories(result: EvaluationResult): RecallBurdenCategory[] {
   return [...new Set(result.recallBurdenEvents.map((event) => event.category))]
@@ -68,17 +76,20 @@ export function printAggregateSummary(results: EvaluationResult[]) {
   }
 }
 
-export function printReport(results: EvaluationResult[]) {
-  console.log("FidelityBench v0.6")
+export function printReport(results: EvaluationResult[], bundle?: ScenarioBundle) {
+  console.log("FidelityBench v1.0.1")
   const scenarioId = results[0]?.scenarioId
+  const maxTotal = bundle?.maxScore ?? DEFAULT_MAX_TOTAL
+  const maxIntent = bundle?.maxIntentFidelity ?? DEFAULT_MAX_INTENT
   if (scenarioId) console.log(`Scenario: ${scenarioId}`)
+  if (bundle?.probes) console.log(`Probes:   ${bundle.probes}`)
   console.log("")
 
   const header =
     `${pad("Agent", 22, "start")}` +
-    `${pad("Score", 8)}` +
-    `${pad("Task", 8)}` +
-    `${pad("Intent", 9)}` +
+    `${pad("Score", 12)}` +
+    `${pad("Task", 9)}` +
+    `${pad("Intent", 11)}` +
     `${pad("RecallBurden", 16)}` +
     `${pad("Clarification", 16)}` +
     `${pad("Tools", 8)}`
@@ -87,9 +98,9 @@ export function printReport(results: EvaluationResult[]) {
   for (const result of results) {
     const row =
       `${pad(result.agentName, 22, "start")}` +
-      `${pad(result.totalScore, 8)}` +
-      `${pad(`${result.taskSuccess}/30`, 8)}` +
-      `${pad(`${result.intentFidelity}`, 9)}` +
+      `${pad(`${result.totalScore}/${maxTotal}`, 12)}` +
+      `${pad(`${result.taskSuccess}/30`, 9)}` +
+      `${pad(`${result.intentFidelity}/${maxIntent}`, 11)}` +
       `${pad(`${result.recallBurden}/20`, 16)}` +
       `${pad(`${result.clarificationQuality}/10`, 16)}` +
       `${pad(`${result.toolUseEfficiency}/5`, 8)}`
