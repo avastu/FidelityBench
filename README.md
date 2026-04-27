@@ -18,7 +18,15 @@ See [`docs/PRIVACY_FIDELITY.md`](docs/PRIVACY_FIDELITY.md) for the privacy/bound
 
 **Status: public MVP** — deterministic no-key benchmark by default, optional LLM baselines, scenario-local judges, and stdio external-agent integration.
 
-## 90-second demo
+## Interactive demo with Claude Code
+
+Enter this into Claude Code in a working directory:
+
+```text
+Opus, please clone [avastu/FidelityBench](https://github.com/avastu/FidelityBench), Use docs/CLAUDE_CODE.md to give me the interactive FidelityBench demo.
+```
+
+Prefer the direct terminal path?
 
 ```bash
 npm install
