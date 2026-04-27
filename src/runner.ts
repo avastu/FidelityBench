@@ -32,7 +32,7 @@ export async function runScenario(
 ): Promise<EvaluationResult> {
   await agent.reset?.()
 
-  const { scenario, simulatedUser, judge } = bundle
+  const { scenario, simulatedUser, judge, asyncJudge } = bundle
   const runId = `run_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
   const userId = "eval_user_001"
   const transcript: TranscriptEvent[] = []
@@ -145,7 +145,22 @@ export async function runScenario(
     recallBurdenEvents,
     askedRequiredFields,
   })
-  return invalidateLlmErrorResult(result)
+
+  let augmented = result
+  if (asyncJudge) {
+    try {
+      augmented = await asyncJudge(result)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      const note = `[asyncJudge skipped: ${message.slice(0, 200)}]`
+      augmented = {
+        ...result,
+        notes: [...(result.notes ?? []), note],
+      }
+    }
+  }
+
+  return invalidateLlmErrorResult(augmented)
 }
 
 function findLlmError(transcript: TranscriptEvent[]): string | undefined {

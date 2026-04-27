@@ -27,12 +27,15 @@ import type {
   RecallBurdenCategory,
   RecallBurdenEvent,
   Scenario,
+  ScenarioAsyncJudge,
   ScenarioBundle,
   ScenarioJudgeInput,
   SimulatedUserResultV2,
   TimelineEvent,
   TranscriptEvent,
 } from "../src/types.js"
+import { llmJudgeHonorsLatestIntent } from "../src/judges/honorsLatestLLMJudge.js"
+import { hasLlmProvider } from "../src/llm/client.js"
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -881,10 +884,117 @@ export const alexPushbackOverflowJudge = (
   }
 }
 
+// LLM-judge augmentation for the honors_latest_intent dimension.
+// Safety property: can DOWNGRADE a regex-honored dim to fail; cannot
+// upgrade a regex-failed dim to honored (paraphrase-tolerance must not
+// launder credit). Set FIDELITYBENCH_DISABLE_LLM_JUDGE=1 to skip.
+export const alexPushbackOverflowAsyncJudge: ScenarioAsyncJudge = async (
+  result,
+) => {
+  if (process.env.FIDELITYBENCH_DISABLE_LLM_JUDGE) return result
+  if (!hasLlmProvider()) return result
+  if (!result.intentDimensionResults) return result
+
+  // Find the lexical honors_latest_intent dimension. If it didn't pass
+  // the regex floor, the LLM judge has nothing to do (per safety
+  // property, we don't upgrade fails).
+  const dims = [...result.intentDimensionResults]
+  const idx = dims.findIndex((d) => d.id === "honors_latest_intent")
+  if (idx < 0) return result
+  const lexical = dims[idx]
+  if (!lexical || !lexical.honored) return result
+
+  // Find the agent's final draft.
+  let finalDraft = ""
+  for (let i = result.transcript.length - 1; i >= 0; i -= 1) {
+    const e = result.transcript[i]
+    if (e?.type === "assistant") {
+      finalDraft = e.message
+      break
+    }
+  }
+  if (!finalDraft || finalDraft.trim().length < 20) return result
+
+  let verdict
+  try {
+    verdict = await llmJudgeHonorsLatestIntent(finalDraft)
+  } catch (error) {
+    const note = `[LLM judge for honors_latest_intent unavailable: ${
+      error instanceof Error ? error.message.slice(0, 160) : String(error)
+    }]`
+    return {
+      ...result,
+      notes: [...(result.notes ?? []), note],
+    }
+  }
+
+  // The lexical regex says HONORED. If the LLM disagrees, downgrade.
+  // If the LLM agrees, leave honored — but mark the dim's evidence with
+  // the LLM's positive verdict for audit.
+  if (!verdict.honors) {
+    const updatedDim: IntentDimensionResult = {
+      ...lexical,
+      honored: false,
+      evidence: `LLM judge: ${verdict.evidence} (lexical regex passed; LLM downgraded)`,
+    }
+    dims[idx] = updatedDim
+    const newIntent = dims.reduce(
+      (sum, d) => sum + (d.honored ? d.weight : 0),
+      0,
+    )
+    // Recompute task success under the same policy as the sync judge:
+    // honors_latest_intent flipping to false may drop the 30-bracket to
+    // 20. We re-run the sync task-success logic by inspecting other
+    // dims and re-deriving namesRiskOrWorkable / tradeoffHonored from
+    // the remaining honored set.
+    const honoredById = new Map(dims.map((d) => [d.id, d.honored]))
+    const namesRisk = honoredById.get("names_risk") ?? false
+    const tradeoff = honoredById.get("scope_tradeoff") ?? false
+    const boundary = honoredById.get("private_boundary") ?? false
+    const drafted = finalDraft.trim().length >= 80
+    let newTask = 0
+    if (!drafted) newTask = 0
+    else if (namesRisk && false /* honors_latest now false */ && boundary)
+      newTask = 30
+    else if (namesRisk && (tradeoff /* OR honorsLatest=false */) && boundary)
+      newTask = 20
+    else if (namesRisk) newTask = 15
+    else newTask = 10
+    const newTotal =
+      newTask +
+      newIntent +
+      result.recallBurden +
+      result.clarificationQuality +
+      result.toolUseEfficiency
+    const note = `LLM JUDGE DOWNGRADE: honors_latest_intent regex-passed but LLM verdict is "not genuinely honored". Reason: ${verdict.evidence}`
+    return {
+      ...result,
+      intentDimensionResults: dims,
+      intentFidelity: newIntent,
+      taskSuccess: newTask,
+      totalScore: newTotal,
+      notes: [...(result.notes ?? []), note],
+    }
+  }
+
+  // LLM agrees the dim is honored — annotate evidence for the audit
+  // trail and keep the score as-is.
+  const updatedDim: IntentDimensionResult = {
+    ...lexical,
+    evidence: `${lexical.evidence} (LLM judge confirmed: ${verdict.evidence})`,
+  }
+  dims[idx] = updatedDim
+  return {
+    ...result,
+    intentDimensionResults: dims,
+  }
+}
+
 export const alexPushbackOverflowBundle: ScenarioBundle = {
   scenario: alexPushbackOverflowScenario,
   simulatedUser: alexPushbackOverflowSimulatedUser,
   judge: alexPushbackOverflowJudge,
+  asyncJudge: alexPushbackOverflowAsyncJudge,
   requiredFields: [],
   family: "action",
   // 30 task + 55 intent (11 dims × 5) + 15 recall + 10 clar + 5 tools = 115

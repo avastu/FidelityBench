@@ -124,6 +124,16 @@ export type ScenarioJudgeInput = {
 }
 export type ScenarioJudge = (input: ScenarioJudgeInput) => EvaluationResult
 
+// Optional async post-processing of a sync judge's result. Used to add
+// LLM-judge augmentation (e.g. semantic verification of dimensions where
+// the lexical regex floor is gameable). Safety property: the async judge
+// can DOWNGRADE a previously-honored dimension to fail, but should not
+// upgrade a previously-failed dimension to honored — that would let
+// paraphrase-tolerance launder credit.
+export type ScenarioAsyncJudge = (
+  result: EvaluationResult,
+) => Promise<EvaluationResult>
+
 // "action" scenarios test execution-fidelity (the agent must DO something —
 // book a restaurant, draft a document). "reflection" scenarios test
 // reflection-fidelity (the agent must FAITHFULLY MIRROR what the user said
@@ -136,6 +146,11 @@ export type ScenarioBundle = {
   scenario: Scenario
   simulatedUser: SimulatedUserFn
   judge: ScenarioJudge
+  // Optional LLM-judge augmentation. The runner awaits this after the
+  // sync judge produces its result. If the async judge throws or the
+  // configured LLM provider is unavailable, the runner falls back to
+  // the sync result — async judging is best-effort, not required.
+  asyncJudge?: ScenarioAsyncJudge
   requiredFields: string[]
   family: ScenarioFamily
   // Maximum total score this scenario can award. Surfaced in the report so
