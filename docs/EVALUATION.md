@@ -61,6 +61,25 @@ Examples:
 
 These baselines help separate language ability from memory architecture.
 
+## Architecture comparison roadmap
+
+FidelityBench will use ablation-style evaluation to compare memory architectures side by side. The goal is to isolate when a memory surface is actually load-bearing, not merely present.
+
+Planned baselines:
+
+| Baseline | What it tests |
+|---|---|
+| `TranscriptLLM` | Full raw transcript in context. |
+| `WindowedTranscriptLLM` | Recent transcript window with older context unavailable. |
+| `SummaryMemoryLLM` | Compressed narrative memory. |
+| `VectorMemoryLLM` | Semantic retrieval over past user context. |
+| `GraphMemoryLLM` | Explicit entities, relations, decisions, preferences, and boundaries. |
+| `HybridGraphSemanticMemoryLLM` | Graph memory plus semantic retrieval. |
+| `HybridWithoutGraph` | Hybrid ablation with graph structure removed. |
+| `HybridWithoutSemantic` | Hybrid ablation with semantic retrieval removed. |
+
+The MVP proves the evaluation construct. Future architecture-discriminating scenarios will test when graph/semantic memory is load-bearing.
+
 ## Validity checks to add next
 
 ### 1. Golden transcripts

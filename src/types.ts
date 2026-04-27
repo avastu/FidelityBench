@@ -200,6 +200,9 @@ export type EvaluationResult = {
   intentDimensionResults?: IntentDimensionResult[]
   // Free-form notes the judge wants surfaced in the report (e.g. "zombie intent").
   notes?: string[]
+  // Set by the runner when the agent did not produce a valid benchmark attempt
+  // (for example, an LLM provider error surfaced as the assistant message).
+  invalidReason?: string
   // Set by the runner when this result represents one trial out of many
   // (--trials N). The display result for that agent×scenario will be the
   // averaged result; per-trial results are kept in the JSON output for

@@ -9,6 +9,8 @@ import type {
   TranscriptEvent,
 } from "./types.js"
 
+const LLM_ERROR_PREFIX = "[LLM error:"
+
 function logAgentInput(input: AgentInput) {
   if (process.env.FIDELITYBENCH_DEBUG) {
     console.log(input)
@@ -136,11 +138,42 @@ export async function runScenario(
     break
   }
 
-  return judge({
+  const result = judge({
     agentName: agent.name,
     scenarioId: scenario.id,
     transcript,
     recallBurdenEvents,
     askedRequiredFields,
   })
+  return invalidateLlmErrorResult(result)
+}
+
+function findLlmError(transcript: TranscriptEvent[]): string | undefined {
+  for (const event of transcript) {
+    if (event.type !== "assistant") continue
+    if (event.message.startsWith(LLM_ERROR_PREFIX)) return event.message
+  }
+  return undefined
+}
+
+function invalidateLlmErrorResult(result: EvaluationResult): EvaluationResult {
+  const llmError = findLlmError(result.transcript)
+  if (!llmError) return result
+
+  const reason = `INVALID RUN: agent returned an LLM/provider error (${llmError})`
+  return {
+    ...result,
+    totalScore: 0,
+    taskSuccess: 0,
+    intentFidelity: 0,
+    recallBurden: 0,
+    clarificationQuality: 0,
+    toolUseEfficiency: 0,
+    recallBurdenEvents: [],
+    selectedRestaurantId: undefined,
+    heldReservation: undefined,
+    intentDimensionResults: undefined,
+    invalidReason: reason,
+    notes: result.notes,
+  }
 }

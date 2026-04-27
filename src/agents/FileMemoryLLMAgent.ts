@@ -142,7 +142,11 @@ export class FileMemoryLLMAgent implements Agent {
           {
             role: "system",
             content: `You maintain memory for an executive assistant.
-Update the memory based on the new user message.
+Return only concise markdown memory. Do not answer the user.`,
+          },
+          {
+            role: "user",
+            content: `Update the memory based on the new user message.
 Keep only information that may matter later:
 - stable preferences
 - constraints
@@ -186,15 +190,26 @@ You receive only the current user message and your saved memory.
 Use memory to avoid making the user repeat known information.
 Ask clarifying questions only for genuinely missing information.
 If tool use is appropriate, return tool calls.
-Saved memory:
+Return strict JSON and no markdown.`,
+          },
+          {
+            role: "user",
+            content: `Saved memory:
 ${savedMemory}
+
 Current input type:
 ${input.inputType}
+
 Current message:
 ${input.message}
+
 Available tools:
-1. restaurants.search(args: { location?, date?, time?, partySize? })
+1. restaurants.search(args: {
+     location?, date?, time?, partySize?,
+     cuisine?, maxPricePerPerson?, requiresVegetarian?, avoidShellfish?
+   })
 2. restaurants.holdReservation(args: { restaurantId, date, time, partySize })
+
 Return strict JSON:
 {
   "message": string,

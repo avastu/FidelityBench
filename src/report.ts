@@ -81,6 +81,7 @@ function turnExcerpt(
 }
 
 function getKeyBehavior(result: EvaluationResult): string {
+  if (result.invalidReason) return "invalid run"
   const recallCategories = uniqueRecallCategories(result)
   if (recallCategories.length > 0) {
     return `asked user to repeat: ${recallCategories.join(", ")}`
@@ -295,6 +296,9 @@ export function printReport(
     const recallCategories = uniqueRecallCategories(result)
     console.log("")
     console.log(`── ${result.agentName} ──`)
+    if (result.invalidReason) {
+      console.log(result.invalidReason)
+    }
     if (result.selectedRestaurantId !== undefined) {
       console.log(`Selected restaurant: ${result.selectedRestaurantId ?? "none"}`)
     }

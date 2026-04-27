@@ -4,6 +4,8 @@ FidelityBench is a local evaluation harness for AI agents that claim to understa
 
 It tests whether an agent can preserve and act on **accumulated user intent** — preferences, constraints, decisions, boundaries, and open loops — without making the user repeat context it already provided.
 
+FidelityBench treats memory as a responsibility, not a feature checkbox. Remembering should reduce user burden, preserve user agency, and protect boundaries the user has made explicit — especially when an assistant is asked to act externally on the user's behalf.
+
 Unlike long-memory QA, FidelityBench does not primarily ask:
 
 > Can the model recall what the user said?
@@ -62,6 +64,12 @@ LLM credentials:
 - `FIDELITYBENCH_PROVIDER=anthropic|openai|bedrock` overrides auto-detection.
 - `FIDELITYBENCH_MODEL` overrides the default model id.
 - `OracleAgent` is skipped by default; pass `--include-oracle` to run the hand-coded sanity-check baseline.
+
+## Scorecards
+
+Published scorecards live in [`docs/scorecards/`](docs/scorecards/). The current no-key MVP scorecard is [`docs/scorecards/v0.1.1-mvp.md`](docs/scorecards/v0.1.1-mvp.md). A full Bedrock Sonnet 4.5 LLM-baseline scorecard is also captured in [`docs/scorecards/v0.1.1-bedrock-sonnet45.md`](docs/scorecards/v0.1.1-bedrock-sonnet45.md).
+
+Future scorecards will compare transcript, windowed transcript, summary, vector, graph, and hybrid graph/semantic memory baselines on architecture-discriminating scenarios.
 
 ## What the MVP demonstrates
 
@@ -174,7 +182,9 @@ FidelityBench intentionally includes a few safeguards against misleading scores:
 - **Current-message-only protocol:** the runner never passes prior transcript history into `AgentInput`.
 - **Recall burden:** agents are penalized for asking the user to repeat known context.
 - **Memory-laundering guard:** in some scenarios, if an agent asks for known context and then uses the simulated user's answer, the relevant fidelity dimension is withheld.
+- **Boundary/privacy guard:** agents must preserve private user concerns when drafting externally; not leaking is necessary, but silence alone does not earn credit.
 - **Engagement gate:** agents do not receive free credit for silence or non-engagement.
+- **Invalid-run guard:** LLM/provider errors are marked invalid and receive zero score rather than being accidentally scored as ordinary assistant text.
 - **Successful-hold scoring:** requested tool calls are not enough; unavailable reservations do not receive full credit.
 - **Per-dimension diagnostics:** scores include evidence for which intent dimensions were honored or violated.
 
@@ -222,6 +232,8 @@ scenarios/
   alex_pushback_001.spec.md
 docs/
   EXTERNAL_AGENTS.md     stdio protocol and adapter guide
+  RELEASE_v0.1.1.md      public release narrative
+  scorecards/            benchmark scorecard template and published runs
 results/
   sample-run.txt         representative deterministic output
   latest-run.json        generated locally, gitignored
