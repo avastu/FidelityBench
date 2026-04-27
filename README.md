@@ -1,6 +1,6 @@
 # FidelityBench
 
-FidelityBench is a local evaluation harness for AI agents that claim to understand and support humans over time.
+FidelityBench is a local evaluation harness for AI agents that aim to understand and support humans over time.
 
 It tests whether an agent can preserve and act on **accumulated user intent** — preferences, constraints, decisions, boundaries, and open loops — without making the user repeat context it already provided.
 
