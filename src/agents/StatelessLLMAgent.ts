@@ -7,17 +7,7 @@ import type {
   ToolCall,
 } from "../types.js"
 import { callLlm } from "../llm/client.js"
-
-const SYSTEM_PROMPT = `You are an executive assistant.
-You only see the current user message. Respond naturally and helpfully.
-If you need information to complete a task, ask the user.
-Return strict JSON with this shape:
-{ "message": string, "toolCalls": array }
-
-Available tools:
-- restaurants.search({location?, date?, time?, partySize?})
-- restaurants.holdReservation({restaurantId, date, time, partySize})
-Set toolCalls=[] if no tool is needed.`
+import { buildResponseSystemPrompt } from "./sharedInstructions.js"
 
 function truncateError(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error)
@@ -125,7 +115,13 @@ export class StatelessLLMAgent implements Agent {
         messages: [
           {
             role: "system",
-            content: SYSTEM_PROMPT,
+            content: buildResponseSystemPrompt({
+              currentDate: input.timestamp.slice(0, 10),
+              contextDescription:
+                "You see ONLY the current input. You do not see prior transcript and have no saved memory.",
+              memoryUseInstruction:
+                "Use only the current input; do not pretend to remember prior context that is not visible.",
+            }),
           },
           {
             role: "user",

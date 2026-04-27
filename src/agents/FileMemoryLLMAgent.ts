@@ -8,6 +8,7 @@ import type {
 } from "../types.js"
 import { callLlm } from "../llm/client.js"
 import { clearMemory, readMemory, writeMemory } from "../memory/fileMemory.js"
+import { buildResponseSystemPrompt } from "./sharedInstructions.js"
 const DEFAULT_USER_ID = "eval_user_001"
 
 function truncateError(error: unknown): string {
@@ -185,12 +186,13 @@ Return updated memory as concise markdown.`,
         messages: [
           {
             role: "system",
-            content: `You are an executive assistant.
-You receive only the current user message and your saved memory.
-Use memory to avoid making the user repeat known information.
-Ask clarifying questions only for genuinely missing information.
-If tool use is appropriate, return tool calls.
-Return strict JSON and no markdown.`,
+            content: buildResponseSystemPrompt({
+              currentDate: input.timestamp.slice(0, 10),
+              contextDescription:
+                "You receive only the current input and your saved markdown memory. You do NOT see prior transcript.",
+              memoryUseInstruction:
+                "Use saved memory to faithfully execute the user's accumulated intent.",
+            }),
           },
           {
             role: "user",
@@ -201,25 +203,7 @@ Current input type:
 ${input.inputType}
 
 Current message:
-${input.message}
-
-Available tools:
-1. restaurants.search(args: {
-     location?, date?, time?, partySize?,
-     cuisine?, maxPricePerPerson?, requiresVegetarian?, avoidShellfish?
-   })
-2. restaurants.holdReservation(args: { restaurantId, date, time, partySize })
-
-Return strict JSON:
-{
-  "message": string,
-  "toolCalls": [
-    {
-      "tool": "restaurants.search" | "restaurants.holdReservation",
-      "args": object
-    }
-  ]
-}`,
+${input.message}`,
           },
         ],
       })

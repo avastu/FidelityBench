@@ -180,9 +180,13 @@ fidelitybench/
       FileMemoryLLMAgent.ts
       TranscriptLLMAgent.ts
       BlockMemoryLLMAgent.ts
+      GraphMemoryLLMAgent.ts
+      HybridGraphSemanticMemoryLLMAgent.ts
+      sharedInstructions.ts
       StdioAgent.ts
     memory/
       fileMemory.ts
+      graphMemory.ts
   scenarios/
     dinner_offsite_001.ts
     temporal_supersession_001.ts
@@ -588,6 +592,12 @@ Expected behavior:
 - Often has high recall burden.
 - Useful as a frontier-language lower bound without continuity.
 
+All first-party LLM agents should use the shared response instructions in
+`src/agents/sharedInstructions.ts`. Agents may add architecture-specific
+memory extraction/retrieval instructions, but response-time task policy should
+stay shared unless a difference is explicitly part of the architecture being
+tested.
+
 ### 12.5 FileMemoryLLMAgent
 
 A real LLM plus a simple persistent markdown memory file:
@@ -622,7 +632,27 @@ Purpose:
 - Tests whether curated/structured memory can outperform raw transcript retention on fidelity tasks.
 - Should be evaluated against TranscriptLLMAgent rather than only against StatelessLLMAgent.
 
-### 12.8 External stdio agents
+### 12.8 GraphMemoryLLMAgent
+
+A graph-memory LLM baseline.
+
+Purpose:
+
+- Extracts typed nodes and typed edges from user turns.
+- Responds from a retrieved subgraph, not from raw transcript or flat blocks.
+- Tests whether explicit relational structure helps on distributed-intent scenarios such as `alex_pushback_001`.
+
+### 12.9 HybridGraphSemanticMemoryLLMAgent
+
+A hybrid graph/semantic-memory LLM baseline.
+
+Purpose:
+
+- Uses the same extracted graph as GraphMemoryLLMAgent.
+- Adds retrieved semantic memory snippets attached to graph nodes.
+- Tests whether graph traversal plus local semantic evidence improves fidelity over graph structure alone.
+
+### 12.10 External stdio agents
 
 Any external process may integrate by speaking JSON lines over stdin/stdout.
 

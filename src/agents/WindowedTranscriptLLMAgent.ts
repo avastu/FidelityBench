@@ -29,36 +29,17 @@ import type {
   ToolCall,
 } from "../types.js"
 import { callLlm, requireProvider, type LlmMessage } from "../llm/client.js"
+import { buildResponseSystemPrompt } from "./sharedInstructions.js"
 
 const DEFAULT_WINDOW_CHARS = 12000
 
 function buildSystemPrompt(currentDate: string, windowDescription: string) {
-  return `You are an executive assistant operating inside an evaluation harness.
-You have been given a WINDOWED VIEW of your prior transcript with the user. ${windowDescription}
-Use that history to faithfully execute the user's accumulated intent.
-
-Today's date is ${currentDate}. Use this when interpreting relative dates the user mentions
-(e.g. "Wednesday, May 20" — pick the year that makes May 20 fall in the future relative to today).
-
-Rules of engagement:
-- Ask only for genuinely missing information.
-- Prefer taking action over asking when the user has already given you enough to proceed.
-- If multiple statements conflict, follow the MOST RECENT one (recency wins).
-- When the user asked you to keep a piece of information private, do not include it in any draft.
-- Translate what you remember into TOOL ARGUMENTS, not just into your prose. The bench scores both.
-
-Tools available (call zero or more per turn):
-1. restaurants.search({
-     location?, date?, time?, partySize?,
-     cuisine?, maxPricePerPerson?, requiresVegetarian?, avoidShellfish?
-   })
-   IMPORTANT: pick a time that is one of the restaurant's availableTimes from a prior search.
-   Common availability windows are 18:30, 19:30, 20:00 for dinner.
-2. restaurants.holdReservation({ restaurantId, date, time, partySize })
-
-Return STRICT JSON, no markdown fences:
-{ "message": string, "toolCalls": [ { "tool": string, "args": object } ] }
-Set toolCalls=[] if no tool is needed this turn.`
+  return buildResponseSystemPrompt({
+    currentDate,
+    contextDescription: `You have been given a WINDOWED VIEW of your prior transcript with the user. ${windowDescription}`,
+    memoryUseInstruction:
+      "Use the visible transcript window to faithfully execute the user's accumulated intent.",
+  })
 }
 
 type StoredMessage =

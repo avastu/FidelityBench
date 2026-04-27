@@ -105,6 +105,8 @@ const AGENT_ALIASES = new Map<string, string>([
   ["FileMemoryLLMAgent", "file-memory-llm"],
   ["TranscriptLLMAgent", "transcript-llm"],
   ["BlockMemoryLLMAgent", "block-memory"],
+  ["GraphMemoryLLMAgent", "graph-memory"],
+  ["HybridGraphSemanticMemoryLLMAgent", "hybrid-graph-semantic"],
   ["WindowedTranscriptLLMAgent", "windowed-transcript"],
 ])
 
@@ -174,6 +176,18 @@ async function buildAgents(): Promise<Agent[]> {
     )
     if (blockMemory) agents.push(blockMemory)
 
+    const graphMemory = await loadOptionalAgent(
+      "./agents/GraphMemoryLLMAgent.js",
+      "GraphMemoryLLMAgent",
+    )
+    if (graphMemory) agents.push(graphMemory)
+
+    const hybridGraphSemantic = await loadOptionalAgent(
+      "./agents/HybridGraphSemanticMemoryLLMAgent.js",
+      "HybridGraphSemanticMemoryLLMAgent",
+    )
+    if (hybridGraphSemantic) agents.push(hybridGraphSemantic)
+
     const windowedTranscript = await loadOptionalAgent(
       "./agents/WindowedTranscriptLLMAgent.js",
       "WindowedTranscriptLLMAgent",
@@ -219,11 +233,15 @@ function isLlmAgentFilter(filter: string): boolean {
     "file-memory-llm",
     "transcript-llm",
     "block-memory",
+    "graph-memory",
+    "hybrid-graph-semantic",
     "windowed-transcript",
     "statelessllmagent",
     "filememoryllmagent",
     "transcriptllmagent",
     "blockmemoryllmagent",
+    "graphmemoryllmagent",
+    "hybridgraphsemanticmemoryllmagent",
     "windowedtranscriptllmagent",
   ])
   return llmAliases.has(normalized)

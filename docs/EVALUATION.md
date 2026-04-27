@@ -58,8 +58,15 @@ Examples:
 - `WindowedTranscriptLLMAgent`: raw transcript but finite visible window
 - `FileMemoryLLMAgent`: simple persistent markdown memory
 - `BlockMemoryLLMAgent`: structured memory baseline
+- `GraphMemoryLLMAgent`: extracted nodes/edges with graph retrieval
+- `HybridGraphSemanticMemoryLLMAgent`: graph retrieval plus semantic memory snippets
 
 These baselines help separate language ability from memory architecture.
+
+First-party LLM agents share one response-time instruction set for task policy,
+tool-use rules, privacy handling, and output JSON shape. Architecture-specific
+prompts are limited to memory extraction/retrieval, so score differences are
+more likely to come from the memory surface rather than bespoke task coaching.
 
 ## Architecture comparison roadmap
 
@@ -73,8 +80,8 @@ Planned baselines:
 | `WindowedTranscriptLLM` | Recent transcript window with older context unavailable. |
 | `SummaryMemoryLLM` | Compressed narrative memory. |
 | `VectorMemoryLLM` | Semantic retrieval over past user context. |
-| `GraphMemoryLLM` | Explicit entities, relations, decisions, preferences, and boundaries. |
-| `HybridGraphSemanticMemoryLLM` | Graph memory plus semantic retrieval. |
+| `GraphMemoryLLM` | Implemented as `GraphMemoryLLMAgent`: explicit entities, relations, decisions, preferences, and boundaries. |
+| `HybridGraphSemanticMemoryLLM` | Implemented as `HybridGraphSemanticMemoryLLMAgent`: graph memory plus semantic snippets. |
 | `HybridWithoutGraph` | Hybrid ablation with graph structure removed. |
 | `HybridWithoutSemantic` | Hybrid ablation with semantic retrieval removed. |
 

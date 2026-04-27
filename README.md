@@ -73,7 +73,7 @@ LLM credentials:
 
 ## Scorecards
 
-Published scorecards live in [`docs/scorecards/`](docs/scorecards/). The current no-key MVP scorecard is [`docs/scorecards/v0.1.1-mvp.md`](docs/scorecards/v0.1.1-mvp.md). A full Bedrock Sonnet 4.5 LLM-baseline scorecard is also captured in [`docs/scorecards/v0.1.1-bedrock-sonnet45.md`](docs/scorecards/v0.1.1-bedrock-sonnet45.md).
+Published scorecards live in [`docs/scorecards/`](docs/scorecards/). The current no-key MVP scorecard is [`docs/scorecards/v0.1.1-mvp.md`](docs/scorecards/v0.1.1-mvp.md). A full Bedrock Sonnet 4.5 graph-memory scorecard is also captured in [`docs/scorecards/v0.1.2-bedrock-sonnet45-graph.md`](docs/scorecards/v0.1.2-bedrock-sonnet45-graph.md).
 
 Future scorecards will compare transcript, windowed transcript, summary, vector, graph, and hybrid graph/semantic memory baselines on architecture-discriminating scenarios.
 
@@ -185,6 +185,8 @@ The promoted implementation contract is in [`SPEC.md`](SPEC.md). The detailed Al
 | `TranscriptLLMAgent` | Optional LLM baseline plus raw transcript in context. Baseline for "what if long context solved this?" |
 | `WindowedTranscriptLLMAgent` | Optional LLM baseline with an explicit transcript window. Useful for testing transcript-window failure modes. |
 | `BlockMemoryLLMAgent` | Optional structured-memory LLM baseline. |
+| `GraphMemoryLLMAgent` | Optional LLM baseline with extracted nodes/edges and graph retrieval. |
+| `HybridGraphSemanticMemoryLLMAgent` | Optional LLM baseline with graph retrieval plus semantic memory snippets. |
 | External stdio agent | Any subprocess that speaks line-delimited JSON over stdin/stdout. |
 
 ## External agent integration
@@ -216,7 +218,7 @@ This is an MVP, not a finished benchmark suite.
 - The restaurant environment is fake and deterministic.
 - Scenario coverage is still small.
 - Scores for LLM agents are provider/model-dependent and stochastic.
-- The current MVP demonstrates intention fidelity and recall burden; it does not yet prove that graph memory beats transcript context.
+- The current MVP now includes graph and hybrid graph/semantic baselines, but does not yet prove that graph memory beats transcript context.
 - Architecture-discriminating scenarios are being added, especially `alex_pushback_001` and its context-overflow variant.
 - Real product baselines are not yet included.
 
@@ -239,8 +241,8 @@ src/
   tools.ts               deterministic restaurant tool environment
   evaluator.ts           dinner judge and shared evaluator helpers
   simulatedUser.ts       dinner simulated user
-  agents/                built-in agent baselines
-  memory/                file memory helpers
+  agents/                built-in agent baselines and shared LLM response instructions
+  memory/                file and graph memory helpers
 scenarios/
   dinner_offsite_001.ts
   temporal_supersession_001.ts
@@ -270,7 +272,7 @@ Near-term:
 Architecture research:
 
 - compare full transcript vs windowed transcript vs summary memory vs vector memory vs hybrid graph/semantic memory
-- add a graph-memory agent adapter
+- add overflow variants that make graph and hybrid graph/semantic retrieval more load-bearing
 - randomize restaurant IDs / pools to reduce memorization
 - add LLM judges for boundary leaks and paraphrase-heavy recall burden
 - compare against real product baselines where possible
