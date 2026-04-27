@@ -212,16 +212,19 @@ function hasBulletStructure(text: string): boolean {
 // Patterns that suggest the agent is mirroring the user's prior successful-
 // pushback pattern: "named the risk early" worked with Alex before, so a
 // faithful agent invokes the same shape (flag/raise/surface/name the risk
-// early/now/upfront, before commitment).
+// early/now/upfront).
+//
+// v0.2-rc tightening (Codex M3): dropped three patterns that fired on
+// generic pushback drafts ("before we commit", "better to flag", "worth
+// flagging") even when the agent had no memory of Alex's prior good
+// response. The remaining patterns require explicit early/risk-naming
+// framing.
 const PRIOR_OUTCOME_PATTERNS = [
   /\bnam(?:e|ing) (?:the|this|a) risk\b/i,
   /\b(?:flag|raise|surface|raising|flagging|surfacing) (?:this|the|a) (?:risk|concern|delivery risk|timeline risk)\b/i,
   /\b(?:flag|raise|surface) (?:this|that|it) (?:now|early|upfront|up front)\b/i,
   /\b(?:early|upfront|up front|head[- ]on)\b[^.!?]{0,40}\b(?:risk|delivery risk|timeline)/i,
-  /\bbefore (?:we )?(?:commit|committing|locking|lock(?: it)? in)/i,
-  /\bbetter to (?:flag|raise|surface|name|say)\b/i,
-  /\b(?:want to|wanted to) (?:flag|raise|surface|name|be clear on|be upfront about)\b/i,
-  /\bworth flagging\b/i,
+  /\b(?:want to|wanted to) (?:flag|raise|surface|name|be clear on|be upfront about)\b[^.!?]{0,40}\b(?:risk|concern|timeline)\b/i,
   /\bearly (?:risk )?(?:signal|warning|flag)\b/i,
 ]
 
