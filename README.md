@@ -14,8 +14,6 @@ It asks:
 
 > Can the agent use remembered context to faithfully execute the user's intentions, maintain the user's privacy, and maintain an accurate memory of what the user has shared?
 
-See [`docs/PRIVACY_FIDELITY.md`](docs/PRIVACY_FIDELITY.md) for the privacy/boundary fidelity framing.
-
 **Status: public MVP** — deterministic no-key benchmark by default, optional LLM baselines, scenario-local judges, and stdio external-agent integration.
 
 ## Interactive demo with Claude Code
