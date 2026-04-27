@@ -12,11 +12,7 @@ Unlike long-memory QA, FidelityBench does not primarily ask:
 
 It asks:
 
-> Can the agent use remembered context to take the right action, ask only for genuinely missing information, and avoid putting the memory burden back on the user?
-
-It also asks a privacy-specific version of that question:
-
-> Can the agent use private context internally without leaking it externally?
+> Can the agent use remembered context to faithfully execute the user's intentions, maintain the user's privacy, and maintain an accurate memory of what the user has shared?
 
 See [`docs/PRIVACY_FIDELITY.md`](docs/PRIVACY_FIDELITY.md) for the privacy/boundary fidelity framing.
 
