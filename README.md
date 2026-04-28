@@ -54,6 +54,9 @@ FIDELITYBENCH_DEBUG=1 npm run bench
 
 # Machine-readable output
 npx tsx src/index.ts --json
+
+# No-network regression checks for judge/scenario contracts
+npm run golden
 ```
 
 The default run works without API keys. LLM agents are skipped unless credentials are configured.
@@ -65,11 +68,14 @@ LLM credentials:
 - Bedrock is optional/advanced via `BEDROCK_API_KEY` or `AWS_BEARER_TOKEN_BEDROCK` plus any required AWS region configuration.
 - `FIDELITYBENCH_PROVIDER=anthropic|openai|bedrock` overrides auto-detection.
 - `FIDELITYBENCH_MODEL` overrides the default model id.
+- `FIDELITYBENCH_MAX_COST_USD` stops new LLM calls once the run's estimated spend reaches the cap.
 - `OracleAgent` is skipped by default; pass `--include-oracle` to run the hand-coded sanity-check baseline.
 
 ## Scorecards
 
 Published scorecards live in [`docs/scorecards/`](docs/scorecards/). The current no-key MVP scorecard is [`docs/scorecards/v0.1.1-mvp.md`](docs/scorecards/v0.1.1-mvp.md). A full Bedrock Sonnet 4.5 graph-memory scorecard is also captured in [`docs/scorecards/v0.1.2-bedrock-sonnet45-graph.md`](docs/scorecards/v0.1.2-bedrock-sonnet45-graph.md).
+
+The latest exploratory architecture-discriminating cell is [`docs/scorecards/v0.3-exploratory-alex-overflow.md`](docs/scorecards/v0.3-exploratory-alex-overflow.md). It compares hybrid graph+semantic memory against a windowed transcript baseline at overflow `N=0`, `N=20`, and `N=80`, with LLM judge verdicts and estimated Bedrock cost recorded in JSON artifacts. The candidate preregistration protocol for the n=30 version is [`docs/prereg/alex-overflow-v0.3.md`](docs/prereg/alex-overflow-v0.3.md).
 
 Future scorecards will compare transcript, windowed transcript, summary, vector, graph, and hybrid graph/semantic memory baselines on architecture-discriminating scenarios.
 
@@ -86,6 +92,8 @@ FidelityBench currently demonstrates the core construct with a local TypeScript 
 - baseline agents
 - per-dimension intent-fidelity diagnostics
 - privacy and boundary-leak checks
+- semantic LLM judge augmentation for gameable dimensions
+- LLM token/cost/runtime accounting
 - human-readable report
 - JSON result output
 - extensible scenario architecture
@@ -166,6 +174,7 @@ Active scenarios are implemented as `ScenarioBundle`s: each scenario owns its ti
 | `board_update_privacy_001` | active | Boundary fidelity: whether private concerns stay private in an external-facing draft. |
 | `reflect_difficult_week_001` | active | Reflection fidelity: whether the agent mirrors the user's actual week without advice/fixing. |
 | `alex_pushback_001` | active | Relational pushback fidelity: whether the agent composes person, prior-outcome, emotional-pattern, communication-style, and privacy-boundary memory. |
+| `alex_pushback_overflow_001` | exploratory | Architecture-discriminating overflow: whether the agent preserves relational, boundary, and supersession intent under realistic noise. |
 
 The promoted implementation contract is in [`SPEC.md`](SPEC.md). The detailed Alex scenario spec is in [`scenarios/alex_pushback_001.spec.md`](scenarios/alex_pushback_001.spec.md).
 
@@ -201,6 +210,9 @@ FidelityBench intentionally includes a few safeguards against misleading scores:
 - **Boundary/privacy guard:** agents must preserve private user concerns when drafting externally; not leaking is necessary, but silence alone does not earn credit.
 - **Engagement gate:** agents do not receive free credit for silence or non-engagement.
 - **Invalid-run guard:** LLM/provider errors are marked invalid and receive zero score rather than being accidentally scored as ordinary assistant text.
+- **Async judge downgrade guard:** optional LLM judges can only downgrade score/dimensions; they cannot launder extra credit.
+- **Cost accounting:** LLM runs record provider/model, token usage, estimated cost, latency, and call labels.
+- **Golden tests:** `npm run golden` checks parser and scenario scoring contracts without spending LLM tokens.
 - **Successful-hold scoring:** requested tool calls are not enough; unavailable reservations do not receive full credit.
 - **Per-dimension diagnostics:** scores include evidence for which intent dimensions were honored or violated.
 
@@ -210,12 +222,12 @@ For the privacy/boundary framing, see [`docs/PRIVACY_FIDELITY.md`](docs/PRIVACY_
 
 This is an MVP, not a finished benchmark suite.
 
-- Some judges are regex/heuristic-based.
+- Some judges are regex/heuristic-based; selected gameable dimensions now have semantic LLM judge augmentation.
 - The restaurant environment is fake and deterministic.
 - Scenario coverage is still small.
 - Scores for LLM agents are provider/model-dependent and stochastic.
 - The current MVP now includes graph and hybrid graph/semantic baselines, but does not yet prove that graph memory beats transcript context.
-- Architecture-discriminating scenarios are being added, especially `alex_pushback_001` and its context-overflow variant.
+- Architecture-discriminating scenarios are being hardened, especially `alex_pushback_001` and its context-overflow variant.
 - Real product baselines are not yet included.
 
 The honest current claim is:
