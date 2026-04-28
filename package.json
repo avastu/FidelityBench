@@ -5,7 +5,8 @@
   "scripts": {
     "bench": "tsx src/index.ts",
     "demo": "tsx src/index.ts --scenario dinner --no-diagnose",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "golden": "tsx src/golden.ts"
   },
   "dependencies": {
     "@ai-sdk/amazon-bedrock": "^4.0.96",

@@ -112,6 +112,7 @@ export class StatelessLLMAgent implements Agent {
     try {
       const rawText = await callLlm({
         responseFormat: "json_object",
+        label: `${this.name}.respond`,
         messages: [
           {
             role: "system",

@@ -2,6 +2,10 @@
 // one resolver, one text-generation method, no streaming.
 
 import { generateText } from "ai"
+import {
+  assertLlmBudgetRemaining,
+  recordLlmUsage,
+} from "./usage.js"
 
 export type LlmMessage =
   | { role: "system"; content: string }
@@ -13,6 +17,7 @@ export type LlmCallOptions = {
   responseFormat?: "text" | "json_object"
   temperature?: number
   maxTokens?: number
+  label?: string
 }
 
 export type LlmProvider = "anthropic" | "openai" | "bedrock"
@@ -92,6 +97,7 @@ export function requireProvider(): LlmProviderInfo {
 
 export async function callLlm(opts: LlmCallOptions): Promise<string> {
   const info = requireProvider()
+  assertLlmBudgetRemaining()
   if (info.provider === "anthropic") return callAnthropic(info.model, opts)
   if (info.provider === "openai") return callOpenAi(info.model, opts)
   return callBedrock(info.model, opts)
@@ -103,11 +109,19 @@ async function callAnthropic(
 ): Promise<string> {
   const { anthropic } = await import("@ai-sdk/anthropic")
   const model = anthropic(modelId)
+  const startedAt = new Date()
   const result = await generateText({
     model,
     messages: opts.messages,
     temperature: opts.temperature ?? 0,
     maxOutputTokens: opts.maxTokens,
+  })
+  recordLlmUsage({
+    provider: "anthropic",
+    model: modelId,
+    label: opts.label,
+    usage: result.usage,
+    startedAt,
   })
   return result.text
 }
@@ -115,11 +129,19 @@ async function callAnthropic(
 async function callOpenAi(modelId: string, opts: LlmCallOptions): Promise<string> {
   const { openai } = await import("@ai-sdk/openai")
   const model = openai(modelId)
+  const startedAt = new Date()
   const result = await generateText({
     model,
     messages: opts.messages,
     temperature: opts.temperature ?? 0,
     maxOutputTokens: opts.maxTokens,
+  })
+  recordLlmUsage({
+    provider: "openai",
+    model: modelId,
+    label: opts.label,
+    usage: result.usage,
+    startedAt,
   })
   return result.text
 }
@@ -135,11 +157,19 @@ async function callBedrock(modelId: string, opts: LlmCallOptions): Promise<strin
   }
   const { bedrock } = await import("@ai-sdk/amazon-bedrock")
   const model = bedrock(modelId)
+  const startedAt = new Date()
   const result = await generateText({
     model,
     messages: opts.messages,
     temperature: opts.temperature ?? 0,
     maxOutputTokens: opts.maxTokens,
+  })
+  recordLlmUsage({
+    provider: "bedrock",
+    model: modelId,
+    label: opts.label,
+    usage: result.usage,
+    startedAt,
   })
   return result.text
 }

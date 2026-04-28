@@ -149,7 +149,10 @@ export async function runScenario(
   let augmented = result
   if (asyncJudge) {
     try {
-      augmented = await asyncJudge(result)
+      augmented = enforceAsyncJudgeDowngradeOnly(
+        result,
+        await asyncJudge(result),
+      )
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error)
       const note = `[asyncJudge skipped: ${message.slice(0, 200)}]`
@@ -161,6 +164,42 @@ export async function runScenario(
   }
 
   return invalidateLlmErrorResult(augmented)
+}
+
+function enforceAsyncJudgeDowngradeOnly(
+  original: EvaluationResult,
+  augmented: EvaluationResult,
+): EvaluationResult {
+  const scoreFields = [
+    "totalScore",
+    "taskSuccess",
+    "intentFidelity",
+    "recallBurden",
+    "clarificationQuality",
+    "toolUseEfficiency",
+  ] as const
+  for (const field of scoreFields) {
+    if (augmented[field] > original[field]) {
+      throw new Error(
+        `asyncJudge attempted to increase ${field}: ${original[field]} -> ${augmented[field]}`,
+      )
+    }
+  }
+
+  const originalDims = new Map(
+    (original.intentDimensionResults ?? []).map((d) => [d.id, d]),
+  )
+  for (const dim of augmented.intentDimensionResults ?? []) {
+    const originalDim = originalDims.get(dim.id)
+    if (!originalDim && dim.honored) {
+      throw new Error(`asyncJudge attempted to add honored dimension ${dim.id}`)
+    }
+    if (originalDim && !originalDim.honored && dim.honored) {
+      throw new Error(`asyncJudge attempted to upgrade dimension ${dim.id}`)
+    }
+  }
+
+  return augmented
 }
 
 function findLlmError(transcript: TranscriptEvent[]): string | undefined {

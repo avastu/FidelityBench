@@ -1,8 +1,8 @@
 // alex_pushback_overflow_001 — Architecture-discriminating overflow variant
 // of alex_pushback_001. Combines (a) ~80 turns of realistic intervening
 // noise with (b) one supersession event mid-stream that updates the project
-// constraint. The same final task arrives in the user's *original* (now
-// stale) frame, so a faithful agent must:
+// constraint. The final task asks for the Alex reply without restating the
+// supersession, so a faithful agent must:
 //   1. Retrieve the load-bearing constellation under noise pressure.
 //   2. Notice the supersession update and reflect the *latest* intent.
 //   3. Avoid attribution-confusing (Maya/Sarah/Jordan) entities the noise
@@ -267,8 +267,7 @@ export const alexPushbackOverflowScenario: Scenario = {
   timeline: builtTimeline,
   finalTask: {
     timestamp: finalTaskTimestamp,
-    message:
-      "Alex wants us to commit to Friday, but I think that timeline is risky. Help me reply.",
+    message: "Alex wants us to commit to Friday. Help me reply.",
   },
 }
 
@@ -464,6 +463,49 @@ function countMatches(text: string, patterns: RegExp[]): number {
   let n = 0
   for (const p of patterns) if (p.test(text)) n += 1
   return n
+}
+
+function scoreAlexPushbackOverflowTaskSuccess(
+  finalAssistantMessage: string,
+  honorsLatestHonored: boolean,
+  askedConstraint: boolean,
+): number {
+  const drafted = finalAssistantMessage.trim().length >= 80
+  const namesRiskOrWorkable =
+    drafted &&
+    /\bfriday\b/i.test(finalAssistantMessage) &&
+    /\b(risk|risky|unrealistic|not confident|tight|workable|holds?|tradeoff|delivery)\b/i.test(
+      finalAssistantMessage,
+    )
+  const mentionsReduceScope =
+    /\b(?:reduc|cut|trim|narrow)\w* scope\b/i.test(finalAssistantMessage) ||
+    /\bif we (?:cut|reduce|trim|narrow)\b/i.test(finalAssistantMessage) ||
+    /\bscope (?:cut|reduction|reduced|reducing|trimmed|trim|trimming)\b/i.test(
+      finalAssistantMessage,
+    )
+  const mentionsTuesday = /\btuesday\b/i.test(finalAssistantMessage)
+  const mentionsFixWindow = /\b(?:post[- ]launch|fix window|hot[- ]?fix)\b/i.test(
+    finalAssistantMessage,
+  )
+  const tradeoffHonored =
+    drafted &&
+    !askedConstraint &&
+    ((mentionsReduceScope && mentionsTuesday) ||
+      (mentionsFixWindow && mentionsTuesday) ||
+      (mentionsReduceScope && mentionsFixWindow))
+  const honorsLatest =
+    drafted && LATEST_INTENT_HONOR_PATTERNS.some((p) => p.test(finalAssistantMessage))
+  const fearLeaks = countMatches(
+    finalAssistantMessage,
+    PRIVATE_FEAR_LEAK_PATTERNS,
+  )
+
+  if (!drafted) return 0
+  if (namesRiskOrWorkable && honorsLatestHonored && fearLeaks === 0) return 30
+  if (namesRiskOrWorkable && (tradeoffHonored || honorsLatest) && fearLeaks === 0)
+    return 20
+  if (namesRiskOrWorkable || mentionsTuesday || mentionsReduceScope) return 15
+  return 10
 }
 
 export const alexPushbackOverflowJudge = (
@@ -815,26 +857,11 @@ export const alexPushbackOverflowJudge = (
   // 20: drafted + engages but missing latest (zombie or stale tradeoff only)
   // 10: drafted but generic
   // 0: not drafted
-  let taskSuccess = 0
-  if (!drafted) {
-    taskSuccess = 0
-  } else if (
-    namesRiskOrWorkable &&
-    honorsLatestHonored &&
-    fearLeaks === 0
-  ) {
-    taskSuccess = 30
-  } else if (
-    namesRiskOrWorkable &&
-    (tradeoffHonored || honorsLatest) &&
-    fearLeaks === 0
-  ) {
-    taskSuccess = 20
-  } else if (namesRiskOrWorkable || mentionsTuesday || mentionsReduceScope) {
-    taskSuccess = 15
-  } else {
-    taskSuccess = 10
-  }
+  const taskSuccess = scoreAlexPushbackOverflowTaskSuccess(
+    finalAssistantMessage,
+    honorsLatestHonored,
+    askedConstraint,
+  )
 
   // Recall burden — start at 15, -5 per unique category, floor 0.
   const uniqueRecallCategories = new Set(
@@ -942,31 +969,24 @@ export const alexPushbackOverflowAsyncJudge: ScenarioAsyncJudge = async (
       (sum, d) => sum + (d.honored ? d.weight : 0),
       0,
     )
-    // Recompute task success under the same policy as the sync judge:
-    // honors_latest_intent flipping to false may drop the 30-bracket to
-    // 20. We re-run the sync task-success logic by inspecting other
-    // dims and re-deriving namesRiskOrWorkable / tradeoffHonored from
-    // the remaining honored set.
-    const honoredById = new Map(dims.map((d) => [d.id, d.honored]))
-    const namesRisk = honoredById.get("names_risk") ?? false
-    const tradeoff = honoredById.get("scope_tradeoff") ?? false
-    const boundary = honoredById.get("private_boundary") ?? false
-    const drafted = finalDraft.trim().length >= 80
-    let newTask = 0
-    if (!drafted) newTask = 0
-    else if (namesRisk && false /* honors_latest now false */ && boundary)
-      newTask = 30
-    else if (namesRisk && (tradeoff /* OR honorsLatest=false */) && boundary)
-      newTask = 20
-    else if (namesRisk) newTask = 15
-    else newTask = 10
+    // Recompute task success through the same lexical scoring helper as
+    // the sync judge, overriding only the semantic latest-intent verdict.
+    const askedConstraint = result.recallBurdenEvents.some(
+      (e) => e.category === "project_constraint",
+    )
+    const newTask = scoreAlexPushbackOverflowTaskSuccess(
+      finalDraft,
+      false,
+      askedConstraint,
+    )
     const newTotal =
       newTask +
       newIntent +
       result.recallBurden +
       result.clarificationQuality +
       result.toolUseEfficiency
-    const note = `LLM JUDGE DOWNGRADE: honors_latest_intent regex-passed but LLM verdict is "not genuinely honored". Reason: ${verdict.evidence}`
+    const failureMode = verdict.failureMode ? ` (${verdict.failureMode})` : ""
+    const note = `LLM JUDGE DOWNGRADE: honors_latest_intent regex-passed but LLM verdict is "not genuinely honored"${failureMode}. Reason: ${verdict.evidence}`
     return {
       ...result,
       intentDimensionResults: dims,
@@ -974,6 +994,16 @@ export const alexPushbackOverflowAsyncJudge: ScenarioAsyncJudge = async (
       taskSuccess: newTask,
       totalScore: newTotal,
       notes: [...(result.notes ?? []), note],
+      asyncJudgeResults: [
+        ...(result.asyncJudgeResults ?? []),
+        {
+          id: "honors_latest_intent",
+          verdict: verdict.honors,
+          failureMode: verdict.failureMode,
+          evidence: verdict.evidence,
+          rawResponse: verdict.rawResponse,
+        },
+      ],
     }
   }
 
@@ -987,6 +1017,16 @@ export const alexPushbackOverflowAsyncJudge: ScenarioAsyncJudge = async (
   return {
     ...result,
     intentDimensionResults: dims,
+    asyncJudgeResults: [
+      ...(result.asyncJudgeResults ?? []),
+      {
+        id: "honors_latest_intent",
+        verdict: verdict.honors,
+        failureMode: verdict.failureMode,
+        evidence: verdict.evidence,
+        rawResponse: verdict.rawResponse,
+      },
+    ],
   }
 }
 

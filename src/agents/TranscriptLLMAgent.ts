@@ -166,7 +166,11 @@ export class TranscriptLLMAgent implements Agent {
 
     try {
       requireProvider()
-      const rawText = await callLlm({ messages, responseFormat: "json_object" })
+      const rawText = await callLlm({
+        messages,
+        responseFormat: "json_object",
+        label: `${this.name}.respond`,
+      })
       const output = parseAgentOutput(rawText)
       const toolCallSummary = output.toolCalls?.length
         ? JSON.stringify(output.toolCalls)

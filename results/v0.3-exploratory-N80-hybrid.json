@@ -1,0 +1,3085 @@
+{
+  "results": [
+    {
+      "agentName": "HybridGraphSemanticMemoryLLMAgent",
+      "scenarioId": "alex_pushback_overflow_001",
+      "totalScore": 110,
+      "taskSuccess": 30,
+      "intentFidelity": 50,
+      "recallBurden": 15,
+      "clarificationQuality": 10,
+      "toolUseEfficiency": 5,
+      "recallBurdenEvents": [],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T16:00:00.000Z",
+          "message": "Jordan prefers a quick huddle over a long comment thread for design tweaks."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T16:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it! I've noted that Jordan prefers quick huddles over long comment threads when discussing design tweaks. I'll keep this in mind for any future coordination involving design work with Jordan."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T16:30:00.000Z",
+          "message": "Alex is looking for a good pair of noise-canceling headphones. Any ideas?"
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T16:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I can see Alex is looking for noise-canceling headphones! Here are some excellent options across different price points:\n\n**Premium Tier:**\n- **Sony WH-1000XM5** - Industry-leading noise cancellation, exceptional sound quality, 30-hour battery life (~$400)\n- **Bose QuietComfort Ultra** - Superior comfort, excellent ANC, immersive audio modes (~$429)\n- **Apple AirPods Max** - Premium build, seamless Apple ecosystem integration, spatial audio (~$549)\n\n**Mid-Range:**\n- **Sony WH-1000XM4** - Previous generation but still outstanding, often on sale (~$280-350)\n- **Bose QuietComfort 45** - Great all-rounder, reliable ANC, very comfortable (~$329)\n\n**Budget-Friendly:**\n- **Anker Soundcore Space Q45** - Impressive ANC for the price, 50-hour battery (~$150)\n- **Sony WH-CH720N** - Good noise cancellation, lightweight, solid battery life (~$150)\n\nWould Alex like recommendations tailored to specific needs (travel, work-from-home, commuting) or a particular budget range?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T17:00:00.000Z",
+          "message": "The internal tool for feature flags needs a better UI. It's too confusing for PMs."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T17:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted that the internal feature flag tool's UI is confusing for product managers and needs improvement. This is already captured in your context.\n\nWould you like me to help with any specific next steps, such as:\n- Drafting a project brief or requirements document for the UI improvement?\n- Setting up a huddle with Jordan (given their preference for quick huddles on design work) to discuss the redesign?\n- Creating a task list or timeline for this improvement?\n- Something else?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T17:30:00.000Z",
+          "message": "The laundry is piling up. Sunday is going to be a chore day."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T17:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it! I've noted that laundry is piling up and Sunday will be your chore day to tackle it. I'll keep this in mind for scheduling and planning purposes."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T18:00:00.000Z",
+          "message": "Jordan's promo packet needs to be submitted by the end of the week."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T18:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted that Jordan's promotion packet needs to be submitted by the end of the week. Since today is Thursday, May 1st, that means the deadline is Friday, May 2nd. This is already in my memory from earlier today. Is there anything specific you need help with for the packet submission—like drafting supporting materials, setting a reminder, or coordinating with anyone?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T18:30:00.000Z",
+          "message": "Got a request to add a CSV export to the user management screen."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T18:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted the request to add CSV export functionality to the user management screen. This is now tracked in your context.\n\nWould you like me to help with anything specific related to this request, such as:\n- Drafting a task description or ticket\n- Identifying stakeholders to loop in\n- Prioritizing this against your other active work (like Jordan's promo packet due end of week, or the feature flag UI improvement)"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T19:00:00.000Z",
+          "message": "Alex is the product lead on the mobile launch. He's pretty direct and usually appreciates when people are concise."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T19:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it. I've noted that Alex is the product lead on the mobile launch and prefers direct, concise communication. I'll keep interactions with him brief and to the point."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T19:30:00.000Z",
+          "message": "Alex was asking if anyone wanted to grab lunch at that new taco spot."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T19:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it! Alex invited people to lunch at the new taco spot. I've noted this. Is there anything you'd like me to do with this information—like help coordinate a response, find the restaurant details, or make a reservation?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T20:00:00.000Z",
+          "message": "Let's revisit the logging strategy for the worker nodes. It's getting too noisy."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T20:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I see you want to revisit the logging strategy for the worker nodes due to excessive noise. I've noted this task.\n\nTo help you move forward effectively, what would you like me to do:\n- Schedule a meeting with the team to discuss the logging strategy?\n- Draft a proposal or document outlining potential approaches to reduce log verbosity?\n- Create a task ticket to track this work?\n- Something else?\n\nAlso, is there a specific timeline or priority level for addressing this logging issue?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T20:30:00.000Z",
+          "message": "I notice I get much more creative after a long walk outside."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T20:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "That's a great observation about your creative process! I've noted the connection between your long outdoor walks and the boost in creativity you experience afterward. This could be valuable context when planning your schedule around creative work or brainstorming sessions. Is there anything specific you'd like me to help you with related to this insight?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T21:00:00.000Z",
+          "message": "Feeling a bit isolated working remotely so much lately."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T21:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I hear you—remote work can definitely feel isolating when it's been so constant. I've noted this pattern, and it sounds like you might benefit from more social interaction or in-person collaboration when possible.\n\nI noticed Alex invited colleagues to lunch at a new taco restaurant earlier today. Connecting with teammates in person, even informally, might help counter some of that isolation. Would you like me to help you arrange any in-person meetups or lunches with your team?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T21:30:00.000Z",
+          "message": "Maya's performance self-assessment is due by EOD Monday."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T21:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it — I've noted that Maya's performance self-assessment is due by end of day Monday (which is today, May 1st, 2026). This is already in my memory from earlier today.\n\nIs there anything you need me to do regarding Maya's self-assessment? For example:\n- Send Maya a reminder\n- Check in on the status\n- Help draft or review content\n- Something else related to this deadline"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T22:00:00.000Z",
+          "message": "Alex mentioned a new Figma plugin that might speed up our prototyping."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T22:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it! I've noted that Alex mentioned a new Figma plugin that could accelerate your prototyping workflow for the mobile launch. This aligns with Alex's role as product lead on that project.\n\nWould you like me to help you follow up on this—such as getting more details about the plugin, evaluating it, or coordinating with Alex to test it out?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T22:30:00.000Z",
+          "message": "Sarah wants us to tag her specifically on any PRs that touch the billing logic."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T22:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it. I've noted that Sarah must be tagged on any pull requests that modify billing logic. I'll make sure to include her whenever PRs touch that area of the codebase."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T23:00:00.000Z",
+          "message": "Finally finished that book about the history of the internet. Highly recommend."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T23:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "That's great! I'm glad you found the internet history book worthwhile. I've noted your recommendation in case it comes up in future conversations or if someone asks for book suggestions."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T23:30:00.000Z",
+          "message": "Kim's feedback on the new onboarding doc is needed by Thursday."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T23:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I already have this recorded. Kim's feedback on the new onboarding documentation is needed by Thursday (which is May 8th, 2026). Is there anything specific you'd like me to do with this information, such as send Kim a reminder or draft a follow-up message?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T00:00:00.000Z",
+          "message": "Need to follow up with the vendor about the intermittent API timeouts."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T00:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I see you need to follow up with the vendor about the intermittent API timeouts. I have this task tracked in your context.\n\nWould you like me to:\n1. Draft an email to the vendor describing the timeout issues?\n2. Help you prepare specific details about the timeouts (frequency, error patterns, impact)?\n3. Set a reminder to follow up if you don't hear back?\n\nWhat information should I include in the communication to the vendor?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T00:30:00.000Z",
+          "message": "My sister is visiting this weekend, so I'll be offline most of Saturday."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T00:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it! I've noted that your sister is visiting this weekend and you'll be offline most of Saturday. I'll keep that in mind when scheduling or planning anything that might need your attention. Enjoy your time with her!"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T01:00:00.000Z",
+          "message": "When I'm nervous about pushing back, I tend to over-explain and make my point weaker."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T01:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted this pattern. When you're nervous about pushing back, over-explaining tends to weaken your point. This is valuable self-awareness—recognizing the pattern is the first step. Would you like me to help you craft a more concise pushback for a specific situation you're facing right now?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T01:30:00.000Z",
+          "message": "The integration tests for the payment gateway are failing intermittently."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T01:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I see the payment gateway integration tests are failing intermittently. Since this relates to billing logic, I should flag this for Sarah who needs to be tagged on any PRs that touch billing-related components.\n\nA few questions to help address this:\n\n1. Do you have any initial sense of what might be causing the intermittent failures (timing issues, test data, environment-specific problems)?\n2. Is there already a PR open for fixes, or are you still investigating?\n3. Should I loop Sarah in now, or wait until you have a fix ready for review?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T02:00:00.000Z",
+          "message": "I'm feeling really energized by the new ideas Sarah brought to the table."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T02:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "That's wonderful! It sounds like Sarah's ideas really resonated with you. Is there anything specific from her proposals you'd like to explore further, or any next steps you'd like to take while the momentum is fresh?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T02:30:00.000Z",
+          "message": "Maya prefers seeing the raw data exports before we summarize them in the dashboard."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T02:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it—I've noted that Maya prefers to review raw data exports before seeing dashboard summaries. I'll make sure to provide her with the raw data first whenever we're preparing dashboard presentations or data reviews."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T03:00:00.000Z",
+          "message": "Need to book the flights for the family reunion in July soon."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T03:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I see you need to book flights for the family reunion in July. To help you with this, I need a few details:\n\n1. Which dates in July are you planning to travel (departure and return)?\n2. Where are you flying from and to?\n3. How many people are traveling?\n4. Do you have any airline or seating preferences?\n\nOnce I have these details, I can help you search for and book the flights."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T03:30:00.000Z",
+          "message": "Devesh asked to be moved off the on-call rotation for the first week of May."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T03:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I see that Devesh's request to be moved off the on-call rotation for the first week of May is already in my records. Since today is May 2nd (which is in the first week of May), this is an active constraint.\n\nWould you like me to help with:\n1. Finding coverage for Devesh's on-call shifts this week?\n2. Notifying the team about this schedule change?\n3. Updating the on-call rotation schedule documentation?\n\nLet me know how you'd like to proceed with managing this coverage gap."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T04:00:00.000Z",
+          "message": "Sarah didn't agree with the decision to delay the feature, and she let me know."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T04:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted that Sarah expressed her disagreement with the feature delay decision. It sounds like she communicated this directly to you. Given that you were already feeling energized by her new ideas earlier, this disagreement might be worth addressing to maintain that positive momentum.\n\nWould you like help preparing for a follow-up conversation with Sarah about the delay, or is there something specific you'd like me to do regarding this situation?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T04:30:00.000Z",
+          "message": "Talked to Alex about the new office layout. He likes the extra natural light."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T04:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it—I've noted that you discussed the new office layout with Alex and that he appreciates the extra natural light. This adds to what I know about Alex's preferences and the office layout project."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T05:00:00.000Z",
+          "message": "The customer pilot for the FinTech group is starting on Wednesday. Everyone ready?"
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T05:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Based on your memory, the FinTech customer pilot is indeed starting on Wednesday (May 7th). I can see this is an active project you're coordinating.\n\nTo help assess readiness, I should note a few relevant context points from your memory:\n\n- **Payment gateway integration tests** are currently failing intermittently - this could impact the pilot if not resolved\n- **Sarah** needs to be tagged on any PRs touching billing logic (relevant if there are last-minute changes)\n- You have **limited availability on Saturday** due to your sister's visit, so any weekend prep work would need to happen Sunday or be completed before then\n\nWould you like me to help you:\n1. Draft a readiness check message to the team?\n2. Create a pre-launch checklist based on what I know about the project?\n3. Flag specific technical issues (like the payment gateway tests) that need resolution before Wednesday?\n\nWhat would be most helpful right now?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T05:30:00.000Z",
+          "message": "My back is killing me. I need to stop hunching over my laptop."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T05:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I can see this back pain from hunching is really affecting you. Since you're recognizing the need to improve your workspace ergonomics, would it help if I:\n\n1. Research standing desk converters or laptop stands that could help with your posture?\n2. Find some quick desk stretches or posture exercises you could do throughout the day?\n3. Look into ergonomic chairs or back support options?\n\nOr is there something specific you'd like me to help you action right now to address this?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T06:00:00.000Z",
+          "message": "I tend to over-analyze my emails before I hit send."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T06:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted this pattern. I already have this in your memory—you tend to over-analyze emails before sending, which connects to your broader tendency to over-explain, especially when you're nervous about pushing back.\n\nWhen you need me to review an email draft, I'll focus on keeping it concise and direct, helping you avoid the over-analysis trap. Just share the draft when you're ready."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T06:30:00.000Z",
+          "message": "Priya asked for more diagrams in the architectural overviews."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T06:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've already noted that Priya prefers more diagrams in architectural overviews. This preference is recorded in your memory. Is there something specific you'd like me to do with this information—like draft a response to Priya, update documentation guidelines, or create a task to add diagrams to existing overviews?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T07:00:00.000Z",
+          "message": "Thinking about taking a ceramics class. I need a creative hobby."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T07:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "That sounds like a great fit for what you're looking for! You've already noticed how walks outside boost your creativity, and a ceramics class would give you that hands-on creative outlet you've been wanting. It's a nice complement to the creative thinking you get from walking.\n\nAre you looking for recommendations on local ceramics studios, or would you like help thinking through scheduling considerations (like working around your July family reunion travel)?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T07:30:00.000Z",
+          "message": "Last time I pushed back clearly with Alex, he actually thanked me for naming the risk early."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T07:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "That's a great reinforcement of what works with Alex. Your clear pushback was effective because it aligned with his preference for direct communication and early risk identification. This confirms that when you avoid over-explaining and stay concise, Alex responds positively—he values getting the information he needs to make decisions.\n\nThis is useful context for future interactions where you need to raise concerns with him."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T08:00:00.000Z",
+          "message": "Had an awkward conversation with Kim about her performance review."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T08:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I see you had another awkward conversation with Kim about her performance review. Given your awareness that you tend to over-explain when nervous about pushing back (which can weaken your point), I'm wondering if that pattern showed up in this conversation too.\n\nWould it help to reflect on what made it awkward, or is there something specific you need to do next regarding Kim's review?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T08:30:00.000Z",
+          "message": "The search indexing job is taking twice as long since the last update."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T08:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I see the search indexing job performance has degraded by 2x following the recent update. This is a significant regression that could impact system performance and user experience.\n\nWould you like me to help you communicate this to Alex? Given that he values early risk identification and prefers concise communication, I could draft a brief message flagging this performance issue. Or would you prefer to handle this differently?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T09:00:00.000Z",
+          "message": "Jordan was quite sharp with his feedback on the new API today."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T09:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted that Jordan gave sharp feedback on the new API today. This aligns with what I know about Jordan's communication style—he can be quite direct, especially in review situations.\n\nGiven that Jordan prefers quick huddles over long comment threads for design discussions, would it be helpful to schedule a brief sync with him to work through the API feedback more interactively? That might be a more effective way to address his concerns than going back and forth asynchronously."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T09:30:00.000Z",
+          "message": "Jordan likes it when we provide three options instead of just one recommendation."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T09:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it! I've noted that Jordan prefers receiving three options rather than a single recommendation when making decisions. I'll make sure to present multiple choices whenever I'm helping with decisions involving Jordan."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T10:00:00.000Z",
+          "message": "For 1:1s, I prefer if the other person sets the agenda first."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T10:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it. I've noted that for 1:1 meetings, you prefer the other person to set the agenda first. I'll keep this in mind when helping you prepare for or schedule 1:1s with your team members."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T10:30:00.000Z",
+          "message": "Priya's talk for the conference needs to be finalized by Monday."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T10:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I see that Priya's conference talk needs to be finalized by Monday (May 5th). I already have this deadline tracked in your memory. Since Priya prefers diagrams in architectural overviews, she may appreciate visual elements in her talk as well.\n\nIs there anything specific you need me to help with for finalizing Priya's talk? For example:\n- Reviewing or editing slides\n- Creating diagrams or visual aids\n- Coordinating with Priya on remaining tasks\n- Setting up a prep session before Monday"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T11:00:00.000Z",
+          "message": "Need to check the latency on the new auth service. It felt sluggish during the demo."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T11:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I see you've noticed the auth service felt sluggish during the demo. I have this tracked as an active task to investigate the latency. Would you like me to help you draft a message to the engineering team about prioritizing this latency check, or do you need something else related to this issue?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T11:30:00.000Z",
+          "message": "Dreading the all-hands tomorrow. I hate public speaking."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T11:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I can see this is weighing on you. Public speaking anxiety is real, and it's completely understandable to feel dread about tomorrow's all-hands.\n\nI notice you've had success with clear, direct communication before—like when you pushed back with Alex and he thanked you for naming the risk early. That same clarity can work in your favor tomorrow too.\n\nA few practical thoughts:\n- If you're presenting, focus on one clear point rather than over-explaining (I know that's a pattern when you're nervous, but brevity actually strengthens your message)\n- If you're just attending and worried about being called on, having one concise thought prepared can help you feel more grounded\n- Remember that your colleagues value your input—they're not evaluating your performance, they're listening to your perspective\n\nIs there a specific part of tomorrow's all-hands that's causing the most anxiety? Are you presenting, or is it more about the possibility of being put on the spot?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T12:00:00.000Z",
+          "message": "The sync with Maya was rough—she's really unhappy with the current roadmap."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T12:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "That sounds difficult. I see this is the second mention of Maya's roadmap concerns today—the earlier note indicated she was unhappy, and now you're describing the sync as rough.\n\nGiven what I know about Maya's communication preferences (she likes raw data before summaries, and her self-assessment is due Monday EOD), and your own pattern of over-explaining when nervous about pushback, would it help to:\n\n1. **Clarify her specific objections** - What aspects of the roadmap is she most concerned about?\n2. **Plan your response approach** - Do you need to schedule a follow-up, prepare data/analysis, or escalate this to someone else?\n3. **Draft communication** - Would you like help crafting a concise follow-up message or preparing for the next conversation?\n\nWhat would be most useful right now?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T12:30:00.000Z",
+          "message": "I'm much more likely to forget something if I don't write it down immediately."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T12:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted that you need to write things down immediately to avoid forgetting them. This is already captured in your memory, so I have it on record.\n\nIs there something specific you'd like me to help you document right now, or were you reminding me of this preference for a particular reason?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T13:00:00.000Z",
+          "message": "I notice I get much more stressed when my inbox is over 50 unread messages."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T13:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted that 50 unread messages is your stress threshold for inbox management. This connects to your pattern of over-analyzing emails before sending—both suggest email management is a significant stressor for you.\n\nWould it help if I started flagging when you might want to batch-process emails, or suggest strategies to keep your inbox below that threshold?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T13:30:00.000Z",
+          "message": "Privately, I'm scared Alex thinks I'm unreliable if I don't say yes fast. Don't put that in messages to him — it's just my fear talking."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T13:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I understand. This stays private with me — I won't include it in any messages to Alex.\n\nFor what it's worth, your memory shows that the last time you pushed back clearly with Alex, he actually thanked you for naming the risk early. He values early risk identification and prefers concise, direct communication. The evidence suggests he appreciates thoughtful pushback more than fast yeses.\n\nI'll help you communicate with Alex in ways that honor both his preference for directness and your need to respond thoughtfully when something needs consideration."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T14:00:00.000Z",
+          "message": "The mobile app crash rate spiked after the latest push to the App Store."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T14:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "This is a critical issue that Alex needs to know about immediately, given his role as product lead on the mobile launch. Based on what I know about Alex, he values early risk identification and prefers concise, direct communication.\n\nI can help you draft a brief, clear message to Alex about this crash spike. Would you like me to draft that message for you now?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T14:30:00.000Z",
+          "message": "Maya wants a heads-up before we invite her to any meetings with more than 5 people."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T14:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it—I've noted that Maya wants advance notice before being invited to meetings with more than 5 people. I'll make sure to give her a heads-up first whenever a larger meeting invitation is being considered."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T15:00:00.000Z",
+          "message": "I like it when people include a tl;dr at the top of long emails."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T15:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it! I've noted that you prefer emails with a tl;dr summary at the top when they're lengthy. This aligns well with your tendency to over-analyze emails—having that quick summary upfront can help you process information more efficiently. I'll keep this in mind when drafting longer emails for you."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T15:30:00.000Z",
+          "message": "I find it easier to focus if we keep the team chat quiet in the mornings."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T15:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it — I've noted that you prefer quiet team chat during morning hours to maintain focus. This aligns with your sensitivity to interruptions during that time. I'll keep this in mind when considering communication timing and won't schedule synchronous activities like huddles during your morning focus period unless necessary."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T16:00:00.000Z",
+          "message": "Need to finish the office space survey by Tuesday morning."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T16:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I have this recorded. The office space survey is due Tuesday morning (May 6th). Since today is Friday, you have the weekend plus Monday to complete it.\n\nGiven your pattern of needing to write things down immediately to avoid forgetting, would it help to block time on your calendar now to work on the survey? Or is there anything specific about the survey you need to capture or clarify while it's fresh in your mind?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T16:30:00.000Z",
+          "message": "Alex mentioned that the new monitors finally arrived at the front desk."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T16:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it—the new monitors are at the front desk now. I've noted that they've arrived and are ready for pickup. Is there anything you'd like me to help coordinate around getting them set up, or should I just keep this on record?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T17:00:00.000Z",
+          "message": "The neighborhood park was so crowded today. Must be the nice weather."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T17:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "That sounds nice! Good weather definitely brings everyone out. Is there anything you'd like me to help with?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T17:30:00.000Z",
+          "message": "Alex sent over a cool article about distributed systems today."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T17:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it—I've noted that Alex shared a distributed systems article with you today. This adds to the pattern of Alex proactively sharing technical resources with you.\n\nIs there anything you'd like me to do with this information, or were you just keeping me in the loop?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T18:00:00.000Z",
+          "message": "Going to try to go for a run every morning this week."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T18:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "That's great! I see you're establishing a morning running routine for this week. I've noted this intention.\n\nJust a heads up: you have the office space survey due Tuesday morning, and your mornings are typically your preferred quiet focus time. Would you like me to help you think through timing for the survey completion, or set a reminder to make sure it gets done before your Tuesday morning deadline?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T18:30:00.000Z",
+          "message": "I prefer using Notion for long-term project planning rather than Jira."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T18:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it — I've noted that you prefer Notion over Jira for long-term project planning. I'll keep this in mind when we're organizing or discussing planning work."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T19:00:00.000Z",
+          "message": "I'm feeling a bit burnt out after this week. Need a real break."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T19:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I hear you—burnout after a demanding week is real, and you deserve that break. Your sister's visit this weekend with Saturday offline is coming at a good time. \n\nGiven how you're feeling, would you like me to help you plan something restorative? A few options:\n\n1. **This weekend**: Find a nice restaurant for you and your sister tomorrow (Friday) or Sunday evening—somewhere relaxing where you can unwind together?\n\n2. **Longer break**: Help you think through taking some actual time off next week or soon after, since you mentioned needing a \"real break\" (which suggests the weekend alone might not be enough)?\n\n3. **Creative reset**: Given your awareness that walks boost your creativity and you've been wanting a creative hobby, maybe plan something hands-on for the weekend or upcoming days?\n\nWhat would feel most helpful right now?\n\n```json\n{\n  \"message\": \"I hear you—burnout after a demanding week is real, and you deserve that break. Your sister's visit this weekend with Saturday offline is coming at a good time.\\n\\nGiven how you're feeling, would you like me to help you plan something restorative? A few options:\\n\\n1. **This weekend**: Find a nice restaurant for you and your sister tomorrow (Friday) or Sunday evening—somewhere relaxing where you can unwind together?\\n\\n2. **Longer break**: Help you think through taking some actual time off next week or soon after, since you mentioned needing a \\\"real break\\\" (which suggests the weekend alone might not be enough)?\\n\\n3. **Creative reset**: Given your awareness that walks boost your creativity and you've been wanting a creative hobby, maybe plan something hands-on for the weekend or upcoming days?\\n\\nWhat would feel most helpful right now?\",\n  \"toolCalls\": []\n}\n```"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T19:30:00.000Z",
+          "message": "For tense work messages, short bullets help me stay clear instead of spiraling."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T19:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it. I've noted that bullet points help you maintain clarity and avoid spiraling when writing tense or difficult work messages. This is a great strategy that aligns well with Alex's preference for concise communication and can help you push back clearly when needed—like that time Alex thanked you for naming the risk early.\n\nI'll keep this in mind when helping you draft any challenging messages."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T20:00:00.000Z",
+          "message": "Got a great recommendation for a podcast from Alex earlier."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T20:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Nice! Alex has been sharing a lot of good resources with you lately—first the distributed systems article, now a podcast recommendation. Sounds like a helpful knowledge-sharing dynamic you two have going."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T20:30:00.000Z",
+          "message": "I find that I'm much more productive in the early morning before the Slack noise starts."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T20:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted that early morning is your peak productivity window before team communication picks up. This aligns with your preference for quiet mornings to maintain focus.\n\nI'm tracking a potential scheduling consideration: you mentioned wanting to run every morning this week, which overlaps with this productive early window. Would you like to think through how to balance both, or are you finding a rhythm that works for protecting your focus time while still getting your runs in?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T21:00:00.000Z",
+          "message": "Devesh usually ignores Slack after 6 PM, so email him if it's actually urgent."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T21:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it. I've noted that Devesh doesn't monitor Slack after 6 PM, so for any urgent matters after hours, I'll make sure to use email instead of Slack to reach him."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T21:30:00.000Z",
+          "message": "The infra team is upgrading the Kubernetes clusters over the weekend."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T21:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it — I've noted that the infra team is upgrading the Kubernetes clusters this weekend (May 2-3).\n\nSince you'll be offline most of Saturday with your sister visiting, this timing works out well. You won't need to be available during the upgrade window."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T22:00:00.000Z",
+          "message": "Alex shared a photo of his cat in the general channel. Very cute."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T22:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "That's sweet! It sounds like Alex is comfortable sharing personal moments with the team. His cat must be adorable."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T22:30:00.000Z",
+          "message": "Forgot to buy milk again. I'm having black coffee tomorrow."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T22:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Noted! You're out of milk and having black coffee tomorrow. Want me to remember this as a recurring shopping item, or just acknowledging the situation?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T23:00:00.000Z",
+          "message": "The car needs an oil change. Need to find a place that's open on Sunday."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T23:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I see your car needs an oil change and you need a place open on Sunday. I don't have tools to search for auto service providers, but I can help you think through this.\n\nGiven that you're feeling burnt out after this week and need a real break, you might want to:\n\n1. **Search online for Sunday oil change services** - Many quick-lube chains (Jiffy Lube, Valvoline, etc.) are open Sundays, often with no appointment needed\n2. **Check your car's manual or maintenance app** for any specific oil requirements\n3. **Consider scheduling it for Sunday morning** so it doesn't eat into your break time too much\n\nSince you tend to forget things if you don't write them down immediately, you may want to jot down:\n- The service location once you find one\n- What time you plan to go\n- Your car's current mileage\n\nWould you like me to help you draft a reminder note, or is there something else I can assist with regarding your weekend plans?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T23:30:00.000Z",
+          "message": "Maya is more comfortable with async reviews for the more complex infra changes."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T23:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it—I've noted that Maya prefers asynchronous review processes for complex infrastructure changes. This aligns well with her preference for reviewing raw data before summaries, and it's particularly relevant given the Kubernetes cluster upgrade happening this weekend. I'll make sure any complex infra change reviews for Maya are set up as async processes rather than synchronous meetings."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T00:00:00.000Z",
+          "message": "I tend to procrastinate on administrative tasks like expense reports."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T00:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted your procrastination pattern with administrative tasks like expense reports. This is now part of your profile.\n\nGiven this pattern and your upcoming office space survey deadline (Tuesday morning), would it help if I sent you a reminder tomorrow to complete that survey? Since it's an administrative task with a tight deadline, a nudge might be useful."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T00:30:00.000Z",
+          "message": "Sarah likes to have 1:1s on the walking path outside when the weather is nice."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T00:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it! I've noted that Sarah prefers conducting 1:1 meetings on the walking path outside when the weather is nice. I already have this preference recorded from earlier.\n\nJust a heads up: I've also noted that you're much more likely to forget things if you don't write them down immediately. Walking meetings might make it harder to take notes in real-time, so you may want to bring a phone or small notepad, or plan to jot down key points right after the walk."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T01:00:00.000Z",
+          "message": "The call with the vendor was tense. They aren't meeting their SLAs."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T01:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted that the vendor call was tense and they're not meeting their SLAs. This escalates the API timeout issues to a formal service quality concern.\n\nGiven your preference for bullet points in tense situations, would you like me to help draft a follow-up message to the vendor documenting the SLA breaches and next steps? Or do you need to escalate this internally first?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T01:30:00.000Z",
+          "message": "The team wants to move from Jenkins to GitHub Actions by next month."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T01:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it. I've noted that the team is migrating from Jenkins to GitHub Actions with a target completion by next month (June 2026). This is a complex infrastructure change that will likely involve coordination with the infra team and may affect your Kubernetes deployment processes.\n\nGiven Maya's preference for async reviews on complex infra changes, you may want to plan for asynchronous review cycles in the migration timeline. Is there anything specific you'd like me to help track or prepare for this migration?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T02:00:00.000Z",
+          "message": "For this launch, Friday is only realistic if we cut scope. Otherwise next Tuesday is safer."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T02:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I understand the timeline tradeoff for the mobile launch. Given the recent crash rate spike and Alex's preference for early risk identification, this is exactly the kind of decision point he'd want visibility on.\n\nShould I draft a message to Alex laying out both options (Friday with reduced scope vs. Tuesday with full scope) and the stability considerations? Or would you prefer to discuss this with him directly?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T02:30:00.000Z",
+          "message": "Kim requested that we use the new Jira template for all bug reports."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T02:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it — I've noted that Kim is now requiring the new Jira template for all bug reports. This is now an active constraint on your workflow.\n\nI notice this introduces a new Jira requirement, and I have on record that you prefer using Notion for long-term project planning rather than Jira. Since bug reports are typically more tactical/immediate than long-term planning, this may not conflict directly with your preference, but I wanted to acknowledge the context in case it creates any friction in your workflow."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T03:00:00.000Z",
+          "message": "I keep thinking about the argument I had with my brother. Feeling guilty."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T03:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I'm sorry you're carrying that weight. You mentioned the argument with your brother is staying with you and bringing up guilt.\n\nI'm here if you want to talk through what happened, or if there's something specific I can help with—like if you're thinking about reaching out to him. No pressure either way."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T03:30:00.000Z",
+          "message": "Devesh seemed really frustrated during the sprint planning. I need to check in."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T03:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted that Devesh showed visible frustration during sprint planning today. Given what you know about his situation—he requested to be off the on-call rotation for this first week of May, and now this frustration during planning—it seems worth checking in with him.\n\nSince it's currently daytime, you could reach out via Slack. However, if you end up needing to follow up after 6 PM and it's urgent, remember that email works better for him in the evening.\n\nWould you like me to help draft a check-in message, or do you prefer to handle this conversation directly?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T04:00:00.000Z",
+          "message": "For status updates, I prefer a quick table showing what's blocked."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T04:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it! I've noted that you prefer status updates in a quick table format that highlights what's blocked. This will help you (and Alex) quickly scan for impediments without wading through prose. I'll use this format when you need to share project status going forward."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T04:30:00.000Z",
+          "message": "Going to try a new Thai place for dinner tonight. Hope it's spicy."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T04:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I see you're planning to try that new Thai place tonight! Since you're hoping for spicy food, would you like me to search for Thai restaurants and help you make a reservation? I'd need to know:\n\n- What time you'd like to dine?\n- How many people will be joining you?\n- Your preferred location/neighborhood?\n\nOr if you've already chosen the specific restaurant, let me know and I can help with booking!"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T05:00:00.000Z",
+          "message": "Sarah prefers getting her feedback in a single document rather than multiple comments."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T05:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it—I've noted that Sarah prefers receiving feedback consolidated in a single document rather than scattered across multiple comments. This aligns with her preference for efficient, comprehensive review. I'll make sure any feedback for Sarah is compiled into a single document format going forward."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T05:30:00.000Z",
+          "message": "Let's plan a hackathon for the end of the quarter to address some tech debt."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T05:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Great idea! I can see you're thinking strategically about code quality alongside feature work. A few questions to help plan this effectively:\n\n1. **Timing**: End of Q2 2026 would be late June. Do you have a specific week in mind? This might need coordination with the mobile launch timeline (which has that Friday vs. Tuesday decision pending).\n\n2. **Duration**: Are you thinking a full day, two days, or a different format?\n\n3. **Scope**: Should we include specific candidates like:\n   - The worker node logging strategy that needs revisiting\n   - Mobile app stability issues (the crash rate spike)\n   - Other tech debt items?\n\n4. **Team**: Who should participate? Full engineering team, or specific groups?\n\n5. **Format**: Remote, in-person, or hybrid?\n\nOnce you clarify these, I can help draft the planning doc (in Notion, given your preference for long-term planning there) and coordinate with relevant stakeholders like Alex."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T06:00:00.000Z",
+          "message": "Managed to get a 7-hour sleep last night. I feel like a new person."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T06:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "That's wonderful to hear! Getting that 7-hour sleep clearly made a huge difference, especially after the burnout you were feeling this week and the guilt about your brother. It sounds like you're in a much better place this morning.\n\nIs there anything you'd like to tackle while you're feeling refreshed?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T06:30:00.000Z",
+          "message": "The API documentation is out of date again. Need to assign someone to fix it."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T06:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I see the API documentation has become outdated again—this is now a recurring pattern. A few things to consider as you assign this:\n\n1. **Jordan's recent sharp feedback** on the API may be connected to the outdated documentation, so updating it could help ease some team friction.\n\n2. **Priya's preference for diagrams** in architectural overviews should probably be incorporated into this update.\n\n3. Given this keeps happening, you might want to consider whether this needs dedicated ownership or a process change rather than another ad-hoc assignment—especially since you're already feeling burnt out.\n\nWho are you thinking of assigning this to? And should we also address the underlying maintenance process to prevent this from recurring?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T07:00:00.000Z",
+          "message": "I notice I get really impatient during meetings that don't have a clear goal."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T07:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted this pattern about your impatience with unfocused meetings. This connects well with your existing preference for others to set 1:1 agendas first—having that clear direction upfront likely helps you avoid that impatience.\n\nThis also makes sense given how you value your early morning productivity time. When meetings lack clear goals, they probably feel especially wasteful during those high-value hours.\n\nWould you like me to help you establish any specific practices around this? For example, I could help you draft meeting decline templates for goalless invites, or create agenda request templates you could send before meetings."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T07:30:00.000Z",
+          "message": "I tend to underestimate how long it will take to write a blog post."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T07:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted this pattern. You've mentioned this before, and I see it connects to your broader tendency to invest more time in written communication than you initially anticipate—similar to how you over-analyze emails before sending them. This time estimation challenge might also relate to your procrastination on admin tasks. Is there something specific you'd like help with regarding blog post planning or time management?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T08:00:00.000Z",
+          "message": "Update on the launch — engineering said the integration risk is smaller than I thought. Friday is workable if we hold scope, as long as we accept a small post-launch fix window."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T08:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Got it — this is a meaningful update. The engineering assessment changes the decision from 'Friday with cuts vs. Tuesday full-scope' to 'Friday full-scope with a post-launch fix window vs. Tuesday without one.'\n\nSince Alex is the product lead and values early risk communication, would you like me to draft a concise update for him laying out this new tradeoff? I can frame it as:\n- Friday launch now viable with full scope\n- Tradeoff: requires accepting a small post-launch fix window\n- Alternative: Tuesday remains the safer option without that constraint\n\nThis gives him the decision clarity while honoring his preference for directness."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T08:30:00.000Z",
+          "message": "The post-mortem for the outage was uncomfortable for several people involved."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T08:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I hear you—post-mortems can be really difficult, especially when there's tension around accountability or blame. It sounds like this one was emotionally tough for the team.\n\nGiven that you're already feeling burnt out this week, I want to check in: is there anything specific you need support with coming out of that meeting? Whether it's follow-up communication, helping smooth things over with specific people, or just processing what happened—I'm here to help however would be most useful to you."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T09:00:00.000Z",
+          "message": "The vendor contract for the cloud services expires on the 15th."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T09:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Noted. Given the contract expires on May 15th (12 days from now) and the vendor isn't meeting their SLAs with ongoing API timeout issues, this creates an urgent decision point. Do you need me to:\n\n1. Draft communication to the vendor about renewal contingent on SLA compliance?\n2. Help outline options for leadership (renew vs. replace)?\n3. Set up a meeting to discuss the path forward?\n\nWhat would be most helpful right now?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T09:30:00.000Z",
+          "message": "The database migration is finally at 90% completion. No major data loss reported."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T09:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "That's excellent news on the database migration reaching 90% completion with no major data loss! This is significant progress on what's been a complex infrastructure initiative.\n\nGiven that this is the type of complex infra change Maya prefers to review asynchronously, would you like me to help prepare a summary for her? I could draft something that highlights the milestone while noting where she can access the raw data exports if she wants to review the details before any dashboard presentation."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T10:00:00.000Z",
+          "message": "The dashboard for the marketing team is still missing the conversion rate metrics."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T10:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I see the marketing dashboard is still missing those conversion rate metrics. Given Maya's preference for reviewing raw data exports before dashboard summaries, should I:\n\n1. Flag this with the team to prioritize adding the conversion rate metrics to the dashboard\n2. Check if the raw conversion rate data exports are available for Maya to review first\n3. Both - ensure raw data is accessible while the dashboard work gets prioritized\n\nWhich approach would be most helpful right now?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T10:30:00.000Z",
+          "message": "I'm nervous about presenting the quarterly results to the board."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T10:30:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I can see this connects to your broader pattern with public speaking—board presentations are particularly high-stakes. Given what you've learned about yourself, here are a few grounded observations:\n\n**What might help based on your patterns:**\n- Your bullet point strategy has worked well for tense work messages. Consider structuring your board deck with clear, concise bullets rather than dense paragraphs—it'll help you stay on track and avoid the over-explanation spiral you've identified.\n- You pushed back clearly with Alex recently and he thanked you for naming risks early. The board likely values that same directness, especially for quarterly results where they need clear signal, not noise.\n\n**What to watch for:**\n- When you get nervous, you tend to over-explain and weaken your point. In a board setting, this might show up as adding too many caveats or justifications. Practice delivering your key points without the extra cushioning.\n\n**Practical step:**\nWould it help to draft your opening remarks or key talking points in bullet format? I can help you structure them to stay crisp and grounded in the data, which might reduce some of the pre-presentation anxiety.\n\nYou've got the self-awareness to recognize these patterns—that's actually your advantage here.\n\n```json\n{\n  \"message\": \"I can see this connects to your broader pattern with public speaking—board presentations are particularly high-stakes. Given what you've learned about yourself, here are a few grounded observations:\\n\\n**What might help based on your patterns:**\\n- Your bullet point strategy has worked well for tense work messages. Consider structuring your board deck with clear, concise bullets rather than dense paragraphs—it'll help you stay on track and avoid the over-explanation spiral you've identified.\\n- You pushed back clearly with Alex recently and he thanked you for naming risks early. The board likely values that same directness, especially for quarterly results where they need clear signal, not noise.\\n\\n**What to watch for:**\\n- When you get nervous, you tend to over-explain and weaken your point. In a board setting, this might show up as adding too many caveats or justifications. Practice delivering your key points without the extra cushioning.\\n\\n**Practical step:**\\nWould it help to draft your opening remarks or key talking points in bullet format? I can help you structure them to stay crisp and grounded in the data, which might reduce some of the pre-presentation anxiety.\\n\\nYou've got the self-awareness to recognize these patterns—that's actually your advantage here.\",\n  \"toolCalls\": []\n}\n```"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T11:00:00.000Z",
+          "message": "The cache layer is hitting its memory limit. Need to look at the eviction policy."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T11:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "I've noted the cache layer memory limit issue and the need to review the eviction policy. This adds to your technical workload during what you've identified as a burnout period.\n\nGiven your pattern of needing to write things down immediately to retain information, would it help to capture specific next steps for this investigation now? For example:\n- Who should own the eviction policy review?\n- Is there a target timeline for addressing this?\n- Should this be prioritized relative to the vendor API issues and contract decision (due by the 15th)?\n\nI want to make sure this gets documented in a way that works with your memory retention needs while being mindful of your current workload."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-03T12:00:00.000Z",
+          "message": "Alex wants us to commit to Friday. Help me reply."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-03T12:00:00.000Z",
+          "agentName": "HybridGraphSemanticMemoryLLMAgent",
+          "message": "Based on your memory, you have good news to share: engineering says the integration risk is smaller than expected, so Friday with full scope is now workable if the team accepts a small post-launch fix window.\n\nGiven Alex's appreciation for early risk identification and concise communication, and your successful pattern of clear pushback with him, here's a draft reply using your preferred bullet format:\n\n---\n\n**Subject: Re: Friday Launch Commitment**\n\nAlex,\n\nYes, we can commit to Friday with full scope. Update from engineering:\n\n• Integration risk is smaller than initially estimated\n• Friday is workable if we accept a small post-launch fix window\n• Full scope can be maintained\n\nLet me know if you want to discuss the fix window parameters.\n\n---\n\nThis is direct, names the key constraint (post-launch fix window), and gives Alex what he needs to make the call. Does this capture what you want to communicate?"
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "alex_work_context",
+          "description": "Workplace-appropriate; refers to launch/scope/timeline",
+          "honored": true,
+          "weight": 5,
+          "evidence": "draft references launch/scope/timeline",
+          "originTurnIndex": 12,
+          "failureTurnIndex": 175
+        },
+        {
+          "id": "direct_communication",
+          "description": "States the situation plainly (risk or workability), not hedged or evasive",
+          "honored": true,
+          "weight": 5,
+          "evidence": "draft engages plainly with the Friday situation",
+          "originTurnIndex": 12,
+          "failureTurnIndex": 175
+        },
+        {
+          "id": "concise_style",
+          "description": "Concise (≤220 words; sendable)",
+          "honored": true,
+          "weight": 5,
+          "evidence": "150 words",
+          "originTurnIndex": 12,
+          "failureTurnIndex": 175
+        },
+        {
+          "id": "bullet_structure",
+          "description": "Uses bullets / numbered options to keep the user clear",
+          "honored": true,
+          "weight": 5,
+          "evidence": "draft uses bullets or numbered structure",
+          "originTurnIndex": 110,
+          "failureTurnIndex": 175
+        },
+        {
+          "id": "names_risk",
+          "description": "Engages with the Friday timeline situation explicitly",
+          "honored": true,
+          "weight": 5,
+          "evidence": "draft engages with the Friday situation",
+          "originTurnIndex": 136,
+          "failureTurnIndex": 175
+        },
+        {
+          "id": "scope_tradeoff",
+          "description": "Preserves a real tradeoff: scope-cut OR fix-window vs. Tuesday alternative",
+          "honored": false,
+          "weight": 5,
+          "evidence": "cut-scope: false, fix-window: true, tuesday: false",
+          "originTurnIndex": 136,
+          "failureTurnIndex": 175
+        },
+        {
+          "id": "avoids_overexplaining",
+          "description": "Avoids the user's anxious over-explaining pattern",
+          "honored": true,
+          "weight": 5,
+          "evidence": "0 hedge/apology pattern(s); 150 words",
+          "originTurnIndex": 36,
+          "failureTurnIndex": 175
+        },
+        {
+          "id": "private_boundary",
+          "description": "Does not disclose the private fear ('Alex thinks I'm unreliable')",
+          "honored": true,
+          "weight": 5,
+          "evidence": "no private-fear leak in draft",
+          "originTurnIndex": 86,
+          "failureTurnIndex": 175
+        },
+        {
+          "id": "uses_prior_outcome",
+          "description": "Mirrors the prior successful 'name the risk early' pattern with Alex",
+          "honored": true,
+          "weight": 5,
+          "evidence": "draft invokes the early-risk-naming framing",
+          "originTurnIndex": 62,
+          "failureTurnIndex": 175
+        },
+        {
+          "id": "attribution_fidelity",
+          "description": "Addresses Alex specifically; does not confuse with noise-corpus people",
+          "honored": true,
+          "weight": 5,
+          "evidence": "draft is correctly addressed to Alex",
+          "failureTurnIndex": 175
+        },
+        {
+          "id": "honors_latest_intent",
+          "description": "Reflects the latest user update (Friday workable with post-launch fix window)",
+          "honored": true,
+          "weight": 5,
+          "evidence": "draft mentions post-launch fix window or workable framing (LLM judge confirmed: Draft's primary recommendation is committing to Friday with full scope and post-launch fix window, directly aligned with the latest engineering update.)",
+          "originTurnIndex": 160,
+          "failureTurnIndex": 175
+        }
+      ],
+      "notes": [],
+      "asyncJudgeResults": [
+        {
+          "id": "honors_latest_intent",
+          "verdict": true,
+          "failureMode": "none",
+          "evidence": "Draft's primary recommendation is committing to Friday with full scope and post-launch fix window, directly aligned with the latest engineering update.",
+          "rawResponse": "```json\n{\"honors_latest_intent\": true, \"failure_mode\": \"none\", \"evidence\": \"Draft's primary recommendation is committing to Friday with full scope and post-launch fix window, directly aligned with the latest engineering update.\"}\n```"
+        }
+      ],
+      "trialIndex": 0
+    }
+  ],
+  "aggregate": [
+    {
+      "agentName": "HybridGraphSemanticMemoryLLMAgent",
+      "total": 110,
+      "scenarios": 1,
+      "scores": {
+        "alex_pushback_overflow_001": 110
+      }
+    }
+  ],
+  "llmUsage": {
+    "calls": 177,
+    "totalInputTokens": 810867,
+    "totalOutputTokens": 60404,
+    "totalTokens": 871271,
+    "estimatedCostUsd": 3.6725,
+    "byLabel": [
+      {
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "calls": 88,
+        "inputTokens": 493026,
+        "outputTokens": 49468,
+        "estimatedCostUsd": 2.4432
+      },
+      {
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "calls": 88,
+        "inputTokens": 316780,
+        "outputTokens": 10879,
+        "estimatedCostUsd": 1.2249
+      },
+      {
+        "label": "judge.honors_latest_intent",
+        "calls": 1,
+        "inputTokens": 1061,
+        "outputTokens": 57,
+        "estimatedCostUsd": 0.0044
+      }
+    ],
+    "records": [
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 506,
+        "outputTokens": 845,
+        "totalTokens": 1351,
+        "estimatedCostUsd": 0.0156123,
+        "startedAt": "2026-04-28T06:06:14.829Z",
+        "latencyMs": 10114
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 1280,
+        "outputTokens": 64,
+        "totalTokens": 1344,
+        "estimatedCostUsd": 0.00528,
+        "startedAt": "2026-04-28T06:06:24.956Z",
+        "latencyMs": 3193
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 1260,
+        "outputTokens": 293,
+        "totalTokens": 1553,
+        "estimatedCostUsd": 0.0089925,
+        "startedAt": "2026-04-28T06:06:28.152Z",
+        "latencyMs": 3920
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 1476,
+        "outputTokens": 315,
+        "totalTokens": 1791,
+        "estimatedCostUsd": 0.010068299999999999,
+        "startedAt": "2026-04-28T06:06:32.077Z",
+        "latencyMs": 6820
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 1495,
+        "outputTokens": 659,
+        "totalTokens": 2154,
+        "estimatedCostUsd": 0.015806999999999998,
+        "startedAt": "2026-04-28T06:06:38.899Z",
+        "latencyMs": 10781
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 2064,
+        "outputTokens": 134,
+        "totalTokens": 2198,
+        "estimatedCostUsd": 0.0090222,
+        "startedAt": "2026-04-28T06:06:49.693Z",
+        "latencyMs": 5744
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 2080,
+        "outputTokens": 296,
+        "totalTokens": 2376,
+        "estimatedCostUsd": 0.011747999999999998,
+        "startedAt": "2026-04-28T06:06:55.441Z",
+        "latencyMs": 4290
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 2298,
+        "outputTokens": 63,
+        "totalTokens": 2361,
+        "estimatedCostUsd": 0.0086229,
+        "startedAt": "2026-04-28T06:06:59.733Z",
+        "latencyMs": 2549
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 2312,
+        "outputTokens": 384,
+        "totalTokens": 2696,
+        "estimatedCostUsd": 0.0139656,
+        "startedAt": "2026-04-28T06:07:02.287Z",
+        "latencyMs": 5089
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 2610,
+        "outputTokens": 106,
+        "totalTokens": 2716,
+        "estimatedCostUsd": 0.010362,
+        "startedAt": "2026-04-28T06:07:07.383Z",
+        "latencyMs": 4133
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 2625,
+        "outputTokens": 292,
+        "totalTokens": 2917,
+        "estimatedCostUsd": 0.0134805,
+        "startedAt": "2026-04-28T06:07:11.521Z",
+        "latencyMs": 4110
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 2840,
+        "outputTokens": 121,
+        "totalTokens": 2961,
+        "estimatedCostUsd": 0.0113685,
+        "startedAt": "2026-04-28T06:07:15.641Z",
+        "latencyMs": 3930
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 2867,
+        "outputTokens": 718,
+        "totalTokens": 3585,
+        "estimatedCostUsd": 0.0213081,
+        "startedAt": "2026-04-28T06:07:19.576Z",
+        "latencyMs": 9098
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3207,
+        "outputTokens": 62,
+        "totalTokens": 3269,
+        "estimatedCostUsd": 0.0116061,
+        "startedAt": "2026-04-28T06:07:28.679Z",
+        "latencyMs": 3064
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 3495,
+        "outputTokens": 387,
+        "totalTokens": 3882,
+        "estimatedCostUsd": 0.017918999999999997,
+        "startedAt": "2026-04-28T06:07:31.759Z",
+        "latencyMs": 5635
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3207,
+        "outputTokens": 62,
+        "totalTokens": 3269,
+        "estimatedCostUsd": 0.0116061,
+        "startedAt": "2026-04-28T06:07:37.409Z",
+        "latencyMs": 3239
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 3854,
+        "outputTokens": 512,
+        "totalTokens": 4366,
+        "estimatedCostUsd": 0.021166199999999996,
+        "startedAt": "2026-04-28T06:07:40.652Z",
+        "latencyMs": 6951
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3305,
+        "outputTokens": 136,
+        "totalTokens": 3441,
+        "estimatedCostUsd": 0.013150499999999999,
+        "startedAt": "2026-04-28T06:07:47.605Z",
+        "latencyMs": 5236
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 4246,
+        "outputTokens": 293,
+        "totalTokens": 4539,
+        "estimatedCostUsd": 0.018846299999999996,
+        "startedAt": "2026-04-28T06:07:52.846Z",
+        "latencyMs": 5513
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3235,
+        "outputTokens": 91,
+        "totalTokens": 3326,
+        "estimatedCostUsd": 0.012176999999999999,
+        "startedAt": "2026-04-28T06:07:58.361Z",
+        "latencyMs": 6459
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 4514,
+        "outputTokens": 312,
+        "totalTokens": 4826,
+        "estimatedCostUsd": 0.020044199999999998,
+        "startedAt": "2026-04-28T06:08:04.830Z",
+        "latencyMs": 5372
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3134,
+        "outputTokens": 128,
+        "totalTokens": 3262,
+        "estimatedCostUsd": 0.012454199999999999,
+        "startedAt": "2026-04-28T06:08:10.206Z",
+        "latencyMs": 4824
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 4723,
+        "outputTokens": 432,
+        "totalTokens": 5155,
+        "estimatedCostUsd": 0.0227139,
+        "startedAt": "2026-04-28T06:08:15.033Z",
+        "latencyMs": 6386
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3189,
+        "outputTokens": 122,
+        "totalTokens": 3311,
+        "estimatedCostUsd": 0.012536699999999998,
+        "startedAt": "2026-04-28T06:08:21.425Z",
+        "latencyMs": 4458
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5092,
+        "outputTokens": 339,
+        "totalTokens": 5431,
+        "estimatedCostUsd": 0.0223971,
+        "startedAt": "2026-04-28T06:08:25.886Z",
+        "latencyMs": 5701
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3078,
+        "outputTokens": 108,
+        "totalTokens": 3186,
+        "estimatedCostUsd": 0.0119394,
+        "startedAt": "2026-04-28T06:08:31.591Z",
+        "latencyMs": 4172
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5184,
+        "outputTokens": 527,
+        "totalTokens": 5711,
+        "estimatedCostUsd": 0.025802699999999998,
+        "startedAt": "2026-04-28T06:08:35.766Z",
+        "latencyMs": 7856
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3204,
+        "outputTokens": 64,
+        "totalTokens": 3268,
+        "estimatedCostUsd": 0.0116292,
+        "startedAt": "2026-04-28T06:08:43.628Z",
+        "latencyMs": 2346
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5406,
+        "outputTokens": 289,
+        "totalTokens": 5695,
+        "estimatedCostUsd": 0.022608299999999998,
+        "startedAt": "2026-04-28T06:08:45.978Z",
+        "latencyMs": 5836
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3230,
+        "outputTokens": 62,
+        "totalTokens": 3292,
+        "estimatedCostUsd": 0.011681999999999998,
+        "startedAt": "2026-04-28T06:08:51.820Z",
+        "latencyMs": 3299
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5432,
+        "outputTokens": 675,
+        "totalTokens": 6107,
+        "estimatedCostUsd": 0.0290631,
+        "startedAt": "2026-04-28T06:08:55.122Z",
+        "latencyMs": 8344
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3213,
+        "outputTokens": 73,
+        "totalTokens": 3286,
+        "estimatedCostUsd": 0.011807400000000001,
+        "startedAt": "2026-04-28T06:09:03.470Z",
+        "latencyMs": 3904
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5419,
+        "outputTokens": 754,
+        "totalTokens": 6173,
+        "estimatedCostUsd": 0.030323700000000002,
+        "startedAt": "2026-04-28T06:09:07.377Z",
+        "latencyMs": 10240
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3119,
+        "outputTokens": 130,
+        "totalTokens": 3249,
+        "estimatedCostUsd": 0.012437699999999998,
+        "startedAt": "2026-04-28T06:09:17.623Z",
+        "latencyMs": 4271
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5467,
+        "outputTokens": 674,
+        "totalTokens": 6141,
+        "estimatedCostUsd": 0.029162099999999996,
+        "startedAt": "2026-04-28T06:09:21.898Z",
+        "latencyMs": 9743
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3160,
+        "outputTokens": 72,
+        "totalTokens": 3232,
+        "estimatedCostUsd": 0.011616,
+        "startedAt": "2026-04-28T06:09:31.651Z",
+        "latencyMs": 3320
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5510,
+        "outputTokens": 667,
+        "totalTokens": 6177,
+        "estimatedCostUsd": 0.0291885,
+        "startedAt": "2026-04-28T06:09:34.975Z",
+        "latencyMs": 8804
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3385,
+        "outputTokens": 77,
+        "totalTokens": 3462,
+        "estimatedCostUsd": 0.012441,
+        "startedAt": "2026-04-28T06:09:43.796Z",
+        "latencyMs": 3593
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5569,
+        "outputTokens": 436,
+        "totalTokens": 6005,
+        "estimatedCostUsd": 0.025571700000000003,
+        "startedAt": "2026-04-28T06:09:47.393Z",
+        "latencyMs": 7253
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3172,
+        "outputTokens": 152,
+        "totalTokens": 3324,
+        "estimatedCostUsd": 0.012975599999999999,
+        "startedAt": "2026-04-28T06:09:54.660Z",
+        "latencyMs": 5518
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5546,
+        "outputTokens": 407,
+        "totalTokens": 5953,
+        "estimatedCostUsd": 0.025017299999999996,
+        "startedAt": "2026-04-28T06:10:00.183Z",
+        "latencyMs": 7297
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3311,
+        "outputTokens": 71,
+        "totalTokens": 3382,
+        "estimatedCostUsd": 0.0120978,
+        "startedAt": "2026-04-28T06:10:07.485Z",
+        "latencyMs": 2853
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5563,
+        "outputTokens": 630,
+        "totalTokens": 6193,
+        "estimatedCostUsd": 0.028752899999999998,
+        "startedAt": "2026-04-28T06:10:10.344Z",
+        "latencyMs": 9714
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3090,
+        "outputTokens": 56,
+        "totalTokens": 3146,
+        "estimatedCostUsd": 0.011120999999999999,
+        "startedAt": "2026-04-28T06:10:20.067Z",
+        "latencyMs": 3557
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5513,
+        "outputTokens": 541,
+        "totalTokens": 6054,
+        "estimatedCostUsd": 0.0271194,
+        "startedAt": "2026-04-28T06:10:23.629Z",
+        "latencyMs": 7735
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 2950,
+        "outputTokens": 125,
+        "totalTokens": 3075,
+        "estimatedCostUsd": 0.011797499999999999,
+        "startedAt": "2026-04-28T06:10:31.374Z",
+        "latencyMs": 4849
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5521,
+        "outputTokens": 516,
+        "totalTokens": 6037,
+        "estimatedCostUsd": 0.026733299999999995,
+        "startedAt": "2026-04-28T06:10:36.230Z",
+        "latencyMs": 7862
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3077,
+        "outputTokens": 151,
+        "totalTokens": 3228,
+        "estimatedCostUsd": 0.0126456,
+        "startedAt": "2026-04-28T06:10:44.102Z",
+        "latencyMs": 3907
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5584,
+        "outputTokens": 558,
+        "totalTokens": 6142,
+        "estimatedCostUsd": 0.0276342,
+        "startedAt": "2026-04-28T06:10:48.013Z",
+        "latencyMs": 8826
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3152,
+        "outputTokens": 115,
+        "totalTokens": 3267,
+        "estimatedCostUsd": 0.012299099999999999,
+        "startedAt": "2026-04-28T06:10:56.841Z",
+        "latencyMs": 4437
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5696,
+        "outputTokens": 551,
+        "totalTokens": 6247,
+        "estimatedCostUsd": 0.027888299999999998,
+        "startedAt": "2026-04-28T06:11:01.283Z",
+        "latencyMs": 8634
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3574,
+        "outputTokens": 66,
+        "totalTokens": 3640,
+        "estimatedCostUsd": 0.0128832,
+        "startedAt": "2026-04-28T06:11:09.925Z",
+        "latencyMs": 3012
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5555,
+        "outputTokens": 464,
+        "totalTokens": 6019,
+        "estimatedCostUsd": 0.0259875,
+        "startedAt": "2026-04-28T06:11:12.941Z",
+        "latencyMs": 7214
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3102,
+        "outputTokens": 230,
+        "totalTokens": 3332,
+        "estimatedCostUsd": 0.0140316,
+        "startedAt": "2026-04-28T06:11:20.163Z",
+        "latencyMs": 7876
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5576,
+        "outputTokens": 472,
+        "totalTokens": 6048,
+        "estimatedCostUsd": 0.026188799999999998,
+        "startedAt": "2026-04-28T06:11:28.045Z",
+        "latencyMs": 7518
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3498,
+        "outputTokens": 139,
+        "totalTokens": 3637,
+        "estimatedCostUsd": 0.0138369,
+        "startedAt": "2026-04-28T06:11:35.567Z",
+        "latencyMs": 4203
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5621,
+        "outputTokens": 349,
+        "totalTokens": 5970,
+        "estimatedCostUsd": 0.024307799999999997,
+        "startedAt": "2026-04-28T06:11:39.778Z",
+        "latencyMs": 6536
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3474,
+        "outputTokens": 112,
+        "totalTokens": 3586,
+        "estimatedCostUsd": 0.0133122,
+        "startedAt": "2026-04-28T06:11:46.319Z",
+        "latencyMs": 5477
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5697,
+        "outputTokens": 498,
+        "totalTokens": 6195,
+        "estimatedCostUsd": 0.027017099999999995,
+        "startedAt": "2026-04-28T06:11:51.800Z",
+        "latencyMs": 7658
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3451,
+        "outputTokens": 94,
+        "totalTokens": 3545,
+        "estimatedCostUsd": 0.012939299999999999,
+        "startedAt": "2026-04-28T06:11:59.460Z",
+        "latencyMs": 3877
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5619,
+        "outputTokens": 523,
+        "totalTokens": 6142,
+        "estimatedCostUsd": 0.0271722,
+        "startedAt": "2026-04-28T06:12:03.340Z",
+        "latencyMs": 8391
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3237,
+        "outputTokens": 117,
+        "totalTokens": 3354,
+        "estimatedCostUsd": 0.012612599999999998,
+        "startedAt": "2026-04-28T06:12:11.737Z",
+        "latencyMs": 6470
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5584,
+        "outputTokens": 892,
+        "totalTokens": 6476,
+        "estimatedCostUsd": 0.0331452,
+        "startedAt": "2026-04-28T06:12:18.218Z",
+        "latencyMs": 15583
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3284,
+        "outputTokens": 106,
+        "totalTokens": 3390,
+        "estimatedCostUsd": 0.0125862,
+        "startedAt": "2026-04-28T06:12:33.808Z",
+        "latencyMs": 5550
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5700,
+        "outputTokens": 618,
+        "totalTokens": 6318,
+        "estimatedCostUsd": 0.029006999999999998,
+        "startedAt": "2026-04-28T06:12:39.362Z",
+        "latencyMs": 10132
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3541,
+        "outputTokens": 108,
+        "totalTokens": 3649,
+        "estimatedCostUsd": 0.0134673,
+        "startedAt": "2026-04-28T06:12:49.499Z",
+        "latencyMs": 6605
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5745,
+        "outputTokens": 324,
+        "totalTokens": 6069,
+        "estimatedCostUsd": 0.0243045,
+        "startedAt": "2026-04-28T06:12:56.109Z",
+        "latencyMs": 5589
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3535,
+        "outputTokens": 98,
+        "totalTokens": 3633,
+        "estimatedCostUsd": 0.0132825,
+        "startedAt": "2026-04-28T06:13:01.723Z",
+        "latencyMs": 3277
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5640,
+        "outputTokens": 510,
+        "totalTokens": 6150,
+        "estimatedCostUsd": 0.027027000000000002,
+        "startedAt": "2026-04-28T06:13:05.006Z",
+        "latencyMs": 10141
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3391,
+        "outputTokens": 125,
+        "totalTokens": 3516,
+        "estimatedCostUsd": 0.013252799999999999,
+        "startedAt": "2026-04-28T06:13:15.161Z",
+        "latencyMs": 4666
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5660,
+        "outputTokens": 339,
+        "totalTokens": 5999,
+        "estimatedCostUsd": 0.0242715,
+        "startedAt": "2026-04-28T06:13:19.835Z",
+        "latencyMs": 5673
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3441,
+        "outputTokens": 64,
+        "totalTokens": 3505,
+        "estimatedCostUsd": 0.012411299999999998,
+        "startedAt": "2026-04-28T06:13:25.522Z",
+        "latencyMs": 3751
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5706,
+        "outputTokens": 376,
+        "totalTokens": 6082,
+        "estimatedCostUsd": 0.025033800000000002,
+        "startedAt": "2026-04-28T06:13:29.279Z",
+        "latencyMs": 6108
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3399,
+        "outputTokens": 74,
+        "totalTokens": 3473,
+        "estimatedCostUsd": 0.0124377,
+        "startedAt": "2026-04-28T06:13:35.394Z",
+        "latencyMs": 3226
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5683,
+        "outputTokens": 516,
+        "totalTokens": 6199,
+        "estimatedCostUsd": 0.027267899999999998,
+        "startedAt": "2026-04-28T06:13:38.632Z",
+        "latencyMs": 7131
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3009,
+        "outputTokens": 134,
+        "totalTokens": 3143,
+        "estimatedCostUsd": 0.0121407,
+        "startedAt": "2026-04-28T06:13:45.770Z",
+        "latencyMs": 5010
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5634,
+        "outputTokens": 718,
+        "totalTokens": 6352,
+        "estimatedCostUsd": 0.0304392,
+        "startedAt": "2026-04-28T06:13:50.786Z",
+        "latencyMs": 12805
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3339,
+        "outputTokens": 89,
+        "totalTokens": 3428,
+        "estimatedCostUsd": 0.012487199999999999,
+        "startedAt": "2026-04-28T06:14:03.605Z",
+        "latencyMs": 5903
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5707,
+        "outputTokens": 608,
+        "totalTokens": 6315,
+        "estimatedCostUsd": 0.028865099999999998,
+        "startedAt": "2026-04-28T06:14:09.513Z",
+        "latencyMs": 11452
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3553,
+        "outputTokens": 243,
+        "totalTokens": 3796,
+        "estimatedCostUsd": 0.0157344,
+        "startedAt": "2026-04-28T06:14:20.982Z",
+        "latencyMs": 8226
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5775,
+        "outputTokens": 665,
+        "totalTokens": 6440,
+        "estimatedCostUsd": 0.030029999999999998,
+        "startedAt": "2026-04-28T06:14:29.222Z",
+        "latencyMs": 10427
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3573,
+        "outputTokens": 215,
+        "totalTokens": 3788,
+        "estimatedCostUsd": 0.015338399999999999,
+        "startedAt": "2026-04-28T06:14:39.671Z",
+        "latencyMs": 6322
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5815,
+        "outputTokens": 540,
+        "totalTokens": 6355,
+        "estimatedCostUsd": 0.0280995,
+        "startedAt": "2026-04-28T06:14:46.000Z",
+        "latencyMs": 8839
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3689,
+        "outputTokens": 90,
+        "totalTokens": 3779,
+        "estimatedCostUsd": 0.0136587,
+        "startedAt": "2026-04-28T06:14:54.844Z",
+        "latencyMs": 3626
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6002,
+        "outputTokens": 400,
+        "totalTokens": 6402,
+        "estimatedCostUsd": 0.026406600000000002,
+        "startedAt": "2026-04-28T06:14:58.478Z",
+        "latencyMs": 7396
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3875,
+        "outputTokens": 102,
+        "totalTokens": 3977,
+        "estimatedCostUsd": 0.014470499999999999,
+        "startedAt": "2026-04-28T06:15:06.119Z",
+        "latencyMs": 3934
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6098,
+        "outputTokens": 1069,
+        "totalTokens": 7167,
+        "estimatedCostUsd": 0.0377619,
+        "startedAt": "2026-04-28T06:15:10.082Z",
+        "latencyMs": 14818
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4172,
+        "outputTokens": 141,
+        "totalTokens": 4313,
+        "estimatedCostUsd": 0.0160941,
+        "startedAt": "2026-04-28T06:15:24.910Z",
+        "latencyMs": 5305
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6197,
+        "outputTokens": 663,
+        "totalTokens": 6860,
+        "estimatedCostUsd": 0.0313896,
+        "startedAt": "2026-04-28T06:15:30.227Z",
+        "latencyMs": 11085
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3944,
+        "outputTokens": 104,
+        "totalTokens": 4048,
+        "estimatedCostUsd": 0.014731199999999998,
+        "startedAt": "2026-04-28T06:15:41.352Z",
+        "latencyMs": 3886
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6326,
+        "outputTokens": 300,
+        "totalTokens": 6626,
+        "estimatedCostUsd": 0.0258258,
+        "startedAt": "2026-04-28T06:15:45.249Z",
+        "latencyMs": 5994
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3659,
+        "outputTokens": 70,
+        "totalTokens": 3729,
+        "estimatedCostUsd": 0.013229699999999999,
+        "startedAt": "2026-04-28T06:15:51.264Z",
+        "latencyMs": 2747
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6120,
+        "outputTokens": 549,
+        "totalTokens": 6669,
+        "estimatedCostUsd": 0.0292545,
+        "startedAt": "2026-04-28T06:15:54.018Z",
+        "latencyMs": 8460
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4089,
+        "outputTokens": 91,
+        "totalTokens": 4180,
+        "estimatedCostUsd": 0.014995199999999998,
+        "startedAt": "2026-04-28T06:16:02.499Z",
+        "latencyMs": 3145
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6419,
+        "outputTokens": 530,
+        "totalTokens": 6949,
+        "estimatedCostUsd": 0.029927699999999998,
+        "startedAt": "2026-04-28T06:16:05.652Z",
+        "latencyMs": 9430
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4350,
+        "outputTokens": 85,
+        "totalTokens": 4435,
+        "estimatedCostUsd": 0.015757499999999997,
+        "startedAt": "2026-04-28T06:16:15.096Z",
+        "latencyMs": 3369
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6006,
+        "outputTokens": 462,
+        "totalTokens": 6468,
+        "estimatedCostUsd": 0.0274428,
+        "startedAt": "2026-04-28T06:16:18.473Z",
+        "latencyMs": 8035
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3587,
+        "outputTokens": 119,
+        "totalTokens": 3706,
+        "estimatedCostUsd": 0.0138006,
+        "startedAt": "2026-04-28T06:16:26.514Z",
+        "latencyMs": 4635
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6095,
+        "outputTokens": 585,
+        "totalTokens": 6680,
+        "estimatedCostUsd": 0.029766,
+        "startedAt": "2026-04-28T06:16:31.157Z",
+        "latencyMs": 8315
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4125,
+        "outputTokens": 77,
+        "totalTokens": 4202,
+        "estimatedCostUsd": 0.014883,
+        "startedAt": "2026-04-28T06:16:39.479Z",
+        "latencyMs": 3425
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6104,
+        "outputTokens": 39,
+        "totalTokens": 6143,
+        "estimatedCostUsd": 0.020786699999999998,
+        "startedAt": "2026-04-28T06:16:42.912Z",
+        "latencyMs": 2538
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3629,
+        "outputTokens": 48,
+        "totalTokens": 3677,
+        "estimatedCostUsd": 0.012767699999999998,
+        "startedAt": "2026-04-28T06:16:45.457Z",
+        "latencyMs": 2919
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6310,
+        "outputTokens": 237,
+        "totalTokens": 6547,
+        "estimatedCostUsd": 0.0247335,
+        "startedAt": "2026-04-28T06:16:48.382Z",
+        "latencyMs": 5189
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4201,
+        "outputTokens": 85,
+        "totalTokens": 4286,
+        "estimatedCostUsd": 0.0152658,
+        "startedAt": "2026-04-28T06:16:53.578Z",
+        "latencyMs": 3232
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6225,
+        "outputTokens": 346,
+        "totalTokens": 6571,
+        "estimatedCostUsd": 0.026251499999999997,
+        "startedAt": "2026-04-28T06:16:56.812Z",
+        "latencyMs": 7626
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3814,
+        "outputTokens": 111,
+        "totalTokens": 3925,
+        "estimatedCostUsd": 0.0144177,
+        "startedAt": "2026-04-28T06:17:04.443Z",
+        "latencyMs": 4356
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6403,
+        "outputTokens": 515,
+        "totalTokens": 6918,
+        "estimatedCostUsd": 0.029627399999999998,
+        "startedAt": "2026-04-28T06:17:08.803Z",
+        "latencyMs": 8261
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3888,
+        "outputTokens": 62,
+        "totalTokens": 3950,
+        "estimatedCostUsd": 0.013853399999999998,
+        "startedAt": "2026-04-28T06:17:17.070Z",
+        "latencyMs": 2767
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5935,
+        "outputTokens": 624,
+        "totalTokens": 6559,
+        "estimatedCostUsd": 0.0298815,
+        "startedAt": "2026-04-28T06:17:19.846Z",
+        "latencyMs": 9517
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3295,
+        "outputTokens": 406,
+        "totalTokens": 3701,
+        "estimatedCostUsd": 0.017572499999999998,
+        "startedAt": "2026-04-28T06:17:29.374Z",
+        "latencyMs": 7893
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6449,
+        "outputTokens": 1044,
+        "totalTokens": 7493,
+        "estimatedCostUsd": 0.0385077,
+        "startedAt": "2026-04-28T06:17:37.274Z",
+        "latencyMs": 15455
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4863,
+        "outputTokens": 108,
+        "totalTokens": 4971,
+        "estimatedCostUsd": 0.0178299,
+        "startedAt": "2026-04-28T06:17:52.738Z",
+        "latencyMs": 3707
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6252,
+        "outputTokens": 325,
+        "totalTokens": 6577,
+        "estimatedCostUsd": 0.025994099999999996,
+        "startedAt": "2026-04-28T06:17:56.451Z",
+        "latencyMs": 5728
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4309,
+        "outputTokens": 65,
+        "totalTokens": 4374,
+        "estimatedCostUsd": 0.0152922,
+        "startedAt": "2026-04-28T06:18:02.187Z",
+        "latencyMs": 3012
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6502,
+        "outputTokens": 674,
+        "totalTokens": 7176,
+        "estimatedCostUsd": 0.0325776,
+        "startedAt": "2026-04-28T06:18:05.215Z",
+        "latencyMs": 10760
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4072,
+        "outputTokens": 118,
+        "totalTokens": 4190,
+        "estimatedCostUsd": 0.015384599999999998,
+        "startedAt": "2026-04-28T06:18:15.985Z",
+        "latencyMs": 3868
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6560,
+        "outputTokens": 588,
+        "totalTokens": 7148,
+        "estimatedCostUsd": 0.031349999999999996,
+        "startedAt": "2026-04-28T06:18:19.861Z",
+        "latencyMs": 8000
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4386,
+        "outputTokens": 69,
+        "totalTokens": 4455,
+        "estimatedCostUsd": 0.0156123,
+        "startedAt": "2026-04-28T06:18:27.867Z",
+        "latencyMs": 2862
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6513,
+        "outputTokens": 727,
+        "totalTokens": 7240,
+        "estimatedCostUsd": 0.0334884,
+        "startedAt": "2026-04-28T06:18:30.731Z",
+        "latencyMs": 9648
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4284,
+        "outputTokens": 88,
+        "totalTokens": 4372,
+        "estimatedCostUsd": 0.015589199999999998,
+        "startedAt": "2026-04-28T06:18:40.382Z",
+        "latencyMs": 4076
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6169,
+        "outputTokens": 581,
+        "totalTokens": 6750,
+        "estimatedCostUsd": 0.0299442,
+        "startedAt": "2026-04-28T06:18:44.461Z",
+        "latencyMs": 9167
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4127,
+        "outputTokens": 49,
+        "totalTokens": 4176,
+        "estimatedCostUsd": 0.014427599999999999,
+        "startedAt": "2026-04-28T06:18:53.640Z",
+        "latencyMs": 2116
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6679,
+        "outputTokens": 39,
+        "totalTokens": 6718,
+        "estimatedCostUsd": 0.0226842,
+        "startedAt": "2026-04-28T06:18:55.760Z",
+        "latencyMs": 1927
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4666,
+        "outputTokens": 58,
+        "totalTokens": 4724,
+        "estimatedCostUsd": 0.0163548,
+        "startedAt": "2026-04-28T06:18:57.691Z",
+        "latencyMs": 2555
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5899,
+        "outputTokens": 522,
+        "totalTokens": 6421,
+        "estimatedCostUsd": 0.0280797,
+        "startedAt": "2026-04-28T06:19:00.249Z",
+        "latencyMs": 8074
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3136,
+        "outputTokens": 252,
+        "totalTokens": 3388,
+        "estimatedCostUsd": 0.014506799999999999,
+        "startedAt": "2026-04-28T06:19:08.329Z",
+        "latencyMs": 7065
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6490,
+        "outputTokens": 503,
+        "totalTokens": 6993,
+        "estimatedCostUsd": 0.0297165,
+        "startedAt": "2026-04-28T06:19:15.427Z",
+        "latencyMs": 8933
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3645,
+        "outputTokens": 99,
+        "totalTokens": 3744,
+        "estimatedCostUsd": 0.013661999999999999,
+        "startedAt": "2026-04-28T06:19:24.375Z",
+        "latencyMs": 3838
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6577,
+        "outputTokens": 642,
+        "totalTokens": 7219,
+        "estimatedCostUsd": 0.0322971,
+        "startedAt": "2026-04-28T06:19:28.239Z",
+        "latencyMs": 9522
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4547,
+        "outputTokens": 87,
+        "totalTokens": 4634,
+        "estimatedCostUsd": 0.0164406,
+        "startedAt": "2026-04-28T06:19:37.780Z",
+        "latencyMs": 3933
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6215,
+        "outputTokens": 649,
+        "totalTokens": 6864,
+        "estimatedCostUsd": 0.031218,
+        "startedAt": "2026-04-28T06:19:41.731Z",
+        "latencyMs": 9847
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3600,
+        "outputTokens": 133,
+        "totalTokens": 3733,
+        "estimatedCostUsd": 0.014074499999999998,
+        "startedAt": "2026-04-28T06:19:51.596Z",
+        "latencyMs": 4269
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6634,
+        "outputTokens": 833,
+        "totalTokens": 7467,
+        "estimatedCostUsd": 0.0356367,
+        "startedAt": "2026-04-28T06:19:55.873Z",
+        "latencyMs": 12856
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4072,
+        "outputTokens": 112,
+        "totalTokens": 4184,
+        "estimatedCostUsd": 0.0152856,
+        "startedAt": "2026-04-28T06:20:08.746Z",
+        "latencyMs": 3843
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6530,
+        "outputTokens": 696,
+        "totalTokens": 7226,
+        "estimatedCostUsd": 0.033033,
+        "startedAt": "2026-04-28T06:20:12.598Z",
+        "latencyMs": 10532
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4124,
+        "outputTokens": 131,
+        "totalTokens": 4255,
+        "estimatedCostUsd": 0.0157707,
+        "startedAt": "2026-04-28T06:20:23.146Z",
+        "latencyMs": 3612
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6422,
+        "outputTokens": 1017,
+        "totalTokens": 7439,
+        "estimatedCostUsd": 0.037973099999999996,
+        "startedAt": "2026-04-28T06:20:26.782Z",
+        "latencyMs": 15467
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4179,
+        "outputTokens": 110,
+        "totalTokens": 4289,
+        "estimatedCostUsd": 0.015605700000000002,
+        "startedAt": "2026-04-28T06:20:42.262Z",
+        "latencyMs": 5093
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6446,
+        "outputTokens": 370,
+        "totalTokens": 6816,
+        "estimatedCostUsd": 0.0273768,
+        "startedAt": "2026-04-28T06:20:47.366Z",
+        "latencyMs": 7220
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3877,
+        "outputTokens": 135,
+        "totalTokens": 4012,
+        "estimatedCostUsd": 0.0150216,
+        "startedAt": "2026-04-28T06:20:54.595Z",
+        "latencyMs": 4435
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6339,
+        "outputTokens": 734,
+        "totalTokens": 7073,
+        "estimatedCostUsd": 0.033029699999999995,
+        "startedAt": "2026-04-28T06:20:59.051Z",
+        "latencyMs": 11671
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3584,
+        "outputTokens": 92,
+        "totalTokens": 3676,
+        "estimatedCostUsd": 0.0133452,
+        "startedAt": "2026-04-28T06:21:10.735Z",
+        "latencyMs": 4580
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6291,
+        "outputTokens": 786,
+        "totalTokens": 7077,
+        "estimatedCostUsd": 0.0337293,
+        "startedAt": "2026-04-28T06:21:15.324Z",
+        "latencyMs": 11453
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3722,
+        "outputTokens": 161,
+        "totalTokens": 3883,
+        "estimatedCostUsd": 0.0149391,
+        "startedAt": "2026-04-28T06:21:26.794Z",
+        "latencyMs": 5337
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6684,
+        "outputTokens": 509,
+        "totalTokens": 7193,
+        "estimatedCostUsd": 0.0304557,
+        "startedAt": "2026-04-28T06:21:32.146Z",
+        "latencyMs": 9096
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4784,
+        "outputTokens": 81,
+        "totalTokens": 4865,
+        "estimatedCostUsd": 0.0171237,
+        "startedAt": "2026-04-28T06:21:41.256Z",
+        "latencyMs": 3250
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 5989,
+        "outputTokens": 304,
+        "totalTokens": 6293,
+        "estimatedCostUsd": 0.024779699999999998,
+        "startedAt": "2026-04-28T06:21:44.512Z",
+        "latencyMs": 5260
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3526,
+        "outputTokens": 125,
+        "totalTokens": 3651,
+        "estimatedCostUsd": 0.0136983,
+        "startedAt": "2026-04-28T06:21:49.783Z",
+        "latencyMs": 4637
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6350,
+        "outputTokens": 449,
+        "totalTokens": 6799,
+        "estimatedCostUsd": 0.0283635,
+        "startedAt": "2026-04-28T06:21:54.426Z",
+        "latencyMs": 7811
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4049,
+        "outputTokens": 79,
+        "totalTokens": 4128,
+        "estimatedCostUsd": 0.0146652,
+        "startedAt": "2026-04-28T06:22:02.254Z",
+        "latencyMs": 3235
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6507,
+        "outputTokens": 612,
+        "totalTokens": 7119,
+        "estimatedCostUsd": 0.0315711,
+        "startedAt": "2026-04-28T06:22:05.496Z",
+        "latencyMs": 10483
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3858,
+        "outputTokens": 255,
+        "totalTokens": 4113,
+        "estimatedCostUsd": 0.0169389,
+        "startedAt": "2026-04-28T06:22:15.991Z",
+        "latencyMs": 8024
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6280,
+        "outputTokens": 648,
+        "totalTokens": 6928,
+        "estimatedCostUsd": 0.031416,
+        "startedAt": "2026-04-28T06:22:24.028Z",
+        "latencyMs": 14067
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3456,
+        "outputTokens": 80,
+        "totalTokens": 3536,
+        "estimatedCostUsd": 0.0127248,
+        "startedAt": "2026-04-28T06:22:38.109Z",
+        "latencyMs": 3481
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6150,
+        "outputTokens": 991,
+        "totalTokens": 7141,
+        "estimatedCostUsd": 0.0366465,
+        "startedAt": "2026-04-28T06:22:41.618Z",
+        "latencyMs": 14465
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3552,
+        "outputTokens": 187,
+        "totalTokens": 3739,
+        "estimatedCostUsd": 0.014807099999999998,
+        "startedAt": "2026-04-28T06:22:56.106Z",
+        "latencyMs": 5546
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6605,
+        "outputTokens": 545,
+        "totalTokens": 7150,
+        "estimatedCostUsd": 0.030788999999999997,
+        "startedAt": "2026-04-28T06:23:01.667Z",
+        "latencyMs": 9153
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3977,
+        "outputTokens": 159,
+        "totalTokens": 4136,
+        "estimatedCostUsd": 0.015747599999999997,
+        "startedAt": "2026-04-28T06:23:10.849Z",
+        "latencyMs": 5506
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6693,
+        "outputTokens": 414,
+        "totalTokens": 7107,
+        "estimatedCostUsd": 0.0289179,
+        "startedAt": "2026-04-28T06:23:16.373Z",
+        "latencyMs": 8606
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4961,
+        "outputTokens": 92,
+        "totalTokens": 5053,
+        "estimatedCostUsd": 0.017889299999999997,
+        "startedAt": "2026-04-28T06:23:25.005Z",
+        "latencyMs": 5875
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6447,
+        "outputTokens": 1219,
+        "totalTokens": 7666,
+        "estimatedCostUsd": 0.0413886,
+        "startedAt": "2026-04-28T06:23:30.899Z",
+        "latencyMs": 17227
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4430,
+        "outputTokens": 174,
+        "totalTokens": 4604,
+        "estimatedCostUsd": 0.01749,
+        "startedAt": "2026-04-28T06:23:48.156Z",
+        "latencyMs": 6323
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6447,
+        "outputTokens": 613,
+        "totalTokens": 7060,
+        "estimatedCostUsd": 0.0313896,
+        "startedAt": "2026-04-28T06:23:54.493Z",
+        "latencyMs": 10883
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3713,
+        "outputTokens": 131,
+        "totalTokens": 3844,
+        "estimatedCostUsd": 0.0144144,
+        "startedAt": "2026-04-28T06:24:05.384Z",
+        "latencyMs": 5520
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6355,
+        "outputTokens": 602,
+        "totalTokens": 6957,
+        "estimatedCostUsd": 0.0309045,
+        "startedAt": "2026-04-28T06:24:10.912Z",
+        "latencyMs": 12966
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4221,
+        "outputTokens": 133,
+        "totalTokens": 4354,
+        "estimatedCostUsd": 0.0161238,
+        "startedAt": "2026-04-28T06:24:23.891Z",
+        "latencyMs": 4890
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6322,
+        "outputTokens": 578,
+        "totalTokens": 6900,
+        "estimatedCostUsd": 0.0303996,
+        "startedAt": "2026-04-28T06:24:28.797Z",
+        "latencyMs": 9853
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4053,
+        "outputTokens": 123,
+        "totalTokens": 4176,
+        "estimatedCostUsd": 0.0154044,
+        "startedAt": "2026-04-28T06:24:38.665Z",
+        "latencyMs": 8098
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6419,
+        "outputTokens": 714,
+        "totalTokens": 7133,
+        "estimatedCostUsd": 0.0329637,
+        "startedAt": "2026-04-28T06:24:46.774Z",
+        "latencyMs": 13731
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4179,
+        "outputTokens": 128,
+        "totalTokens": 4307,
+        "estimatedCostUsd": 0.015902700000000002,
+        "startedAt": "2026-04-28T06:25:00.523Z",
+        "latencyMs": 4722
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6429,
+        "outputTokens": 898,
+        "totalTokens": 7327,
+        "estimatedCostUsd": 0.0360327,
+        "startedAt": "2026-04-28T06:25:05.254Z",
+        "latencyMs": 14284
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4523,
+        "outputTokens": 575,
+        "totalTokens": 5098,
+        "estimatedCostUsd": 0.0244134,
+        "startedAt": "2026-04-28T06:25:19.547Z",
+        "latencyMs": 11716
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6253,
+        "outputTokens": 525,
+        "totalTokens": 6778,
+        "estimatedCostUsd": 0.029297399999999998,
+        "startedAt": "2026-04-28T06:25:31.272Z",
+        "latencyMs": 8468
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 3694,
+        "outputTokens": 175,
+        "totalTokens": 3869,
+        "estimatedCostUsd": 0.015077699999999998,
+        "startedAt": "2026-04-28T06:25:39.754Z",
+        "latencyMs": 6493
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.extract",
+        "inputTokens": 6693,
+        "outputTokens": 1399,
+        "totalTokens": 8092,
+        "estimatedCostUsd": 0.0451704,
+        "startedAt": "2026-04-28T06:25:46.257Z",
+        "latencyMs": 21307
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "HybridGraphSemanticMemoryLLMAgent.respond",
+        "inputTokens": 4907,
+        "outputTokens": 250,
+        "totalTokens": 5157,
+        "estimatedCostUsd": 0.0203181,
+        "startedAt": "2026-04-28T06:26:07.662Z",
+        "latencyMs": 9184
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "judge.honors_latest_intent",
+        "inputTokens": 1061,
+        "outputTokens": 57,
+        "totalTokens": 1118,
+        "estimatedCostUsd": 0.0044418,
+        "startedAt": "2026-04-28T06:26:16.888Z",
+        "latencyMs": 2762
+      }
+    ]
+  }
+}

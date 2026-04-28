@@ -215,6 +215,8 @@ export type EvaluationResult = {
   intentDimensionResults?: IntentDimensionResult[]
   // Free-form notes the judge wants surfaced in the report (e.g. "zombie intent").
   notes?: string[]
+  // Structured outputs from optional async/LLM judges, for auditability.
+  asyncJudgeResults?: Record<string, unknown>[]
   // Set by the runner when the agent did not produce a valid benchmark attempt
   // (for example, an LLM provider error surfaced as the assistant message).
   invalidReason?: string
