@@ -234,7 +234,11 @@ export class BlockMemoryLLMAgent implements Agent {
         content: `CURRENT MEMORY:\n${blocksToText(this.blocks)}\n\nNEW USER MESSAGE:\n${userMessage}`,
       },
     ]
-    const raw = await callLlm({ messages, responseFormat: "json_object" })
+    const raw = await callLlm({
+      messages,
+      expectedFormat: "json_object",
+      label: `${this.name}.extract`,
+    })
     const patch = parseExtraction(raw)
     this.blocks = applyPatch(this.blocks, patch)
   }
@@ -254,7 +258,11 @@ export class BlockMemoryLLMAgent implements Agent {
         content: `MEMORY (your only record of past turns):\n${memoryView}\n\n${userBlock}`,
       },
     ]
-    const raw = await callLlm({ messages, responseFormat: "json_object" })
+    const raw = await callLlm({
+      messages,
+      expectedFormat: "json_object",
+      label: `${this.name}.respond`,
+    })
     return parseAgentOutput(raw)
   }
 }

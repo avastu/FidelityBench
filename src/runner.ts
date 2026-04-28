@@ -32,7 +32,7 @@ export async function runScenario(
 ): Promise<EvaluationResult> {
   await agent.reset?.()
 
-  const { scenario, simulatedUser, judge } = bundle
+  const { scenario, simulatedUser, judge, asyncJudge } = bundle
   const runId = `run_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
   const userId = "eval_user_001"
   const transcript: TranscriptEvent[] = []
@@ -145,7 +145,78 @@ export async function runScenario(
     recallBurdenEvents,
     askedRequiredFields,
   })
-  return invalidateLlmErrorResult(result)
+
+  let augmented = result
+  if (asyncJudge) {
+    try {
+      const original = cloneEvaluationResult(result)
+      augmented = enforceAsyncJudgeDowngradeOnly(
+        original,
+        await asyncJudge(cloneEvaluationResult(result)),
+      )
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      const note = `[asyncJudge skipped: ${message.slice(0, 200)}]`
+      augmented = {
+        ...result,
+        notes: [...(result.notes ?? []), note],
+      }
+    }
+  }
+
+  return invalidateLlmErrorResult(augmented)
+}
+
+function cloneEvaluationResult(result: EvaluationResult): EvaluationResult {
+  return JSON.parse(JSON.stringify(result)) as EvaluationResult
+}
+
+function enforceAsyncJudgeDowngradeOnly(
+  original: EvaluationResult,
+  augmented: EvaluationResult,
+): EvaluationResult {
+  const scoreFields = [
+    "totalScore",
+    "taskSuccess",
+    "intentFidelity",
+    "recallBurden",
+    "clarificationQuality",
+    "toolUseEfficiency",
+  ] as const
+  for (const field of scoreFields) {
+    const originalValue = original[field]
+    const augmentedValue = augmented[field]
+    if (!Number.isFinite(originalValue)) {
+      throw new Error(
+        `original evaluation has invalid ${field}: ${String(originalValue)}`,
+      )
+    }
+    if (!Number.isFinite(augmentedValue)) {
+      throw new Error(
+        `asyncJudge produced invalid ${field}: ${String(augmentedValue)}`,
+      )
+    }
+    if (augmentedValue > originalValue) {
+      throw new Error(
+        `asyncJudge attempted to increase ${field}: ${originalValue} -> ${augmentedValue}`,
+      )
+    }
+  }
+
+  const originalDims = new Map(
+    (original.intentDimensionResults ?? []).map((d) => [d.id, d]),
+  )
+  for (const dim of augmented.intentDimensionResults ?? []) {
+    const originalDim = originalDims.get(dim.id)
+    if (!originalDim && dim.honored) {
+      throw new Error(`asyncJudge attempted to add honored dimension ${dim.id}`)
+    }
+    if (originalDim && !originalDim.honored && dim.honored) {
+      throw new Error(`asyncJudge attempted to upgrade dimension ${dim.id}`)
+    }
+  }
+
+  return augmented
 }
 
 function findLlmError(transcript: TranscriptEvent[]): string | undefined {

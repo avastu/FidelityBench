@@ -6,6 +6,7 @@ import { StdioAgent } from "./agents/StdioAgent.js"
 import { printReport, printAggregateSummary } from "./report.js"
 import { runScenario } from "./runner.js"
 import { aggregateTrials } from "./trials.js"
+import { getLlmUsageSummary, resetLlmUsage } from "./llm/usage.js"
 import {
   hasLlmProvider,
   NO_LLM_AGENT_AVAILABLE_MESSAGE,
@@ -266,6 +267,10 @@ async function loadScenarios(): Promise<ScenarioBundle[]> {
       "../scenarios/alex_pushback_001.js",
       "alexPushbackBundle",
     ],
+    [
+      "../scenarios/alex_pushback_overflow_001.js",
+      "alexPushbackOverflowBundle",
+    ],
   ]
   for (const [modulePath, exportName] of optional) {
     const bundle = await loadOptionalScenario(modulePath, exportName)
@@ -377,6 +382,7 @@ async function main() {
   }
 
   try {
+    resetLlmUsage()
     const allAgents = await buildAgents()
     const allScenarios = await loadScenarios()
 
@@ -476,17 +482,24 @@ async function main() {
     }
 
     const aggregate = buildAggregate(allResults)
+    const llmUsage = getLlmUsageSummary()
     printAggregateSummary(allResults, scenarios)
+    if (llmUsage.calls > 0) {
+      console.log(
+        `\nLLM usage: ${llmUsage.calls} call(s), ${llmUsage.totalInputTokens} input tokens, ${llmUsage.totalOutputTokens} output tokens, est. $${llmUsage.estimatedCostUsd.toFixed(4)}`,
+      )
+    }
     if (jsonMode) {
       for (const a of aggregate) {
         emitJsonLine({ kind: "aggregate", ...a })
       }
+      emitJsonLine({ kind: "llm_usage", ...llmUsage })
     }
 
     await fs.mkdir("results", { recursive: true })
     await fs.writeFile(
       "results/latest-run.json",
-      JSON.stringify({ results: allResults, aggregate }, null, 2),
+      JSON.stringify({ results: allResults, aggregate, llmUsage }, null, 2),
     )
 
     for (const agent of allAgents) {

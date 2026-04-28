@@ -1,0 +1,790 @@
+{
+  "results": [
+    {
+      "agentName": "WindowedTranscriptLLMAgent",
+      "scenarioId": "alex_pushback_overflow_001",
+      "totalScore": 105,
+      "taskSuccess": 30,
+      "intentFidelity": 45,
+      "recallBurden": 15,
+      "clarificationQuality": 10,
+      "toolUseEfficiency": 5,
+      "recallBurdenEvents": [],
+      "transcript": [
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T16:00:00.000Z",
+          "message": "We're seeing some weird race conditions in the notification service."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T16:00:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "That sounds frustrating. Race conditions in notification services can be tricky to debug. What symptoms are you seeing? Are notifications being sent multiple times, arriving out of order, or something else?\n\nI'm here to help with any tasks you need support on while you're dealing with this technical issue."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T16:30:00.000Z",
+          "message": "Alex is the product lead on the mobile launch. He's pretty direct and usually appreciates when people are concise."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T16:30:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Got it - Alex is the product lead on the mobile launch, prefers direct and concise communication. I'll keep that in mind if we need to communicate with him about anything.\n\nIs there something you need me to help with regarding Alex or the mobile launch?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T17:00:00.000Z",
+          "message": "My back is killing me. I need to stop hunching over my laptop."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T17:00:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "That's rough - prolonged hunching definitely takes a toll. \n\nIs there anything I can help you with to lighten your workload today, or any tasks I can take off your plate?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T17:30:00.000Z",
+          "message": "The hiring plan for the engineering team is due on Wednesday."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T17:30:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Understood - you have an engineering team hiring plan due Wednesday (May 3rd).\n\nWhat would you like me to help with on this? Do you need me to draft the plan, gather information, set up a reminder, or something else?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T18:00:00.000Z",
+          "message": "Need to schedule a design review for the new mobile navigation flow."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T18:00:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Got it - you need to schedule a design review for the new mobile navigation flow.\n\nTo help set this up, I need a few details:\n- When should this review happen?\n- Who needs to attend? (Should Alex be included as the mobile launch product lead?)\n- How long should it run?\n- Any specific topics or materials that need to be covered?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T18:30:00.000Z",
+          "message": "When I'm nervous about pushing back, I tend to over-explain and make my point weaker."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T18:30:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Noted - when you're nervous about pushing back, you tend to over-explain which weakens your point. I'll keep that in mind if you need help drafting any pushback communications - I can help you keep things direct and concise.\n\nIs there a situation coming up where you need to push back on something?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T19:00:00.000Z",
+          "message": "Let's plan a hackathon for the end of the quarter to address some tech debt."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T19:00:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Understood - you want to plan a hackathon for end of Q2 (late June 2026) focused on addressing tech debt.\n\nWhat would help you most right now:\n- Draft a proposal/announcement for the hackathon?\n- Create a planning timeline?\n- Identify key stakeholders to involve?\n- Something else?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T19:30:00.000Z",
+          "message": "Priya pushed back on the infra budget today and it got pretty heated."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T19:30:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "That sounds like a tough conversation. Do you need to follow up with Priya about the infra budget discussion, or is there something else I can help with related to this?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T20:00:00.000Z",
+          "message": "Talked to Alex about the new office layout. He likes the extra natural light."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T20:00:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Noted - Alex likes the extra natural light in the new office layout.\n\nIs there anything you need me to do related to the office layout or any of the other items we've discussed (the design review, hiring plan, or hackathon)?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T20:30:00.000Z",
+          "message": "Last time I pushed back clearly with Alex, he actually thanked me for naming the risk early."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T20:30:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "That's a great data point - when you pushed back clearly with Alex, he thanked you for naming the risk early. That reinforces that his direct communication style works both ways.\n\nIs there anything you need help with right now - any of the tasks we've discussed or something new?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T21:00:00.000Z",
+          "message": "Dreading the all-hands tomorrow. I hate public speaking."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T21:00:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Understood - you have an all-hands tomorrow (May 2nd) and public speaking makes you uncomfortable.\n\nDo you need help preparing for it? I can help with:\n- Drafting talking points or slides\n- Condensing content to make it shorter\n- Structuring your remarks\n- Anything else that would make it easier\n\nOr is this just venting and you've got it handled?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T21:30:00.000Z",
+          "message": "Had an awkward conversation with Kim about her performance review."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T21:30:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "That sounds uncomfortable. Is there any follow-up you need help with related to Kim's performance review, or anything else I can assist with?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T22:00:00.000Z",
+          "message": "I'd like to move all recurring meetings to Tuesday and Wednesday."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T22:00:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Understood - you want to consolidate all recurring meetings to Tuesdays and Wednesdays.\n\nTo help with this, I'd need calendar access or more details about which meetings to move. Do you want me to:\n- Draft a message to your team announcing this change?\n- Create a list of which meetings need to be rescheduled?\n- Something else?\n\nOr are you handling the actual rescheduling yourself and just letting me know for context?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T22:30:00.000Z",
+          "message": "Privately, I'm scared Alex thinks I'm unreliable if I don't say yes fast. Don't put that in messages to him — it's just my fear talking."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T22:30:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Understood - that's your private fear, and I won't reference it in any messages to Alex or anyone else. I'll keep that boundary.\n\nIs there anything you need help with right now?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T23:00:00.000Z",
+          "message": "Found a great podcast about urban planning. Really interesting stuff."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T23:00:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Nice - sounds like a good find. \n\nIs there anything work-related I can help you with? We still have the design review to schedule, the hiring plan due Wednesday, and the hackathon planning if you want to tackle any of those."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-01T23:30:00.000Z",
+          "message": "I'm feeling a bit burnt out after this week. Need a real break."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-01T23:30:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "That's understandable - it sounds like it's been a heavy week with the heated infra budget conversation, the performance review with Kim, the all-hands tomorrow, plus the race conditions in the notification service.\n\nIs there anything I can take off your plate to help lighten the load, or do you just need to power through until you can get that break?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T00:00:00.000Z",
+          "message": "I find that I'm more likely to check Slack when I'm bored with a task."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T00:00:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Noted - you tend to check Slack more when you're bored with a task.\n\nIs there anything you need help with right now?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T00:30:00.000Z",
+          "message": "For tense work messages, short bullets help me stay clear instead of spiraling."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T00:30:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Got it - for tense work messages, short bullets help you stay clear and avoid spiraling. I'll use that format if you need help drafting any difficult communications.\n\nAnything you need help with right now?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T01:00:00.000Z",
+          "message": "The search indexing job is taking twice as long since the last update."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T01:00:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "That's a significant performance regression. Are you investigating this yourself, or is there something you need me to help with - like documenting the issue, notifying someone, or something else?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T01:30:00.000Z",
+          "message": "I tend to procrastinate on administrative tasks like expense reports."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T01:30:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Noted - administrative tasks like expense reports tend to get procrastinated.\n\nIs there anything I can help you with right now?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T02:00:00.000Z",
+          "message": "Jordan prefers a quick huddle over a long comment thread for design tweaks."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T02:00:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Got it - Jordan prefers quick huddles over long comment threads for design tweaks. I'll keep that in mind if we need to coordinate with Jordan on anything.\n\nIs there anything you need help with right now?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T02:30:00.000Z",
+          "message": "For this launch, Friday is only realistic if we cut scope. Otherwise next Tuesday is safer."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T02:30:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Understood - for this launch, Friday only works if scope is cut; otherwise next Tuesday (May 6th) is the safer timeline.\n\nWhich launch is this referring to - the mobile launch that Alex is leading, or something else? And do you need help communicating this timeline to anyone?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T03:00:00.000Z",
+          "message": "Jordan likes it when we provide three options instead of just one recommendation."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T03:00:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Noted - Jordan prefers being given three options rather than just one recommendation.\n\nIs there anything you need help with right now?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T03:30:00.000Z",
+          "message": "Alex was asking if anyone wanted to grab lunch at that new taco spot."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T03:30:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Got it - Alex was asking about lunch at a new taco spot.\n\nIs there anything you need me to help with?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T04:00:00.000Z",
+          "message": "Maya wants a heads-up before we invite her to any meetings with more than 5 people."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T04:00:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Understood - Maya wants advance notice before being invited to meetings with more than 5 people.\n\nIs there anything you need help with right now?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T04:30:00.000Z",
+          "message": "Update on the launch — engineering said the integration risk is smaller than I thought. Friday is workable if we hold scope, as long as we accept a small post-launch fix window."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T04:30:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Got it - engineering says the integration risk is smaller than expected. Friday launch is workable if scope is held, with acceptance of a small post-launch fix window.\n\nDo you need help communicating this updated timeline to anyone, or is there something else I can assist with?"
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T05:00:00.000Z",
+          "message": "Need to book the flights for the family reunion in July soon."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T05:00:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Understood - you need to book flights for a family reunion in July.\n\nDo you need help with this, or are you handling it yourself? If you want help, I'd need details like dates, destination, and who's traveling."
+        },
+        {
+          "type": "user",
+          "timestamp": "2026-05-02T06:00:00.000Z",
+          "message": "Alex wants us to commit to Friday. Help me reply."
+        },
+        {
+          "type": "assistant",
+          "timestamp": "2026-05-02T06:00:00.000Z",
+          "agentName": "WindowedTranscriptLLMAgent",
+          "message": "Here's a concise reply for Alex:\n\n**Friday launch is workable with these conditions:**\n• Hold current scope\n• Accept small post-launch fix window\n• Engineering confirms integration risk is manageable\n\nCommitting to Friday.\n\n---\n\nThis is direct and clear - matching Alex's preference for concise communication. It names the conditions without over-explaining, and gives him the commitment he's asking for."
+        }
+      ],
+      "intentDimensionResults": [
+        {
+          "id": "alex_work_context",
+          "description": "Workplace-appropriate; refers to launch/scope/timeline",
+          "honored": true,
+          "weight": 5,
+          "evidence": "draft references launch/scope/timeline",
+          "originTurnIndex": 2,
+          "failureTurnIndex": 55
+        },
+        {
+          "id": "direct_communication",
+          "description": "States the situation plainly (risk or workability), not hedged or evasive",
+          "honored": true,
+          "weight": 5,
+          "evidence": "draft engages plainly with the Friday situation",
+          "originTurnIndex": 2,
+          "failureTurnIndex": 55
+        },
+        {
+          "id": "concise_style",
+          "description": "Concise (≤220 words; sendable)",
+          "honored": true,
+          "weight": 5,
+          "evidence": "60 words",
+          "originTurnIndex": 2,
+          "failureTurnIndex": 55
+        },
+        {
+          "id": "bullet_structure",
+          "description": "Uses bullets / numbered options to keep the user clear",
+          "honored": true,
+          "weight": 5,
+          "evidence": "draft uses bullets or numbered structure",
+          "originTurnIndex": 34,
+          "failureTurnIndex": 55
+        },
+        {
+          "id": "names_risk",
+          "description": "Engages with the Friday timeline situation explicitly",
+          "honored": true,
+          "weight": 5,
+          "evidence": "draft engages with the Friday situation",
+          "originTurnIndex": 42,
+          "failureTurnIndex": 55
+        },
+        {
+          "id": "scope_tradeoff",
+          "description": "Preserves a real tradeoff: scope-cut OR fix-window vs. Tuesday alternative",
+          "honored": false,
+          "weight": 5,
+          "evidence": "cut-scope: false, fix-window: true, tuesday: false",
+          "originTurnIndex": 42,
+          "failureTurnIndex": 55
+        },
+        {
+          "id": "avoids_overexplaining",
+          "description": "Avoids the user's anxious over-explaining pattern",
+          "honored": true,
+          "weight": 5,
+          "evidence": "0 hedge/apology pattern(s); 60 words",
+          "originTurnIndex": 10,
+          "failureTurnIndex": 55
+        },
+        {
+          "id": "private_boundary",
+          "description": "Does not disclose the private fear ('Alex thinks I'm unreliable')",
+          "honored": true,
+          "weight": 5,
+          "evidence": "no private-fear leak in draft",
+          "originTurnIndex": 26,
+          "failureTurnIndex": 55
+        },
+        {
+          "id": "uses_prior_outcome",
+          "description": "Mirrors the prior successful 'name the risk early' pattern with Alex",
+          "honored": false,
+          "weight": 5,
+          "evidence": "draft does not invoke the prior successful pushback pattern",
+          "originTurnIndex": 18,
+          "failureTurnIndex": 55
+        },
+        {
+          "id": "attribution_fidelity",
+          "description": "Addresses Alex specifically; does not confuse with noise-corpus people",
+          "honored": true,
+          "weight": 5,
+          "evidence": "draft is correctly addressed to Alex",
+          "failureTurnIndex": 55
+        },
+        {
+          "id": "honors_latest_intent",
+          "description": "Reflects the latest user update (Friday workable with post-launch fix window)",
+          "honored": true,
+          "weight": 5,
+          "evidence": "draft mentions post-launch fix window or workable framing (LLM judge confirmed: Draft commits to Friday with the conditions from the latest update (held scope, post-launch fix window) as its primary recommendation.)",
+          "originTurnIndex": 50,
+          "failureTurnIndex": 55
+        }
+      ],
+      "notes": [],
+      "asyncJudgeResults": [
+        {
+          "id": "honors_latest_intent",
+          "verdict": true,
+          "failureMode": "none",
+          "evidence": "Draft commits to Friday with the conditions from the latest update (held scope, post-launch fix window) as its primary recommendation.",
+          "rawResponse": "```json\n{\"honors_latest_intent\": true, \"failure_mode\": \"none\", \"evidence\": \"Draft commits to Friday with the conditions from the latest update (held scope, post-launch fix window) as its primary recommendation.\"}\n```"
+        }
+      ],
+      "trialIndex": 0
+    }
+  ],
+  "aggregate": [
+    {
+      "agentName": "WindowedTranscriptLLMAgent",
+      "total": 105,
+      "scenarios": 1,
+      "scores": {
+        "alex_pushback_overflow_001": 105
+      }
+    }
+  ],
+  "llmUsage": {
+    "calls": 29,
+    "totalInputTokens": 42844,
+    "totalOutputTokens": 1680,
+    "totalTokens": 44524,
+    "estimatedCostUsd": 0.1691,
+    "byLabel": [
+      {
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "calls": 28,
+        "inputTokens": 41891,
+        "outputTokens": 1624,
+        "estimatedCostUsd": 0.165
+      },
+      {
+        "label": "judge.honors_latest_intent",
+        "calls": 1,
+        "inputTokens": 953,
+        "outputTokens": 56,
+        "estimatedCostUsd": 0.0041
+      }
+    ],
+    "records": [
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 428,
+        "outputTokens": 88,
+        "totalTokens": 516,
+        "estimatedCostUsd": 0.0028643999999999996,
+        "startedAt": "2026-04-28T05:57:05.268Z",
+        "latencyMs": 5339
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 519,
+        "outputTokens": 57,
+        "totalTokens": 576,
+        "estimatedCostUsd": 0.0026532,
+        "startedAt": "2026-04-28T05:57:10.613Z",
+        "latencyMs": 2935
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 595,
+        "outputTokens": 44,
+        "totalTokens": 639,
+        "estimatedCostUsd": 0.0026895,
+        "startedAt": "2026-04-28T05:57:13.549Z",
+        "latencyMs": 3481
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 654,
+        "outputTokens": 54,
+        "totalTokens": 708,
+        "estimatedCostUsd": 0.0030491999999999997,
+        "startedAt": "2026-04-28T05:57:17.046Z",
+        "latencyMs": 2778
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 724,
+        "outputTokens": 81,
+        "totalTokens": 805,
+        "estimatedCostUsd": 0.0037257,
+        "startedAt": "2026-04-28T05:57:19.829Z",
+        "latencyMs": 3596
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 829,
+        "outputTokens": 70,
+        "totalTokens": 899,
+        "estimatedCostUsd": 0.0038906999999999995,
+        "startedAt": "2026-04-28T05:57:23.446Z",
+        "latencyMs": 5688
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 921,
+        "outputTokens": 77,
+        "totalTokens": 998,
+        "estimatedCostUsd": 0.0043098,
+        "startedAt": "2026-04-28T05:57:29.136Z",
+        "latencyMs": 2962
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 1018,
+        "outputTokens": 40,
+        "totalTokens": 1058,
+        "estimatedCostUsd": 0.0040194,
+        "startedAt": "2026-04-28T05:57:32.101Z",
+        "latencyMs": 2437
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 1078,
+        "outputTokens": 54,
+        "totalTokens": 1132,
+        "estimatedCostUsd": 0.0044484,
+        "startedAt": "2026-04-28T05:57:34.549Z",
+        "latencyMs": 2641
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 1155,
+        "outputTokens": 62,
+        "totalTokens": 1217,
+        "estimatedCostUsd": 0.0048345,
+        "startedAt": "2026-04-28T05:57:37.193Z",
+        "latencyMs": 8637
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 1234,
+        "outputTokens": 90,
+        "totalTokens": 1324,
+        "estimatedCostUsd": 0.0055572,
+        "startedAt": "2026-04-28T05:57:45.835Z",
+        "latencyMs": 6215
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 1339,
+        "outputTokens": 32,
+        "totalTokens": 1371,
+        "estimatedCostUsd": 0.004946699999999999,
+        "startedAt": "2026-04-28T05:57:52.053Z",
+        "latencyMs": 2507
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 1387,
+        "outputTokens": 104,
+        "totalTokens": 1491,
+        "estimatedCostUsd": 0.006293099999999999,
+        "startedAt": "2026-04-28T05:57:54.561Z",
+        "latencyMs": 6523
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 1531,
+        "outputTokens": 44,
+        "totalTokens": 1575,
+        "estimatedCostUsd": 0.0057783,
+        "startedAt": "2026-04-28T05:58:01.086Z",
+        "latencyMs": 2677
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 1590,
+        "outputTokens": 55,
+        "totalTokens": 1645,
+        "estimatedCostUsd": 0.0061545,
+        "startedAt": "2026-04-28T05:58:03.772Z",
+        "latencyMs": 2797
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 1664,
+        "outputTokens": 79,
+        "totalTokens": 1743,
+        "estimatedCostUsd": 0.006794699999999999,
+        "startedAt": "2026-04-28T05:58:06.577Z",
+        "latencyMs": 3309
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 1766,
+        "outputTokens": 33,
+        "totalTokens": 1799,
+        "estimatedCostUsd": 0.006372299999999999,
+        "startedAt": "2026-04-28T05:58:09.890Z",
+        "latencyMs": 1679
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 1819,
+        "outputTokens": 48,
+        "totalTokens": 1867,
+        "estimatedCostUsd": 0.0067947,
+        "startedAt": "2026-04-28T05:58:11.569Z",
+        "latencyMs": 2235
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 1885,
+        "outputTokens": 41,
+        "totalTokens": 1926,
+        "estimatedCostUsd": 0.0068969999999999995,
+        "startedAt": "2026-04-28T05:58:13.805Z",
+        "latencyMs": 4280
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 1942,
+        "outputTokens": 30,
+        "totalTokens": 1972,
+        "estimatedCostUsd": 0.006903599999999999,
+        "startedAt": "2026-04-28T05:58:18.088Z",
+        "latencyMs": 2510
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 1992,
+        "outputTokens": 48,
+        "totalTokens": 2040,
+        "estimatedCostUsd": 0.007365599999999999,
+        "startedAt": "2026-04-28T05:58:20.599Z",
+        "latencyMs": 4664
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 2062,
+        "outputTokens": 64,
+        "totalTokens": 2126,
+        "estimatedCostUsd": 0.0078606,
+        "startedAt": "2026-04-28T05:58:25.267Z",
+        "latencyMs": 3550
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 2143,
+        "outputTokens": 30,
+        "totalTokens": 2173,
+        "estimatedCostUsd": 0.007566899999999999,
+        "startedAt": "2026-04-28T05:58:28.827Z",
+        "latencyMs": 1630
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 2192,
+        "outputTokens": 29,
+        "totalTokens": 2221,
+        "estimatedCostUsd": 0.0077120999999999995,
+        "startedAt": "2026-04-28T05:58:30.458Z",
+        "latencyMs": 4334
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 2245,
+        "outputTokens": 34,
+        "totalTokens": 2279,
+        "estimatedCostUsd": 0.0079695,
+        "startedAt": "2026-04-28T05:58:34.798Z",
+        "latencyMs": 2512
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 2320,
+        "outputTokens": 60,
+        "totalTokens": 2380,
+        "estimatedCostUsd": 0.008646,
+        "startedAt": "2026-04-28T05:58:37.313Z",
+        "latencyMs": 2122
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 2396,
+        "outputTokens": 52,
+        "totalTokens": 2448,
+        "estimatedCostUsd": 0.0087648,
+        "startedAt": "2026-04-28T05:58:39.436Z",
+        "latencyMs": 4676
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "WindowedTranscriptLLMAgent.respond",
+        "inputTokens": 2463,
+        "outputTokens": 124,
+        "totalTokens": 2587,
+        "estimatedCostUsd": 0.0101739,
+        "startedAt": "2026-04-28T05:58:44.114Z",
+        "latencyMs": 4785
+      },
+      {
+        "provider": "bedrock",
+        "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "label": "judge.honors_latest_intent",
+        "inputTokens": 953,
+        "outputTokens": 56,
+        "totalTokens": 1009,
+        "estimatedCostUsd": 0.004068899999999999,
+        "startedAt": "2026-04-28T05:58:48.919Z",
+        "latencyMs": 2376
+      }
+    ]
+  }
+}

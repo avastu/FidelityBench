@@ -139,6 +139,7 @@ export class FileMemoryLLMAgent implements Agent {
 
     try {
       const updatedMemory = await callLlm({
+        label: `${this.name}.memory_update`,
         messages: [
           {
             role: "system",
@@ -182,7 +183,8 @@ Return updated memory as concise markdown.`,
 
     try {
       const rawText = await callLlm({
-        responseFormat: "json_object",
+        expectedFormat: "json_object",
+        label: `${this.name}.respond`,
         messages: [
           {
             role: "system",

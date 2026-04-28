@@ -209,6 +209,25 @@ function hasBulletStructure(text: string): boolean {
   return bullets >= 2
 }
 
+// Patterns that suggest the agent is mirroring the user's prior successful-
+// pushback pattern: "named the risk early" worked with Alex before, so a
+// faithful agent invokes the same shape (flag/raise/surface/name the risk
+// early/now/upfront).
+//
+// v0.2-rc tightening (Codex M3): dropped three patterns that fired on
+// generic pushback drafts ("before we commit", "better to flag", "worth
+// flagging") even when the agent had no memory of Alex's prior good
+// response. The remaining patterns require explicit early/risk-naming
+// framing.
+const PRIOR_OUTCOME_PATTERNS = [
+  /\bnam(?:e|ing) (?:the|this|a) risk\b/i,
+  /\b(?:flag|raise|surface|raising|flagging|surfacing) (?:this|the|a) (?:risk|concern|delivery risk|timeline risk)\b/i,
+  /\b(?:flag|raise|surface) (?:this|that|it) (?:now|early|upfront|up front)\b/i,
+  /\b(?:early|upfront|up front|head[- ]on)\b[^.!?]{0,40}\b(?:risk|delivery risk|timeline)/i,
+  /\b(?:want to|wanted to) (?:flag|raise|surface|name|be clear on|be upfront about)\b[^.!?]{0,40}\b(?:risk|concern|timeline)\b/i,
+  /\bearly (?:risk )?(?:signal|warning|flag)\b/i,
+]
+
 // Hedge / over-explain markers. We're after the user's *anxious* pattern —
 // excessive justification, apology, qualification — not legitimate caveats.
 const OVEREXPLAIN_PATTERNS = [
@@ -467,7 +486,32 @@ export const alexPushbackJudge = (
     failureTurnIndex: finalTurn,
   })
 
-  void priorOutcomeOrigin // currently unused but kept for future "prior outcome" dimension
+  // 9) uses_prior_outcome — mirrors the prior successful-pushback pattern.
+  // The user has on record that "naming the risk early" worked with Alex
+  // before. A faithful agent should invoke the same shape rather than
+  // discover a fresh-each-time framing. Detection is lexical-floor only;
+  // a future LLM-judge augmentation can catch paraphrases.
+  const usesPriorOutcomeShape =
+    drafted && PRIOR_OUTCOME_PATTERNS.some((p) => p.test(finalAssistantMessage))
+  // No corresponding recall-burden category exists for this dimension yet
+  // (the user did not separately gate "prior outcome" as askable context),
+  // so this dimension does not need a memory-laundering guard. Document
+  // here so a future PR can add `prior_outcome` to PATTERNS if needed.
+  const priorOutcomeHonored = usesPriorOutcomeShape
+  dimensions.push({
+    id: "uses_prior_outcome",
+    description:
+      "Mirrors the prior successful 'name the risk early' pattern with Alex",
+    honored: priorOutcomeHonored,
+    weight: 5,
+    evidence: !drafted
+      ? "no draft produced"
+      : usesPriorOutcomeShape
+        ? "draft invokes the early-risk-naming framing"
+        : "draft does not invoke the prior successful pushback pattern",
+    originTurnIndex: priorOutcomeOrigin,
+    failureTurnIndex: finalTurn,
+  })
 
   const intentFidelity = dimensions.reduce(
     (sum, d) => sum + (d.honored ? d.weight : 0),
@@ -546,9 +590,10 @@ export const alexPushbackBundle: ScenarioBundle = {
   judge: alexPushbackJudge,
   requiredFields: [],
   family: "action",
-  // 30 task + 40 intent (8 dims × 5) + 15 recall + 10 clar + 5 tools
-  maxScore: 100,
-  maxIntentFidelity: 40,
+  // 30 task + 45 intent (9 dims × 5) + 15 recall + 10 clar + 5 tools
+  // (v0.2 added uses_prior_outcome as the 9th dimension; see Codex M3 fix.)
+  maxScore: 105,
+  maxIntentFidelity: 45,
   probes:
     "Relational fidelity: can the agent compose Alex's role + communication style + prior outcome + user's anxious pattern + bullet preference + private boundary + project constraint into one sendable reply, without making the user repeat themselves?",
 }
