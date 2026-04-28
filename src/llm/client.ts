@@ -14,7 +14,9 @@ export type LlmMessage =
 
 export type LlmCallOptions = {
   messages: LlmMessage[]
-  responseFormat?: "text" | "json_object"
+  // Documents the format expected by the caller's parser/prompt. Provider-level
+  // JSON enforcement is intentionally not implied by this abstraction.
+  expectedFormat?: "text" | "json_object"
   temperature?: number
   maxTokens?: number
   label?: string

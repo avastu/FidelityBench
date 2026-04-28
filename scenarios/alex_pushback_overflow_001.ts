@@ -141,6 +141,17 @@ function sampleNoiseTurns(
       if (turn) selected.push(turn)
     }
   }
+  if (selected.length !== N) {
+    const capacities = Object.entries(allocations)
+      .map(([pool, count]) => {
+        const available = corpus.pools[pool]?.length ?? 0
+        return `${pool}: requested ${count}, available ${available}`
+      })
+      .join("; ")
+    throw new Error(
+      `alex_pushback_overflow_001 could only sample ${selected.length}/${N} requested noise turns. Increase corpus size or lower FIDELITYBENCH_OVERFLOW_N. Pool capacities: ${capacities}`,
+    )
+  }
   // Final shuffle so pool order doesn't leak structure
   for (let i = selected.length - 1; i > 0; i -= 1) {
     const j = Math.floor(rng() * (i + 1))

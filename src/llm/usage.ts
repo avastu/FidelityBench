@@ -103,7 +103,7 @@ export function getLlmUsageSummary() {
       ...entry,
       estimatedCostUsd: Math.round(entry.estimatedCostUsd * 10000) / 10000,
     })),
-    records,
+    records: records.map((record) => ({ ...record })),
   }
 }
 
@@ -111,15 +111,19 @@ export function resetLlmUsage() {
   records.length = 0
 }
 
-export function assertLlmBudgetRemaining() {
+function rawEstimatedCostUsd(): number {
+  return records.reduce((sum, r) => sum + r.estimatedCostUsd, 0)
+}
+
+export function assertLlmBudgetRemaining(phase = "before LLM call") {
   const cap = process.env.FIDELITYBENCH_MAX_COST_USD
   if (!cap) return
   const max = Number.parseFloat(cap)
   if (!Number.isFinite(max) || max <= 0) return
-  const spent = getLlmUsageSummary().estimatedCostUsd
+  const spent = rawEstimatedCostUsd()
   if (spent >= max) {
     throw new Error(
-      `FIDELITYBENCH_MAX_COST_USD exceeded before LLM call: $${spent.toFixed(4)} >= $${max.toFixed(2)}`,
+      `FIDELITYBENCH_MAX_COST_USD exceeded ${phase}: $${spent.toFixed(4)} >= $${max.toFixed(2)}`,
     )
   }
 }
@@ -162,4 +166,5 @@ export function recordLlmUsage(args: {
     startedAt: args.startedAt.toISOString(),
     latencyMs: Date.now() - args.startedAt.getTime(),
   })
+  assertLlmBudgetRemaining("after LLM call")
 }

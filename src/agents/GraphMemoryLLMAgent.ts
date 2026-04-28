@@ -182,7 +182,7 @@ export class GraphBackedLLMAgent implements Agent {
     ]
     const raw = await callLlm({
       messages,
-      responseFormat: "json_object",
+      expectedFormat: "json_object",
       temperature: 0,
       label: `${this.name}.extract`,
     })
@@ -205,7 +205,7 @@ export class GraphBackedLLMAgent implements Agent {
         : `LATEST TOOL RESULT:\n${this.lastToolResult ?? input.message}`
     const currentDate = input.timestamp.slice(0, 10)
     const raw = await callLlm({
-      responseFormat: "json_object",
+      expectedFormat: "json_object",
       temperature: 0,
       label: `${this.name}.respond`,
       messages: [

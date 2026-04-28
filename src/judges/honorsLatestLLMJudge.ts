@@ -177,7 +177,7 @@ export async function llmJudgeHonorsLatestIntent(
   }
   const raw = await callLlm({
     messages: buildMessages(draft),
-    responseFormat: "json_object",
+    expectedFormat: "json_object",
     temperature: 0,
     maxTokens: 350,
     label: "judge.honors_latest_intent",

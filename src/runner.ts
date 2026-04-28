@@ -149,9 +149,10 @@ export async function runScenario(
   let augmented = result
   if (asyncJudge) {
     try {
+      const original = cloneEvaluationResult(result)
       augmented = enforceAsyncJudgeDowngradeOnly(
-        result,
-        await asyncJudge(result),
+        original,
+        await asyncJudge(cloneEvaluationResult(result)),
       )
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error)
@@ -164,6 +165,10 @@ export async function runScenario(
   }
 
   return invalidateLlmErrorResult(augmented)
+}
+
+function cloneEvaluationResult(result: EvaluationResult): EvaluationResult {
+  return JSON.parse(JSON.stringify(result)) as EvaluationResult
 }
 
 function enforceAsyncJudgeDowngradeOnly(
@@ -179,9 +184,21 @@ function enforceAsyncJudgeDowngradeOnly(
     "toolUseEfficiency",
   ] as const
   for (const field of scoreFields) {
-    if (augmented[field] > original[field]) {
+    const originalValue = original[field]
+    const augmentedValue = augmented[field]
+    if (!Number.isFinite(originalValue)) {
       throw new Error(
-        `asyncJudge attempted to increase ${field}: ${original[field]} -> ${augmented[field]}`,
+        `original evaluation has invalid ${field}: ${String(originalValue)}`,
+      )
+    }
+    if (!Number.isFinite(augmentedValue)) {
+      throw new Error(
+        `asyncJudge produced invalid ${field}: ${String(augmentedValue)}`,
+      )
+    }
+    if (augmentedValue > originalValue) {
+      throw new Error(
+        `asyncJudge attempted to increase ${field}: ${originalValue} -> ${augmentedValue}`,
       )
     }
   }

@@ -183,7 +183,7 @@ Return updated memory as concise markdown.`,
 
     try {
       const rawText = await callLlm({
-        responseFormat: "json_object",
+        expectedFormat: "json_object",
         label: `${this.name}.respond`,
         messages: [
           {

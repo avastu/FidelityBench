@@ -236,7 +236,7 @@ export class BlockMemoryLLMAgent implements Agent {
     ]
     const raw = await callLlm({
       messages,
-      responseFormat: "json_object",
+      expectedFormat: "json_object",
       label: `${this.name}.extract`,
     })
     const patch = parseExtraction(raw)
@@ -260,7 +260,7 @@ export class BlockMemoryLLMAgent implements Agent {
     ]
     const raw = await callLlm({
       messages,
-      responseFormat: "json_object",
+      expectedFormat: "json_object",
       label: `${this.name}.respond`,
     })
     return parseAgentOutput(raw)
